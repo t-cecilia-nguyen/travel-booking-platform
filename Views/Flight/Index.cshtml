@@ -5,6 +5,8 @@
 
 <h2>Flights</h2>
 
+<a class="btn btn-primary" asp-area="" asp-controller="Flight" asp-action="Create">Create New Flight</a>
+
 @if (Model.Any())
 {
 	<table class="table">
@@ -33,6 +35,8 @@
 					<td>@flight.Price</td>
 					<td>
 						<a asp-action="Details" asp-route-id="@flight.FlightId" class="btn btn-info">Details</a>
+						<a asp-action="Edit" asp-route-id="@flight.FlightId" class="btn btn-secondary">Edit</a>
+						<a asp-action="Delete" asp-route-id="@flight.FlightId" class="btn btn-danger">Delete</a>
 					</td>
 				</tr>
 			}
