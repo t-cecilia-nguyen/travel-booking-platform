@@ -18,22 +18,11 @@ namespace GBC_Travel_Group_90.Controllers
         }
         public IActionResult Index()
         {
-            // Test with hard coding
-            //var flights = new List<Flight>()
-            //{
-            //    new Flight { FlightId = 1,
-            //        FlightNumber = "F8 1602",
-            //        Airline = "Flair Airlines",
-            //        Origin = "Toronto",
-            //        Destination = "Fort Lauderdale",
-            //        DepartureTime = new DateTime(2024,4,1,6,30,0),
-            //        ArrivalTime = new DateTime(2024,4,1,9,50,0),
-            //        Price = 131
-            //    }
+            var flights = _db.Flights.ToList();
 
-            //};
+            var availableFlights = flights.Where(f => f.CurrentPassengers < f.MaxPassengers).ToList();
 
-			return View(_db.Flights.ToList());
+            return View(availableFlights);
         }
 
         public IActionResult Create()

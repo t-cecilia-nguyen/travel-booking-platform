@@ -22,5 +22,7 @@ namespace GBC_Travel_Group_90.Models
         [Required]
         [Range(1, double.MaxValue)]
         public decimal Price { get; set; }
+        public int MaxPassengers { get; set; }
+        public int CurrentPassengers { get; set; }
     }
 }

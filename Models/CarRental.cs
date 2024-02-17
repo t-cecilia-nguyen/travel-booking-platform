@@ -10,13 +10,17 @@ namespace GBC_Travel_Group_90.Models
         [Required]
         public string PickUpLocation { get; set; }
         [Required]
-        public DateTime PickUpDate { get; set; }
+		[DataType(DataType.Date)]
+		public DateTime PickUpDate { get; set; }
         [Required]
-        public DateTime DropOffDate { get; set; }
+		[DataType(DataType.Date)]
+		public DateTime DropOffDate { get; set; }
         [Required]
         public string CarModel { get; set; }
         [Required]
+        public int MaxPassengers { get; set; }
+        [Required]
         [Range(1, double.MaxValue)]
         public decimal Price { get; set; }
-    }
+	}
 }
