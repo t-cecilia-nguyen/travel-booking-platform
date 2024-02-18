@@ -6,13 +6,13 @@ namespace GBC_Travel_Group_90.Models
     {
         public int FlightId { get; set; }
         [Required]
-        public string FlightNumber { get; set; }
+        public string? FlightNumber { get; set; }
         [Required]
-        public string Airline { get; set; }
+        public string? Airline { get; set; }
         [Required]
-        public string Origin { get; set; }
+        public string? Origin { get; set; }
         [Required]
-        public string Destination { get; set; }
+        public string? Destination { get; set; }
         [Required]
         [DataType(DataType.Date)]
         public DateTime DepartureTime { get; set; }

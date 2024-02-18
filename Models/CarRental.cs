@@ -6,9 +6,9 @@ namespace GBC_Travel_Group_90.Models
     {
         public int CarRentalId { get; set; }
         [Required]  
-        public string RentalCompany { get; set; }
+        public string? RentalCompany { get; set; }
         [Required]
-        public string PickUpLocation { get; set; }
+        public string? PickUpLocation { get; set; }
         [Required]
 		[DataType(DataType.Date)]
 		public DateTime PickUpDate { get; set; }
@@ -16,7 +16,7 @@ namespace GBC_Travel_Group_90.Models
 		[DataType(DataType.Date)]
 		public DateTime DropOffDate { get; set; }
         [Required]
-        public string CarModel { get; set; }
+        public string? CarModel { get; set; }
         [Required]
         public int MaxPassengers { get; set; }
         [Required]

@@ -2,14 +2,27 @@
 
 @{
     ViewData["Title"] = "Hotel Home Page";
+    var userEmail = ViewBag.Email ?? "";
+    var isAdmin = ViewBag.IsAdmin ?? false;
+
+    var userId = ViewBag.UserId ?? "";
+
+   
 }
 
-<h1>Hotel Home Page</h1>
+<h2 class="white-opaque">Welcome To Hotel Page</h2>
 
 <div class="container">
+    
+    <div class="d-flex justify-content-end">
+        <p class="text-white bg-black">
+            Hello, @userEmail!
+        </p>
+    </div>
+    
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <form asp-controller="Hotel" asp-action="Search" method="get">
+            <form asp-controller="Hotel" asp-action="SearchHotel" method="get">
                 <div class="search-row">
                     <div class="form-group">
                         <label for="name">Name: </label>
@@ -50,11 +63,12 @@
 </div>
 
 
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
+@if (isAdmin)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 
 
 <div class="white-opaque">
@@ -76,9 +90,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Price)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IsAvailable)
-                </th>
+                
                 <th></th>
             </tr>
         </thead>
@@ -102,19 +114,24 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Price)
                             </td>
+                            
                             <td>
-                                @Html.DisplayFor(modelItem => item.IsAvailable)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.HotelId">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.HotelId">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.HotelId">Delete</a>
+                                <a asp-action="Details" asp-route-id="@item.HotelId" asp-route-userId="@ViewBag.UserId">Details</a> 
+                                @if (isAdmin) 
+                                {
+                                    <a asp-action="Edits" asp-route-id="@item.HotelId">Edit</a> 
+                                    <a asp-action="Delete" asp-route-id="@item.HotelId">Delete</a>
+                                }
+                                
                             </td>
                         </tr>
                 }
             else
             {
-                <p class="text-danger" >No hotels available.</p>
+                <tr>
+                    <td class="text-danger">No hotels available.</td>
+                </tr>
+                
             }
         </tbody>
     </table>

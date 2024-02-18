@@ -7,31 +7,45 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GBC_Travel_Group_90.Controllers
 {
-    public class HotelsController : Controller
+    
+    public class HotelController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public HotelsController(ApplicationDbContext context)
+        public HotelController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // GET: Hotels
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? userId)
         {
+            var user = _context.Users.Find(userId);
+            if (user != null)
+            {
+                bool isAdmin = user.IsAdmin;
+                string? email = user.Email;
+                ViewBag.IsAdmin = isAdmin;
+                ViewBag.Email = email;
+                ViewBag.UserId = user.UserId;
+            }
+            
+            
             return View(await _context.Hotels.ToListAsync());
         }
 
         // GET: Hotels/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int? userId)
         {
             if (id == null)
             {
                 return NotFound();
             }
+          
 
             var hotel = await _context.Hotels
                 .FirstOrDefaultAsync(m => m.HotelId == id);
@@ -39,11 +53,15 @@ namespace GBC_Travel_Group_90.Controllers
             {
                 return NotFound();
             }
+            ViewBag.UserId = userId;
+            ViewBag.HotelId = hotel.HotelId;
 
             return View(hotel);
         }
 
+
         // GET: Hotels/Create
+       
         public IActionResult Create()
         {
             return View();
@@ -53,7 +71,7 @@ namespace GBC_Travel_Group_90.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Location,StarRate,NumberOfRooms,Price,IsAvailable")] Hotel hotel)
+        public async Task<IActionResult> Create([Bind("Name,Location,StarRate,NumberOfRooms,Price")] Hotel hotel)
         {
             if (ModelState.IsValid)
             {
@@ -84,7 +102,7 @@ namespace GBC_Travel_Group_90.Controllers
      
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Location,StarRate,NumberOfRooms,Price,IsAvailable")] Hotel hotel)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Location,StarRate,NumberOfRooms,Price")] Hotel hotel)
         {
             if (id != hotel.HotelId)
             {
@@ -152,38 +170,45 @@ namespace GBC_Travel_Group_90.Controllers
             return _context.Hotels.Any(e => e.HotelId == id);
         }
 
-		[HttpGet("Search")]
-		public async Task<IActionResult> Search(string? name, string? location, int? starRate,DateTime? checkInDate, DateTime? checkOutDate, bool? availability, decimal? price)
+		[HttpGet("SearchHotel")]
+		public async Task<IActionResult> SearchHotel(string? name, string? location, int? starRate,DateTime? checkInDate, DateTime? checkOutDate, decimal? price)
 		{
 			var hotelsQuery = _context.Hotels.AsQueryable();
 
 			if (!string.IsNullOrEmpty(name))
 			{
-				hotelsQuery = hotelsQuery.Where(h => h.Name.Contains(name));
-			}
+                hotelsQuery = hotelsQuery.Where(h => h.Name != null && h.Name.Contains(name));
 
-			if (!string.IsNullOrEmpty(location))
+            }
+
+            if (!string.IsNullOrEmpty(location))
 			{
-				hotelsQuery = hotelsQuery.Where(h => h.Location.Contains(location));
+				hotelsQuery = hotelsQuery.Where(h => h.Location != null  && h.Location.Contains(location));
 			}
 
 			if (starRate > 0 && starRate <= 5)
 			{
 				hotelsQuery = hotelsQuery.Where(h => h.StarRate == starRate);
 			}
+
             if (checkInDate.HasValue && checkOutDate.HasValue)
             {
-                hotelsQuery = hotelsQuery.Where(h => h.IsAvailableForDates(checkInDate, checkOutDate));
+                // Retrieve bookings for the specified date range only
+                var bookingsForDateRange = _context.HotelBookings
+                    .Where(b => b.CheckInDate < checkOutDate && b.CheckOutDate > checkInDate)
+                    .ToList();
+
+                // Filter the hotels based on availability
+                var availableHotelIds = hotelsQuery
+                    .Where(h => h.IsAvailableForDates(checkInDate, checkOutDate, bookingsForDateRange))
+                    .Select(h => h.HotelId) 
+                    .ToList();
+
+                // Filter the hotelsQuery based on the availableHotelIds
+                hotelsQuery = hotelsQuery.Where(h => availableHotelIds.Contains(h.HotelId));
             }
 
-            if (availability.HasValue)
-			{
-
-				hotelsQuery = hotelsQuery.Where(h => h.IsAvailable == availability.Value);
-                                        
-            }
-
-			if (price.HasValue)
+            if (price.HasValue)
 			{
 				hotelsQuery = hotelsQuery.Where(h => h.Price == price.Value);
 			}

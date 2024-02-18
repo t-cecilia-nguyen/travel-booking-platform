@@ -18,31 +18,26 @@ namespace GBC_Travel_Group_90.Models
         [Required]
         [Range(1, double.MaxValue)]
         public decimal Price { get; set; }
-        [Required]
-        public bool IsAvailable { get; set; }
+      
 
         public List<HotelBooking>? HotelBookings { get; set; }
 
-       
 
+
+      
+     
         // Check if the hotel is available for the specified date range
-        public bool IsAvailableForDates(DateTime? checkInDate, DateTime? checkOutDate)
+        public bool IsAvailableForDates(DateTime? checkInDate, DateTime? checkOutDate, List<HotelBooking> bookingsForDateRange)
         {
             if (HotelBookings == null)
                 return true; // No bookings, so hotel is available
 
             // Check if any booked reservation overlaps with the requested date range
-            foreach (var reservation in HotelBookings)
-            {
-                if (IsDateRangeOverlap(checkInDate, checkOutDate, reservation.CheckInDate, reservation.CheckOutDate))
-                {
-                    // Overlapping reservation found; hotel is not available
-                    return false;
-                }
-            }
+            var overlappingReservation = HotelBookings.FirstOrDefault(reservation =>
+                bookingsForDateRange.Any(b => IsDateRangeOverlap(checkInDate, checkOutDate, b.CheckInDate, b.CheckOutDate)));
 
-            // No overlapping reservation found; hotel is available
-            return true;
+            // If any overlapping reservation is found, hotel is not available
+            return overlappingReservation == null;
         }
 
         // Helper method to check if two date ranges overlap
@@ -50,6 +45,7 @@ namespace GBC_Travel_Group_90.Models
         {
             return start1 < end2 && start2 < end1;
         }
+        
     }
 
 }  

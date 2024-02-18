@@ -15,5 +15,9 @@ namespace GBC_Travel_Group_90.Models
 
         [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
+        [Required]
+        public bool IsAdmin { get; set; }   
+
+        public List<HotelBooking>? HotelBookings { get; set; }
     }
 }
