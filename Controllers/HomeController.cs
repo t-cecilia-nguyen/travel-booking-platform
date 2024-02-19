@@ -1,16 +1,18 @@
+using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace GBC_Travel_Group_90.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _db;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext db)
         {
-            _logger = logger;
+            _db = db;
         }
 
         public IActionResult Index()
@@ -18,14 +20,32 @@ namespace GBC_Travel_Group_90.Controllers
             return View();
         }
 
-        public IActionResult About()
+        [HttpPost]
+        public IActionResult Create(User user)
         {
-            return View();
-        }
+            // Check if the email already exists
+            var existingUser = _db.Users.FirstOrDefault(u => u.Email == user.Email);
 
-        public IActionResult Contact()
-        {
-            return View();
+            if (existingUser != null)
+            {
+                return RedirectToAction("Index", "Flight");
+            }
+            else
+            {
+                // Email doesn't exist, save a new user
+                var newUser = new User
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Admin = false
+                };
+
+                _db.Users.Add(newUser);
+                _db.SaveChanges();
+
+                return RedirectToAction("Index", "Flight");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

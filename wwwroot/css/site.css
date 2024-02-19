@@ -25,11 +25,58 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
+.center-button {
+    display: flex;
+    justify-content: center;
+}
+
+.front_quote {
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 450px;
+    text-align: center;
+    padding: 20px;
+    margin-left: 50px;
+}
+
+.quote-container, .user_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: calc(100vh - 81.8px);
+}
+
+.user_form {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+    background-color: black;
+}
+
+.about_us {
+    background-color: white;
+    padding: 80px;
+}
+.contact {
+    background-color: white;
+    padding: 80px;
+}
+
+.about_us_container, .contact_container {
+    box-sizing: border-box;
+}
+
+.title {
+    margin-bottom: 30px;
+}
 
 .main_nav {
-    background-color: midnightblue;
+    background-color: #fce1e4;    
 }
 
 .navbar-space {

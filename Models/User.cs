@@ -1,30 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using System.ComponentModel.DataAnnotations;
 
 namespace GBC_Travel_Group_90.Models
 {
-    public abstract class User
+    public class User
     {
+        public int UserId { get; set; }
+
         [Required]
         [StringLength(100)]
-        public string Name { get; set; }
-    }
+        public string FirstName { get; set; }
 
-    public class RegisteredUser : User
-    {
         [Required]
-        public string UserId { get; set; }
-        [Required]
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
-        [Required]
-        [DataType(DataType.Password)]   
-        public string Password { get; set; }
-    }
+        [StringLength(100)]
+        public string LastName { get; set; }
 
-    public class GuestUser : User
-    {
-        [Required]
-        [DataType(DataType.EmailAddress)]
+        [Required(ErrorMessage = "The email address is required")]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
+
+        public Boolean Admin { get; set; }
+
+        public ICollection<Booking>? Booking { get; set; }
     }
 }

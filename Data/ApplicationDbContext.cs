@@ -14,6 +14,8 @@ namespace GBC_Travel_Group_90.Data
 
         public DbSet<CarRental> CarRentals { get; set;}
 
+		public DbSet<User> Users { get; set; }
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Flight>()
