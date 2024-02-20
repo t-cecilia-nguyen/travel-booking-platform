@@ -5,7 +5,6 @@ namespace GBC_Travel_Group_90.Models
     public class Booking
     {
         public int BookingId { get; set; }
-        [Required]
         public int UserId { get; set; }
         public required User User { get; set; }
         public int FlightId { get; set; }
