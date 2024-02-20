@@ -7,28 +7,88 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/GBC_Travel_Group_90.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GBC_Travel_Group_90</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+        <!-- Top Nav Bar -->
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light main_nav border-bottom box-shadow mb-3">
+            <div class="container-fluid d-flex flex-column align-items-start">                
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between w-100">
+                    <ul class="navbar-nav flex-grow-1 d-flex justify-content-start">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/banh_bao.png" /> Travel90 Agency</a>
+                        </li>                                           
                     </ul>
+
+
+                    <div class="navbar-collapse collapse d-sm-inline-flex">
+                        <ul class="navbar-nav flex-grow-1 justify-content-middle">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i>Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index"><i class="fa-solid fa-circle-info"></i>Your Summary</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Flight" asp-action="Index"><i class="fa-solid fa-list-check"></i> Flight Booking </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CarRental" asp-action="Index"><i class="fa-solid fa-list-check"></i> Car Booking </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Hotel" asp-action="Index"><i class="fa-solid fa-list-check"></i> Hotel Booking </a>
+                            </li>
+
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
+
+        @{
+            var hideNavBar = false;
+            var currentPage = ViewContext.RouteData.Values["controller"].ToString() + "/" + ViewContext.RouteData.Values["action"].ToString();
+
+            if (currentPage.Equals("Home/Index", StringComparison.OrdinalIgnoreCase))
+            {
+                hideNavBar = true;
+                <style>
+                    body {
+                        background-image: url('pexels-quang-nguyen-vinh-14023032.jpg');
+                        background-size: cover;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-attachment: fixed;
+                    }
+                </style>
+            }
+        }
+
+        @if (!hideNavBar)
+        {
+            <!-- Center Nav Bar -->
+            <div class="d-flex justify-content-center navbar-space">
+                <nav class="navbar navbar-expand-lg white-opaque">
+                    <div class="container-fluid">
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link animated-underline" asp-area="" asp-controller="Flight" asp-action="Index">Flights</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link animated-underline" asp-area="" asp-controller="CarRental" asp-action="Index">Cars</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link animated-underline" href="#">Hotels</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        }
+
     </header>
     <div class="container">
         <main role="main" class="pb-3">

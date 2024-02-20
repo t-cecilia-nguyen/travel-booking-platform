@@ -1,0 +1,41 @@
+﻿@model List<CarRental>
+
+<h2>User Details</h2>
+
+<h3>User Information</h3>
+<p>Email: @ViewBag.UserEmail</p>
+
+
+<h3>Rental Cars</h3>
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Rental Company</th>
+                <th>Pick Up Location</th>
+                <th>Pick Up Date</th>
+                <th>Drop Off Date</th>
+                <th>Car Model</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var carRental in Model)
+            {
+                <tr>
+                    <td>@carRental.RentalCompany</td>
+                    <td>@carRental.PickUpLocation</td>
+                    <td>@carRental.PickUpDate</td>
+                    <td>@carRental.DropOffDate</td>
+                    <td>@carRental.CarModel</td>
+                    <td>@carRental.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No rental cars found for this user.</p>
+}
