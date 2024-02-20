@@ -8,13 +8,13 @@ namespace GBC_Travel_Group_90.Models
     {
         public int HotelBookingId { get; set; }
         [Required]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         public DateTime BookingDate { get; set; }
 		[Required]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         public DateTime CheckInDate { get; set; }
 		[Required]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         public DateTime CheckOutDate { get; set; }
         public Status Status { get; set; }
         public int UserId { get; set; }

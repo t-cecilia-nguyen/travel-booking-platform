@@ -83,7 +83,7 @@ namespace GBC_Travel_Group_90.Controllers
                 // User exists, proceed with the insertion
                 hotelBooking.BookingDate = DateTime.Now;
                 hotelBooking.Status = Status.Confirmed;
-
+               
                 _context.HotelBookings.Add(hotelBooking);
                 await _context.SaveChangesAsync();
                 ViewBag.HotelId = hotelBooking.HotelId;

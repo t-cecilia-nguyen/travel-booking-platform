@@ -30,7 +30,52 @@ namespace GBC_Travel_Group_90.Data
 				.HasPrecision(18, 2);
 			modelBuilder.Entity<Hotel>()
 				.Property(c => c.Price)
-				.HasPrecision(18, 2);
-		}
-	}
+                .HasPrecision(18, 2);
+
+
+            // Seed Hotel data
+            modelBuilder.Entity<Hotel>().HasData(
+                new Hotel
+                {
+                    HotelId = 1,
+                    Name = "Marriot",
+                    Location = "123 str Toronto ON",
+                    StarRate = 4,
+                    NumberOfRooms = 50,
+                    Price = 350.00m
+                },
+                new Hotel
+                {
+                    HotelId = 2,
+                    Name = "Holiday Inn",
+                    Location = "234 str Calgary AB",
+                    StarRate = 3,
+                    NumberOfRooms = 100,
+                    Price = 250.00m
+                },
+                 new Hotel
+                 {
+                     HotelId = 3,
+                     Name = "Happy Hotel",
+                     Location = "999 str Vancouver BC",
+                     StarRate = 3,
+                     NumberOfRooms = 20,
+                     Price = 150.00m
+                 },
+                  new Hotel
+                  {
+                      HotelId = 4,
+                      Name = "Angry Hotel",
+                      Location = "012 str Norway",
+                      StarRate = 5,
+                      NumberOfRooms = 15,
+                      Price = 1000.00m
+                  }
+            );
+            
+
+            
+
+        }
+    }
 }

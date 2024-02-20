@@ -172,7 +172,7 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
 		[HttpGet("SearchHotel")]
-		public async Task<IActionResult> SearchHotel(string? name, string? location, int? starRate,DateTime? checkInDate, DateTime? checkOutDate, decimal? price)
+		public async Task<IActionResult> SearchHotel(string? name, string? location, int? starRate,DateTime? checkInDate, DateTime? checkOutDate, decimal? maxPrice)
 		{
 			var hotelsQuery = _context.Hotels.AsQueryable();
 
@@ -209,10 +209,11 @@ namespace GBC_Travel_Group_90.Controllers
                 hotelsQuery = hotelsQuery.Where(h => availableHotelIds.Contains(h.HotelId));
             }
 
-            if (price.HasValue)
+            if (maxPrice.HasValue)
 			{
-				hotelsQuery = hotelsQuery.Where(h => h.Price == price.Value);
-			}
+               
+                 hotelsQuery = hotelsQuery.Where(h => h.Price <= maxPrice.Value);
+            }
 
             
 

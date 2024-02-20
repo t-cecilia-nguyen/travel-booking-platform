@@ -34,6 +34,7 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
 
+
         [HttpGet("Details")]
         public IActionResult Details(string email)
         {
@@ -49,6 +50,11 @@ namespace GBC_Travel_Group_90.Controllers
             ViewBag.User = user;
             return View(userCarRentals);
         }
+
+
+
+
+
 
 
         [HttpGet("Create")]
