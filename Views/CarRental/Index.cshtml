@@ -16,13 +16,12 @@
 					<td>Pick Up Date</td>
 					<td>Drop Off Date</td>
 					<td>Car Model</td>
-					<td>Max Passengers</td>
 					<td>Price</td>
 					<td>Actions</td>
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (var carRental in Model)
+				@foreach (var carRental in Model.Where(cr => cr.Available != false))
 				{
 					<tr>
 						<td>@carRental.RentalCompany</td>
@@ -30,9 +29,9 @@
 						<td>@carRental.PickUpDate</td>
 						<td>@carRental.DropOffDate</td>
 						<td>@carRental.CarModel</td>
-						<td>@carRental.MaxPassengers</td>
 						<td>@carRental.Price</td>
 						<td>
+							<a asp-action="Book" asp-route-id="@carRental.CarRentalId" class="btn btn-info">Book Now</a>
 							<a asp-action="Details" asp-route-id="@carRental.CarRentalId" class="btn btn-info">Details</a>
 							<a asp-action="Edit" asp-route-id="@carRental.CarRentalId" class="btn btn-secondary">Edit</a>
 							<a asp-action="Delete" asp-route-id="@carRental.CarRentalId" class="btn btn-danger">Delete</a>

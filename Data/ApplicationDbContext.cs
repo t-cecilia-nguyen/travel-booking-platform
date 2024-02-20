@@ -5,6 +5,8 @@ namespace GBC_Travel_Group_90.Data
 {
     public class ApplicationDbContext : DbContext
     {
+        internal readonly object Bookings;
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) 
         { 
             
@@ -16,15 +18,6 @@ namespace GBC_Travel_Group_90.Data
 
 		public DbSet<User> Users { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			modelBuilder.Entity<Flight>()
-				.Property(f => f.Price)
-				.HasPrecision(18, 2);
 
-			modelBuilder.Entity<CarRental>()
-				.Property(c => c.Price)
-				.HasPrecision(18, 2);
-		}
 	}
 }
