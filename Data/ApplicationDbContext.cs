@@ -17,7 +17,20 @@ namespace GBC_Travel_Group_90.Data
         public DbSet<CarRental> CarRentals { get; set;}
 
 		public DbSet<User> Users { get; set; }
+		public DbSet<Hotel> Hotels { get; set; }
+		public DbSet<HotelBooking> HotelBookings { get; set; }
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<Flight>()
+				.Property(f => f.Price)
+				.HasPrecision(18, 2);
 
-
+			modelBuilder.Entity<CarRental>()
+				.Property(c => c.Price)
+				.HasPrecision(18, 2);
+			modelBuilder.Entity<Hotel>()
+				.Property(c => c.Price)
+				.HasPrecision(18, 2);
+		}
 	}
 }

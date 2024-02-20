@@ -7,6 +7,7 @@ namespace GBC_Travel_Group_90.Models
     {
         public int UserId { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string FirstName { get; set; }
 
@@ -20,5 +21,6 @@ namespace GBC_Travel_Group_90.Models
 
         public Boolean Admin { get; set; }
 
+        public List<HotelBooking>? HotelBookings { get; set; }
     }
 }

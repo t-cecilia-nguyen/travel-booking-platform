@@ -4,6 +4,7 @@ using GBC_Travel_Group_90.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GBC_Travel_Group_90.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240218161652_UpdateUserAndHotel")]
+    partial class UpdateUserAndHotel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +32,6 @@ namespace GBC_Travel_Group_90.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarRentalId"));
-
-                    b.Property<bool>("Available")
-                        .HasColumnType("bit");
 
                     b.Property<string>("CarModel")
                         .IsRequired()
@@ -58,12 +58,7 @@ namespace GBC_Travel_Group_90.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("CarRentalId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("CarRentals");
                 });
@@ -187,11 +182,7 @@ namespace GBC_Travel_Group_90.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
-                    b.Property<bool>("Admin")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
@@ -221,7 +212,7 @@ namespace GBC_Travel_Group_90.Migrations
                         .IsRequired();
 
                     b.HasOne("GBC_Travel_Group_90.Models.User", "User")
-                        .WithMany("HotelBookings")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -232,11 +223,6 @@ namespace GBC_Travel_Group_90.Migrations
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Models.Hotel", b =>
-                {
-                    b.Navigation("HotelBookings");
-                });
-
-            modelBuilder.Entity("GBC_Travel_Group_90.Models.User", b =>
                 {
                     b.Navigation("HotelBookings");
                 });

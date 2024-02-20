@@ -8,20 +8,20 @@ namespace GBC_Travel_Group_90.Controllers
 {
 
     [Route("Car")]
-    public class CarRentalController : Controller
+	public class CarRentalController : Controller
 	{
 		private readonly ApplicationDbContext _db;
 
 
-        public CarRentalController(ApplicationDbContext db)
-        {
-            _db = db;
-        }
+		public CarRentalController(ApplicationDbContext db)
+		{
+			_db = db;
+		}
 
 
 
         [HttpGet("")]
-        public IActionResult Index()
+		public IActionResult Index()
 		{
 			return View(_db.CarRentals.ToList());
 		}
@@ -43,11 +43,11 @@ namespace GBC_Travel_Group_90.Controllers
 
 
         [HttpGet("Create")]
-        public IActionResult Create()
-        {
+		public IActionResult Create()
+		{
 
-            return View();
-        }
+			return View();
+		}
 
 
 
@@ -60,7 +60,7 @@ namespace GBC_Travel_Group_90.Controllers
 
 
         [HttpPost("Create")]
-        [ValidateAntiForgeryToken]
+		[ValidateAntiForgeryToken]
 		public IActionResult Create(CarRental carRental)
 		{
 			if (ModelState.IsValid)
@@ -71,13 +71,7 @@ namespace GBC_Travel_Group_90.Controllers
 			}
 			return View(carRental);
 		}
-
-
-
-		[HttpGet("Book/{id:int}")]
-		public IActionResult Book(int id)
 		{
-			var carRental = _db.CarRentals.Find(id);
 
 			if (carRental == null)
 			{
@@ -125,7 +119,7 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
 
-        public IActionResult Edit(int id)
+		public IActionResult Edit(int id)
 		{
 			var carRental = _db.CarRentals.Find(id);
 
@@ -136,10 +130,7 @@ namespace GBC_Travel_Group_90.Controllers
 			return View(carRental);
 		}
 
-
-
-        [HttpGet("Edit/{id:int}")]
-        [ValidateAntiForgeryToken]
+		[ValidateAntiForgeryToken]
 		public IActionResult Edit(int id, [Bind("CarRentalId, RentalCompany, PickUpLocation, PickUpDate, DropOffDate, CarModel, Price")] CarRental carRental)
 		{
 			if (id != carRental.CarRentalId)

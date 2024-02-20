@@ -10,7 +10,7 @@ namespace GBC_Travel_Group_90.Models
 			Available = true; 
 		}
 
-		public int CarRentalId { get; set; }
+        public int CarRentalId { get; set; }
 
         [Required]  
         public string RentalCompany { get; set; }

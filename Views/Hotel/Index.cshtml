@@ -1,0 +1,138 @@
+﻿@model IEnumerable<GBC_Travel_Group_90.Models.Hotel>
+
+@{
+    ViewData["Title"] = "Hotel Home Page";
+    var userEmail = ViewBag.Email ?? "";
+    var isAdmin = ViewBag.IsAdmin ?? false;
+
+    var userId = ViewBag.UserId ?? "";
+
+   
+}
+
+<h2 class="white-opaque">Welcome To Hotel Page</h2>
+
+<div class="container">
+    
+    <div class="d-flex justify-content-end">
+        <p class="text-white bg-black">
+            Hello, @userEmail!
+        </p>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <form asp-controller="Hotel" asp-action="SearchHotel" method="get">
+                <div class="search-row">
+                    <div class="form-group">
+                        <label for="name">Name: </label>
+                        <div class="input-icon">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location:</label>
+                        <div class="input-icon">
+                            <i class="fa-solid fa-plane"></i>
+                            <input type="text" id="loacation" name="location" class="form-control" placeholder="Location">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="starRate">Star Rate:</label>
+                        <div class="input-icon">
+                            <i class="fa-solid fa-plane"></i>
+                            <input type="number" id="starRate" name="starRate" class="form-control" placeholder="Star Rate">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkInDate">CheckIn Date:</label>
+                        <input type="date" id="checkInDate" name="checkInDate" class="form-control" placeholder="CheckIn Date">
+                    </div>
+                    <div class="form-group">
+                        <label for="checkOutDate">CheckOut Date:</label>
+                        <input type="date" id="checkOutDate" name="checkOutDate" class="form-control" placeholder="CheckOut Date">
+                    </div>
+                </div>
+                <div class="form-group" style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Explore</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@if (isAdmin)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+
+<div class="white-opaque">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Location)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StarRate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NumberOfRooms)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            
+                @foreach (var item in Model) {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Location)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StarRate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NumberOfRooms)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.HotelId" asp-route-userId="@ViewBag.UserId">Details</a> 
+                                @if (isAdmin) 
+                                {
+                                    <a asp-action="Edits" asp-route-id="@item.HotelId">Edit</a> 
+                                    <a asp-action="Delete" asp-route-id="@item.HotelId">Delete</a>
+                                }
+                                
+                            </td>
+                        </tr>
+                }
+            else
+            {
+                <tr>
+                    <td class="text-danger">No hotels available.</td>
+                </tr>
+                
+            }
+        </tbody>
+    </table>
+</div>
