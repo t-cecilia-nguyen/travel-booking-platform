@@ -8,23 +8,23 @@ namespace GBC_Travel_Group_90.Controllers
 {
 
     [Route("Car")]
-	public class CarRentalController : Controller
-	{
-		private readonly ApplicationDbContext _db;
+    public class CarRentalController : Controller
+    {
+        private readonly ApplicationDbContext _db;
 
 
-		public CarRentalController(ApplicationDbContext db)
-		{
-			_db = db;
-		}
+        public CarRentalController(ApplicationDbContext db)
+        {
+            _db = db;
+        }
 
 
 
         [HttpGet("")]
-		public IActionResult Index()
-		{
-			return View(_db.CarRentals.ToList());
-		}
+        public IActionResult Index()
+        {
+            return View(_db.CarRentals.ToList());
+        }
 
 
 
@@ -43,11 +43,11 @@ namespace GBC_Travel_Group_90.Controllers
 
 
         [HttpGet("Create")]
-		public IActionResult Create()
-		{
+        public IActionResult Create()
+        {
 
-			return View();
-		}
+            return View();
+        }
 
 
 
@@ -60,26 +60,32 @@ namespace GBC_Travel_Group_90.Controllers
 
 
         [HttpPost("Create")]
-		[ValidateAntiForgeryToken]
-		public IActionResult Create(CarRental carRental)
-		{
-			if (ModelState.IsValid)
-			{
-				_db.CarRentals.Add(carRental);
-				_db.SaveChanges();
-				return RedirectToAction("Index");
-			}
-			return View(carRental);
-		}
-		{
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(CarRental carRental)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.CarRentals.Add(carRental);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(carRental);
+        }
 
-			if (carRental == null)
-			{
-				return NotFound();
-			}
 
-			return View(carRental);
-		}
+
+        [HttpGet("Book/{id:int}")]
+        public IActionResult Book(int id)
+        {
+            var carRental = _db.CarRentals.Find(id);
+
+            if (carRental == null)
+            {
+                return NotFound();
+            }
+
+            return View(carRental);
+        }
 
 
 
@@ -106,12 +112,12 @@ namespace GBC_Travel_Group_90.Controllers
                     FirstName = "Guest",
                     LastName = "Guest"
                 };
-                _db.Users.Add(user); 
-                _db.SaveChanges(); 
+                _db.Users.Add(user);
+                _db.SaveChanges();
             }
 
             carRental.Available = false;
-            carRental.UserId = user.UserId; 
+            carRental.UserId = user.UserId;
             _db.SaveChanges();
 
 
@@ -119,88 +125,91 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
 
-		public IActionResult Edit(int id)
-		{
-			var carRental = _db.CarRentals.Find(id);
+        public IActionResult Edit(int id)
+        {
+            var carRental = _db.CarRentals.Find(id);
 
-			if (carRental == null)
-			{
-				return NotFound();
-			}
-			return View(carRental);
-		}
-
-		[ValidateAntiForgeryToken]
-		public IActionResult Edit(int id, [Bind("CarRentalId, RentalCompany, PickUpLocation, PickUpDate, DropOffDate, CarModel, Price")] CarRental carRental)
-		{
-			if (id != carRental.CarRentalId)
-			{
-				return NotFound();
-			}
-
-			if (ModelState.IsValid)
-			{
-				try
-				{
-					_db.Update(carRental);
-					_db.SaveChanges();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!CarRentalExists(carRental.CarRentalId))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-				return RedirectToAction(nameof(Index));
-			}
-			return View(carRental);
-		}
+            if (carRental == null)
+            {
+                return NotFound();
+            }
+            return View(carRental);
+        }
 
 
 
-		private bool CarRentalExists(int id)
-		{
-			return _db.CarRentals.Any(e => e.CarRentalId == id);
-		}
+        [HttpGet("Edit/{id:int}")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, [Bind("CarRentalId, RentalCompany, PickUpLocation, PickUpDate, DropOffDate, CarModel, Price")] CarRental carRental)
+        {
+            if (id != carRental.CarRentalId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _db.Update(carRental);
+                    _db.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CarRentalExists(carRental.CarRentalId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(carRental);
+        }
 
 
 
-		public IActionResult Delete(int id)
-		{
-			var carRental = _db.CarRentals.FirstOrDefault(p => p.CarRentalId == id);
-
-			if (carRental == null)
-			{
-				return NotFound();
-			}
-			return View(carRental);
-		}
+        private bool CarRentalExists(int id)
+        {
+            return _db.CarRentals.Any(e => e.CarRentalId == id);
+        }
 
 
 
-		[HttpPost, ActionName("DeleteConfirmed")]
-		[ValidateAntiForgeryToken]
-		public IActionResult DeleteConfirmed(int carRentalId)
-		{
-			var carRental = _db.CarRentals.Find(carRentalId);
-			if (carRental != null)
-			{
-				_db.CarRentals.Remove(carRental);
-				_db.SaveChanges();
-				return RedirectToAction(nameof(Index));
-			}
-			return NotFound();
-		}
+        public IActionResult Delete(int id)
+        {
+            var carRental = _db.CarRentals.FirstOrDefault(p => p.CarRentalId == id);
+
+            if (carRental == null)
+            {
+                return NotFound();
+            }
+            return View(carRental);
+        }
+
+
+
+        [HttpPost, ActionName("DeleteConfirmed")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int carRentalId)
+        {
+            var carRental = _db.CarRentals.Find(carRentalId);
+            if (carRental != null)
+            {
+                _db.CarRentals.Remove(carRental);
+                _db.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return NotFound();
+        }
 
 
 
 
 
 
-	}
+    }
 }
