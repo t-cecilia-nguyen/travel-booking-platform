@@ -38,7 +38,7 @@ namespace GBC_Travel_Group_90.Controllers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Email = user.Email,
-                    Admin = false
+                    IsAdmin = false
                 };
 
                 _db.Users.Add(newUser);

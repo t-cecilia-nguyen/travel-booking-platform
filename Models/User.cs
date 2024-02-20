@@ -18,7 +18,7 @@ namespace GBC_Travel_Group_90.Models
         [Required(ErrorMessage = "The email address is required")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string Email { get; set; }
-        public Boolean Admin { get; set; }
+        public bool IsAdmin { get; set; }
         public ICollection<Booking>? Booking { get; set; }
     }
 }
