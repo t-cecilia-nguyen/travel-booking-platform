@@ -10,46 +10,46 @@
     <div>
         <hr />
         <dl class="row">
-            <dt class = "col-sm-2">
+            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.FlightNumber)
             </dt>
-            <dd class = "col-sm-10">
+            <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.FlightNumber)
             </dd>
-            <dt class = "col-sm-2">
+            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Airline)
             </dt>
-            <dd class = "col-sm-10">
+            <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Airline)
             </dd>
-            <dt class = "col-sm-2">
+            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Origin)
             </dt>
-            <dd class = "col-sm-10">
+            <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Origin)
             </dd>
-            <dt class = "col-sm-2">
+            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Destination)
             </dt>
-            <dd class = "col-sm-10">
+            <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Destination)
             </dd>
-            <dt class = "col-sm-2">
+            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.DepartureTime)
             </dt>
-            <dd class = "col-sm-10">
+            <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.DepartureTime)
             </dd>
-            <dt class = "col-sm-2">
+            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.ArrivalTime)
             </dt>
-            <dd class = "col-sm-10">
+            <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.ArrivalTime)
             </dd>
-            <dt class = "col-sm-2">
+            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Price)
             </dt>
-            <dd class = "col-sm-10">
+            <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Price)
             </dd>
             <dt class="col-sm-2">
@@ -62,6 +62,14 @@
     </div>
     <div>
         <a asp-action="Edit" asp-route-id="@Model?.FlightId" class="btn btn-primary">Edit</a>
+        <form asp-controller="Booking" asp-action="BookFlight" method="post">
+            <div class="form-group">
+                <input type="hidden" name="flightId" value="@Model?.FlightId" />
+                <label for="email">Enter your email address:</label>
+                <input name="email" type="email" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success">Book Flight</button>
+        </form>
         <a asp-action="Index" class="btn btn-secondary">Back to Flights</a>
     </div>
 </div>
