@@ -50,8 +50,11 @@ namespace GBC_Travel_Group_90.Controllers
         // GET: HotelBookings/Create
         public IActionResult Create(int hotelId, int userId)
         {
+            var user = _context.Users.Find(userId);
+            if (user == null) return NotFound("User not found");
+            
             var hotel = _context.Hotels.Find(hotelId);
-            if (hotel == null) return NotFound();
+            if (hotel == null) return NotFound("Hotel not found");
 
             var hotelBooking = new HotelBooking { HotelId = hotelId , UserId = userId};
 
@@ -79,6 +82,7 @@ namespace GBC_Travel_Group_90.Controllers
 
                 // User exists, proceed with the insertion
                 hotelBooking.BookingDate = DateTime.Now;
+                hotelBooking.Status = Status.Confirmed;
 
                 _context.HotelBookings.Add(hotelBooking);
                 await _context.SaveChangesAsync();

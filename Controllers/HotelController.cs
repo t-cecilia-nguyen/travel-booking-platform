@@ -46,6 +46,7 @@ namespace GBC_Travel_Group_90.Controllers
                 return NotFound();
             }
           
+            if(userId == null) return RedirectToAction("Create", "User", new { hotelId = id });
 
             var hotel = await _context.Hotels
                 .FirstOrDefaultAsync(m => m.HotelId == id);

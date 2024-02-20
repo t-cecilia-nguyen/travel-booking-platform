@@ -22,6 +22,9 @@ namespace GBC_Travel_Group_90.Models
         public int HotelId { get; set; }
         public Hotel? Hotel { get; set;}
 
+        
+
+
 
     }
     public enum Status

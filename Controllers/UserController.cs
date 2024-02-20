@@ -52,8 +52,12 @@ namespace GBC_Travel_Group_90.Controllers
 
 
         [HttpGet("Create")]
-        public IActionResult Create()
+        public IActionResult Create(int? hotelId)
         {
+            if(hotelId != null)
+            {
+                TempData["HotelId"] = hotelId;
+            }
             return View();
         }
 
@@ -62,6 +66,8 @@ namespace GBC_Travel_Group_90.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserId,FirstName,LastName,Email,IsAdmin")] User user)
         {
+            int? hotelId = TempData["HotelId"] as int?; // Retrieve hotelId from TempData
+
             if (ModelState.IsValid)
             {
                 _context.Add(user);
@@ -71,9 +77,12 @@ namespace GBC_Travel_Group_90.Controllers
                 ViewBag.UserEmail = user.Email;
                 ViewBag.IsAdmin = user.IsAdmin;
 
-
-                return RedirectToAction(nameof(Index), "Hotel", new {userId = user.UserId});
+                
+                return RedirectToAction(nameof(Details), "Hotel", new {id = hotelId, userId = user.UserId});
             }
+            // If the model state is not valid, set the ViewBag.HotelId again
+            ViewBag.HotelId = hotelId;
+
             return View(user);
         }
 

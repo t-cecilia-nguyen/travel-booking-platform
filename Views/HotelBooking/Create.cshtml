@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Create Booking";
-  
+    var userId = ViewBag.UserId;
 
 }
 
@@ -29,10 +29,10 @@
             </div>
             
             @Html.HiddenFor(model => model.HotelId)
-            @Html.HiddenFor(model => model.UserId)
-            
+            @Html.HiddenFor(model => model.UserId, new { value = userId })
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
