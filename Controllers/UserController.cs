@@ -33,7 +33,7 @@ namespace GBC_Travel_Group_90.Controllers
             return View();
         }
 
-
+        ///
 
         [HttpGet("Details")]
         public IActionResult Details(string email)
