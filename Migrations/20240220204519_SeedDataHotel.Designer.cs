@@ -4,6 +4,7 @@ using GBC_Travel_Group_90.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GBC_Travel_Group_90.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240220204519_SeedDataHotel")]
+    partial class SeedDataHotel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,39 +24,6 @@ namespace GBC_Travel_Group_90.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("GBC_Travel_Group_90.Models.Booking", b =>
-                {
-                    b.Property<int>("BookingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"));
-
-                    b.Property<int?>("CarRentalId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("FlightId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("HotelId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookingId");
-
-                    b.HasIndex("CarRentalId");
-
-                    b.HasIndex("FlightId");
-
-                    b.HasIndex("HotelId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Bookings");
-                });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Models.CarRental", b =>
                 {
@@ -235,9 +205,6 @@ namespace GBC_Travel_Group_90.Migrations
                     b.Property<int>("HotelId")
                         .HasColumnType("int");
 
-                    b.Property<int>("NumOfRoomsToBook")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -282,35 +249,6 @@ namespace GBC_Travel_Group_90.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("GBC_Travel_Group_90.Models.Booking", b =>
-                {
-                    b.HasOne("GBC_Travel_Group_90.Models.CarRental", "CarRental")
-                        .WithMany()
-                        .HasForeignKey("CarRentalId");
-
-                    b.HasOne("GBC_Travel_Group_90.Models.Flight", "Flight")
-                        .WithMany("Bookings")
-                        .HasForeignKey("FlightId");
-
-                    b.HasOne("GBC_Travel_Group_90.Models.Hotel", "Hotel")
-                        .WithMany("Bookings")
-                        .HasForeignKey("HotelId");
-
-                    b.HasOne("GBC_Travel_Group_90.Models.User", "User")
-                        .WithMany("Bookings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CarRental");
-
-                    b.Navigation("Flight");
-
-                    b.Navigation("Hotel");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("GBC_Travel_Group_90.Models.CarRental", b =>
                 {
                     b.HasOne("GBC_Travel_Group_90.Models.User", "User")
@@ -339,22 +277,13 @@ namespace GBC_Travel_Group_90.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("GBC_Travel_Group_90.Models.Flight", b =>
-                {
-                    b.Navigation("Bookings");
-                });
-
             modelBuilder.Entity("GBC_Travel_Group_90.Models.Hotel", b =>
                 {
-                    b.Navigation("Bookings");
-
                     b.Navigation("HotelBookings");
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Models.User", b =>
                 {
-                    b.Navigation("Bookings");
-
                     b.Navigation("HotelBookings");
                 });
 #pragma warning restore 612, 618

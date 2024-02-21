@@ -17,6 +17,12 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.BookingDate)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NumOfRoomsToBook)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumOfRoomsToBook)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CheckInDate)
         </dt>
@@ -28,6 +34,12 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.CheckOutDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Status)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.User.FirstName)
@@ -65,6 +77,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Hotel.StarRate)
         </dd>
+        
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Hotel.Price)
         </dt>

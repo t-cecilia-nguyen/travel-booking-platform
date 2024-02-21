@@ -12,6 +12,7 @@ namespace GBC_Travel_Group_90.Models
         [Required]
         [Range(1, 5)]
         public int StarRate { get; set; }
+        
         [Required]
         [Range(1, int.MaxValue)]
         public int NumberOfRooms { get; set; }

@@ -61,32 +61,32 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Flight" asp-action="Index"><i class="fa-solid fa-list-check"></i> Flight Booking</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="CarRental" asp-action="Index"><i class="fa-solid fa-list-check"></i> Car Booking</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Hotel" asp-action="Index"><i class="fa-solid fa-list-check"></i> Hotel Booking</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="User" asp-action="Create">Login/Logout</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
-
-        @{
-            var currentPage = ViewContext.RouteData.Values["controller"].ToString() + "/" + ViewContext.RouteData.Values["action"].ToString();
-            if (currentPage.Equals("Home/Index", StringComparison.OrdinalIgnoreCase))
-            {
-                <style>
-                    body {
-                        background-image: url('pexels-quang-nguyen-vinh-14023032.jpg');
-                        background-size: cover;
-                        background-position: center;
-                        background-repeat: no-repeat;
-                        background-attachment: fixed;
-                    }
-                </style>
-            }
-        }
-
+        <!-- Center Nav Bar -->
+        <div class="d-flex justify-content-center navbar-space">
+            <nav class="navbar navbar-expand-lg white-opaque">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link animated-underline" asp-area="" asp-controller="Flight" asp-action="Index">Flights</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link animated-underline" asp-area="" asp-controller="CarRental" asp-action="Index">Cars</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link animated-underline" asp-area="" asp-controller="Hotel" asp-action="Index">Hotels</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
