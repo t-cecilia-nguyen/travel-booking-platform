@@ -9,16 +9,17 @@ namespace GBC_Travel_Group_90.Models
 
         [Required]
         [StringLength(100)]
-        public string FirstName { get; set; }
-
+        public string? FirstName { get; set; }
         [Required]
         [StringLength(100)]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
-        [Required(ErrorMessage = "The email address is required")]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
-        public string Email { get; set; }
+        [DataType(DataType.EmailAddress)]
+        public string? Email { get; set; }
+        [Required]
         public bool IsAdmin { get; set; }
-        public ICollection<Booking>? Booking { get; set; }
+
+        public List<Booking>? Bookings { get; set; }
+        public List<HotelBooking>? HotelBookings { get; set; }
     }
 }

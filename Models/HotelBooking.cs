@@ -10,19 +10,17 @@ namespace GBC_Travel_Group_90.Models
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime BookingDate { get; set; }
-        [Required]
+		[Required]
         [DataType(DataType.DateTime)]
         public DateTime CheckInDate { get; set; }
-        [Required]
+		[Required]
         [DataType(DataType.DateTime)]
         public DateTime CheckOutDate { get; set; }
         public Status Status { get; set; }
         public int UserId { get; set; }
         public User? User { get; set; }
         public int HotelId { get; set; }
-        public Hotel? Hotel { get; set; }
-
-
+        public Hotel? Hotel { get; set;}
     }
     public enum Status
     {

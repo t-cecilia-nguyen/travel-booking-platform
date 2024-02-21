@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace GBC_Travel_Group_90.Controllers
 {
-
+    
     public class HotelController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -33,6 +33,8 @@ namespace GBC_Travel_Group_90.Controllers
                 ViewBag.Email = email;
                 ViewBag.UserId = user.UserId;
             }
+            
+            
             return View(await _context.Hotels.ToListAsync());
         }
 
@@ -43,6 +45,7 @@ namespace GBC_Travel_Group_90.Controllers
             {
                 return NotFound();
             }
+          
 
             var hotel = await _context.Hotels
                 .FirstOrDefaultAsync(m => m.HotelId == id);
@@ -56,13 +59,16 @@ namespace GBC_Travel_Group_90.Controllers
             return View(hotel);
         }
 
+
         // GET: Hotels/Create
+       
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: Hotels/Create
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Location,StarRate,NumberOfRooms,Price")] Hotel hotel)
@@ -93,6 +99,7 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
         // POST: Hotels/Edit/5
+     
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Name,Location,StarRate,NumberOfRooms,Price")] Hotel hotel)
@@ -163,26 +170,26 @@ namespace GBC_Travel_Group_90.Controllers
             return _context.Hotels.Any(e => e.HotelId == id);
         }
 
-        [HttpGet("SearchHotel")]
+		[HttpGet("SearchHotel")]
         public async Task<IActionResult> SearchHotel(string? name, string? location, int? starRate, DateTime? checkInDate, DateTime? checkOutDate, decimal? price)
-        {
-            var hotelsQuery = _context.Hotels.AsQueryable();
+		{
+			var hotelsQuery = _context.Hotels.AsQueryable();
 
-            if (!string.IsNullOrEmpty(name))
-            {
+			if (!string.IsNullOrEmpty(name))
+			{
                 hotelsQuery = hotelsQuery.Where(h => h.Name != null && h.Name.Contains(name));
 
             }
 
             if (!string.IsNullOrEmpty(location))
-            {
+			{
                 hotelsQuery = hotelsQuery.Where(h => h.Location != null && h.Location.Contains(location));
-            }
+			}
 
-            if (starRate > 0 && starRate <= 5)
-            {
-                hotelsQuery = hotelsQuery.Where(h => h.StarRate == starRate);
-            }
+			if (starRate > 0 && starRate <= 5)
+			{
+				hotelsQuery = hotelsQuery.Where(h => h.StarRate == starRate);
+			}
 
             if (checkInDate.HasValue && checkOutDate.HasValue)
             {
@@ -194,7 +201,7 @@ namespace GBC_Travel_Group_90.Controllers
                 // Filter the hotels based on availability
                 var availableHotelIds = hotelsQuery
                     .Where(h => h.IsAvailableForDates(checkInDate, checkOutDate, bookingsForDateRange))
-                    .Select(h => h.HotelId)
+                    .Select(h => h.HotelId) 
                     .ToList();
 
                 // Filter the hotelsQuery based on the availableHotelIds
@@ -202,14 +209,17 @@ namespace GBC_Travel_Group_90.Controllers
             }
 
             if (price.HasValue)
-            {
-                hotelsQuery = hotelsQuery.Where(h => h.Price == price.Value);
-            }
+			{
+				hotelsQuery = hotelsQuery.Where(h => h.Price == price.Value);
+			}
+
+            
+
 
             var hotels = await hotelsQuery.ToListAsync();
 
-            return View("Index", hotels); // Reuse the Index view to display results
-        }
+			return View("Index", hotels); // Reuse the Index view to display results
+		}
 
-    }
+	}
 }

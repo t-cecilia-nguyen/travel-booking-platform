@@ -22,7 +22,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (var carRental in Model)
+				@foreach (var carRental in Model.Where(cr => cr.Available != false))
 				{
 					<tr>
 						<td>@carRental.RentalCompany</td>
@@ -33,6 +33,7 @@
 						<td>@carRental.MaxPassengers</td>
 						<td>@carRental.Price</td>
 						<td>
+							<a asp-action="Book" asp-route-id="@carRental.CarRentalId" class="btn btn-info">Book Now</a>
 							<a asp-action="Details" asp-route-id="@carRental.CarRentalId" class="btn btn-info">Details</a>
 							<a asp-action="Edit" asp-route-id="@carRental.CarRentalId" class="btn btn-secondary">Edit</a>
 							<a asp-action="Delete" asp-route-id="@carRental.CarRentalId" class="btn btn-danger">Delete</a>

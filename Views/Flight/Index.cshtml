@@ -73,6 +73,7 @@
 							<td>@flight.Price</td>
 							<td>@flight.MaxPassengers</td>
 							<td>
+								<a asp-controller="Booking" asp-action="BookFlight" asp-route-id="@flight.FlightId" class="btn btn-info">Book Flight</a>
 								<a asp-action="Details" asp-route-id="@flight.FlightId" class="btn btn-info">Details</a>
 								<a asp-action="Edit" asp-route-id="@flight.FlightId" class="btn btn-secondary">Edit</a>
 								<a asp-action="Delete" asp-route-id="@flight.FlightId" class="btn btn-danger">Delete</a>

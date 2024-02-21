@@ -34,7 +34,7 @@ namespace GBC_Travel_Group_90.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Flight flight)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _db.Flights.Add(flight);
                 _db.SaveChanges();
@@ -99,7 +99,7 @@ namespace GBC_Travel_Group_90.Controllers
         {
             return _db.Flights.Any(e => e.FlightId == id);
         }
-        
+
         public IActionResult Delete(int id)
         {
             var flight = _db.Flights.FirstOrDefault(p => p.FlightId == id);

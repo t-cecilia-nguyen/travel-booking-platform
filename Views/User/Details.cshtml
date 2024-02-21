@@ -1,0 +1,92 @@
+﻿@model ViewModel
+
+<h2>User Details</h2>
+
+<div class="card">
+    <div class="card-header">
+        <h3>User Information</h3>
+    </div>
+    <div class="card-body">
+        <p>Email: @ViewBag.Email</p>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h3>Flight Information</h3>
+    </div>
+    <div class="card-body">
+        @if (Model.Bookings.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Flight Number</td>
+                        <td>Airline</td>
+                        <td>Origin</td>
+                        <td>Destination</td>
+                        <td>Departure</td>
+                        <td>Arrival</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var booking in Model.Bookings)
+                    {
+                        <tr>
+                            <td>@booking.Flight?.FlightNumber</td>
+                            <td>@booking.Flight?.Airline</td>
+                            <td>@booking.Flight?.Origin</td>
+                            <td>@booking.Flight?.Destination</td>
+                            <td>@booking.Flight?.DepartureTime</td>
+                            <td>@booking.Flight?.ArrivalTime</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No flights found for this user.</p>
+        }
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h3>Rental Cars</h3>
+    </div>
+    <div class="card-body">
+        @if (Model.CarRentals.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Rental Company</th>
+                        <th>Pick Up Location</th>
+                        <th>Pick Up Date</th>
+                        <th>Drop Off Date</th>
+                        <th>Car Model</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var carRental in Model.CarRentals)
+                    {
+                        <tr>
+                            <td>@carRental.RentalCompany</td>
+                            <td>@carRental.PickUpLocation</td>
+                            <td>@carRental.PickUpDate</td>
+                            <td>@carRental.DropOffDate</td>
+                            <td>@carRental.CarModel</td>
+                            <td>@carRental.Price</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No rental cars found for this user.</p>
+        }
+    </div>
+</div>

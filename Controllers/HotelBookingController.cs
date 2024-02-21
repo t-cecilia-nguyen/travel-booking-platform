@@ -61,10 +61,10 @@ namespace GBC_Travel_Group_90.Controllers
 
 
             return View(hotelBooking);
-
+            
         }
-
-
+        
+        
 
         // POST: HotelBookings/Create
         [HttpPost]
@@ -75,7 +75,7 @@ namespace GBC_Travel_Group_90.Controllers
 
             if (ModelState.IsValid)
             {
-
+                
 
                 // User exists, proceed with the insertion
                 hotelBooking.BookingDate = DateTime.Now;
@@ -92,10 +92,10 @@ namespace GBC_Travel_Group_90.Controllers
             return (View(hotelBooking));
 
         }
+        
+           
 
-
-
-
+        
         // GET: HotelBookings/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -146,7 +146,7 @@ namespace GBC_Travel_Group_90.Controllers
                 }
                 return RedirectToAction(nameof(Details), new { id = hotelBooking.HotelBookingId });
             }
-            return View(hotelBooking);
+             return View(hotelBooking);
         }
 
         // GET: HotelBookings/Delete/5

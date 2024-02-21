@@ -62,14 +62,6 @@
     </div>
     <div>
         <a asp-action="Edit" asp-route-id="@Model?.FlightId" class="btn btn-primary">Edit</a>
-        <form asp-controller="Booking" asp-action="BookFlight" method="post">
-            <div class="form-group">
-                <input type="hidden" name="flightId" value="@Model?.FlightId" />
-                <label for="email">Enter your email address:</label>
-                <input name="email" type="email" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-success">Book Flight</button>
-        </form>
         <a asp-action="Index" class="btn btn-secondary">Back to Flights</a>
     </div>
 </div>

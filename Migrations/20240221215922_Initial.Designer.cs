@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GBC_Travel_Group_90.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240220030809_Hotel")]
-    partial class Hotel
+    [Migration("20240221215922_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,6 +66,9 @@ namespace GBC_Travel_Group_90.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarRentalId"));
 
+                    b.Property<bool>("Available")
+                        .HasColumnType("bit");
+
                     b.Property<string>("CarModel")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -91,7 +94,12 @@ namespace GBC_Travel_Group_90.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("CarRentalId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CarRentals");
                 });
@@ -161,6 +169,7 @@ namespace GBC_Travel_Group_90.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("StarRate")
@@ -168,7 +177,42 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasKey("HotelId");
 
-                    b.ToTable("Hotel");
+                    b.ToTable("Hotels");
+                });
+
+            modelBuilder.Entity("GBC_Travel_Group_90.Models.HotelBooking", b =>
+                {
+                    b.Property<int>("HotelBookingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HotelBookingId"));
+
+                    b.Property<DateTime>("BookingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CheckInDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CheckOutDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HotelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("HotelBookingId");
+
+                    b.HasIndex("HotelId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("HotelBookings");
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Models.User", b =>
@@ -179,17 +223,16 @@ namespace GBC_Travel_Group_90.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
-                    b.Property<bool>("Admin")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -204,7 +247,7 @@ namespace GBC_Travel_Group_90.Migrations
             modelBuilder.Entity("GBC_Travel_Group_90.Models.Booking", b =>
                 {
                     b.HasOne("GBC_Travel_Group_90.Models.CarRental", "CarRental")
-                        .WithMany("Bookings")
+                        .WithMany()
                         .HasForeignKey("CarRentalId");
 
                     b.HasOne("GBC_Travel_Group_90.Models.Flight", "Flight")
@@ -216,7 +259,7 @@ namespace GBC_Travel_Group_90.Migrations
                         .HasForeignKey("HotelId");
 
                     b.HasOne("GBC_Travel_Group_90.Models.User", "User")
-                        .WithMany("Booking")
+                        .WithMany("Bookings")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -232,7 +275,30 @@ namespace GBC_Travel_Group_90.Migrations
 
             modelBuilder.Entity("GBC_Travel_Group_90.Models.CarRental", b =>
                 {
-                    b.Navigation("Bookings");
+                    b.HasOne("GBC_Travel_Group_90.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GBC_Travel_Group_90.Models.HotelBooking", b =>
+                {
+                    b.HasOne("GBC_Travel_Group_90.Models.Hotel", "Hotel")
+                        .WithMany("HotelBookings")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GBC_Travel_Group_90.Models.User", "User")
+                        .WithMany("HotelBookings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Models.Flight", b =>
@@ -243,11 +309,15 @@ namespace GBC_Travel_Group_90.Migrations
             modelBuilder.Entity("GBC_Travel_Group_90.Models.Hotel", b =>
                 {
                     b.Navigation("Bookings");
+
+                    b.Navigation("HotelBookings");
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Models.User", b =>
                 {
-                    b.Navigation("Booking");
+                    b.Navigation("Bookings");
+
+                    b.Navigation("HotelBookings");
                 });
 #pragma warning restore 612, 618
         }
