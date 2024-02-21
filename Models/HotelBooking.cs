@@ -16,6 +16,8 @@ namespace GBC_Travel_Group_90.Models
 		[Required]
         [DataType(DataType.Date)]
         public DateTime CheckOutDate { get; set; }
+        [Required]
+        public int NumOfRoomsToBook { get; set; }
         public Status Status { get; set; }
         public int UserId { get; set; }
         public User? User { get; set; }
@@ -33,4 +35,6 @@ namespace GBC_Travel_Group_90.Models
         Pending,
         Canceled
     }
+
+    
 }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Models;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GBC_Travel_Group_90.Controllers
 {
@@ -47,59 +48,104 @@ namespace GBC_Travel_Group_90.Controllers
             return View(hotelBooking);
         }
 
+
+        private bool IsRoomAvailable(int? hotelId, int numOfRoomsToBook)
+        {
+            var hotel = _context.Hotels.Find(hotelId);
+
+            if (hotel == null || numOfRoomsToBook <= 0)
+            {
+                // Hotel not found or invalid number of rooms to book
+                return false;
+            }
+
+            var numOfRooms = hotel.NumberOfRooms;
+
+            return numOfRooms >= numOfRoomsToBook;
+        }
+
+        private void UpdateNumberOfRooms(int hotelId, int numOfRoomsToBook)
+        {
+            var hotel = _context.Hotels.Find(hotelId);
+
+            if (hotel != null && numOfRoomsToBook > 0)
+            {
+                hotel.NumberOfRooms -= numOfRoomsToBook;
+                _context.SaveChanges();
+            }
+        }
+        private bool IsValidBookingDates(DateTime checkInDate, DateTime checkOutDate)
+        {
+            // Ensure that CheckInDate is smaller than or equal to CheckOutDate
+            return checkInDate <= checkOutDate;
+        }
+
         // GET: HotelBookings/Create
         public IActionResult Create(int hotelId, int userId)
         {
             var user = _context.Users.Find(userId);
             if (user == null) return NotFound("User not found");
-            
+
             var hotel = _context.Hotels.Find(hotelId);
             if (hotel == null) return NotFound("Hotel not found");
 
-            var hotelBooking = new HotelBooking { HotelId = hotelId , UserId = userId};
-
+            var hotelBooking = new HotelBooking { HotelId = hotelId, UserId = userId , Status = Status.Pending };
 
             ViewBag.HotelId = hotelId;
             ViewBag.UserId = userId;
 
-
             return View(hotelBooking);
-            
         }
-        
-        
 
         // POST: HotelBookings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HotelBookingId,CheckInDate,CheckOutDate,UserId,HotelId")] HotelBooking hotelBooking)
+        public async Task<IActionResult> Create([Bind("HotelBookingId, CheckInDate,CheckOutDate, NumOfRoomsToBook,UserId,HotelId")] HotelBooking hotelBooking)
         {
-
-
             if (ModelState.IsValid)
             {
-                
+                // Check if CheckInDate is smaller than or equal to CheckOutDate
+                if (!IsValidBookingDates(hotelBooking.CheckInDate, hotelBooking.CheckOutDate))
+                {
+                    ModelState.AddModelError(nameof(hotelBooking.CheckInDate), "Check-in date must be smaller than or equal to check-out date.");
+                    return View(hotelBooking);
+                }
 
-                // User exists, proceed with the insertion
-                hotelBooking.BookingDate = DateTime.Now;
-                hotelBooking.Status = Status.Confirmed;
+                // Check if rooms are available
+                if (IsRoomAvailable(hotelBooking.HotelId, hotelBooking.NumOfRoomsToBook))
+                {
+                    // Update the NumberOfRooms property
+                    UpdateNumberOfRooms(hotelBooking.HotelId, hotelBooking.NumOfRoomsToBook);
+
+                    // Continue booking 
+                    hotelBooking.BookingDate = DateTime.Now;
+                    hotelBooking.Status = Status.Confirmed; 
+                    _context.HotelBookings.Add(hotelBooking);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Details), new { id = hotelBooking.HotelBookingId });
+                }
+                else
+                {
+                    // Display error message to the user
+                    ModelState.AddModelError(nameof(hotelBooking.NumOfRoomsToBook), "Not enough rooms available for booking.");
+
+                    ViewBag.HotelId = hotelBooking.HotelId;
+                    ViewBag.UserId = hotelBooking.UserId;
+
+                    return View(hotelBooking);
+                }
+
                
-                _context.HotelBookings.Add(hotelBooking);
-                await _context.SaveChangesAsync();
-                ViewBag.HotelId = hotelBooking.HotelId;
-                ViewBag.UserId = hotelBooking.UserId;
-
-                return RedirectToAction(nameof(Details), new { id = hotelBooking.HotelBookingId });
-
-
             }
-            return (View(hotelBooking));
 
+            return View(hotelBooking);
         }
-        
-           
 
-        
+
+
+
+
         // GET: HotelBookings/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
