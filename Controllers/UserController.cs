@@ -43,11 +43,28 @@ namespace GBC_Travel_Group_90.Controllers
                 return NotFound();
             }
 
+            var userFlights = _context.Bookings
+                            .Where(b => b.UserId == user.UserId)
+                            .Include(b => b.Flight)
+                            .ToList();
+
             var userCarRentals = _context.CarRentals.Where(cr => cr.UserId == user.UserId).ToList();
 
-            // Pass both the user and the list of car rentals to the view
+            // Create a ViewModel to hold all this data
+            var viewModel = new ViewModel
+            {
+                User = user,
+                Bookings = userFlights,
+                CarRentals = userCarRentals
+
+            };
             ViewBag.User = user;
-            return View(userCarRentals);
+            ViewBag.Email = user.Email;
+            return View(viewModel);
+
+            /*// Pass both the user and the list of car rentals to the view
+            ViewBag.User = user;
+            return View(userCarRentals);*/
         }
 
 

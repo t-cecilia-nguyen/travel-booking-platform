@@ -13,21 +13,14 @@ namespace GBC_Travel_Group_90.Models
         [Range(1, 5)]
         public int StarRate { get; set; }
         [Required]
-        public DateTime CheckOutDate { get; set; }
-        [Required]
         [Range(1, int.MaxValue)]
         public int NumberOfRooms { get; set; }
         [Required]
         [Range(1, double.MaxValue)]
         public decimal Price { get; set; }
-      
-
+        public virtual ICollection<Booking>? Bookings { get; set; }
         public List<HotelBooking>? HotelBookings { get; set; }
 
-
-
-      
-     
         // Check if the hotel is available for the specified date range
         public bool IsAvailableForDates(DateTime? checkInDate, DateTime? checkOutDate, List<HotelBooking> bookingsForDateRange)
         {
@@ -47,7 +40,7 @@ namespace GBC_Travel_Group_90.Models
         {
             return start1 < end2 && start2 < end1;
         }
-        
+
     }
 
 }  

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using System.ComponentModel.DataAnnotations;
 
 namespace GBC_Travel_Group_90.Models
 {
@@ -18,6 +19,7 @@ namespace GBC_Travel_Group_90.Models
         [Required]
         public bool IsAdmin { get; set; }
 
+        public List<Booking>? Bookings { get; set; }
         public List<HotelBooking>? HotelBookings { get; set; }
     }
 }

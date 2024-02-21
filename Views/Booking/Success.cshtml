@@ -1,0 +1,35 @@
+﻿@model GBC_Travel_Group_90.Models.Booking
+
+<div class="container mt-5">
+    <div class="white-opaque">
+        <h2 class="mb-3">Congratulations! Your flight has been successfully booked.</h2>
+        <h2 class="mb-3">Please see below for details.</h2>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            User Details
+        </div>
+        <div class="card-body">
+            <p><strong>Email:</strong> @Model.User.Email</p>
+            <p><strong>First Name:</strong> @Model.User.FirstName</p>
+            <p><strong>Last Name:</strong> @Model.User.LastName</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            Flight Details
+        </div>
+        <div class="card-body">
+            <p><strong>Flight Number:</strong> @Model.Flight.FlightNumber</p>
+            <p><strong>Airline:</strong> @Model.Flight.Airline</p>
+            <p><strong>Origin:</strong> @Model.Flight.Origin</p>
+            <p><strong>Destination:</strong> @Model.Flight.Destination</p>
+            <p><strong>Departure Time:</strong> @Model.Flight.DepartureTime</p>
+            <p><strong>Arrival Time:</strong> @Model.Flight.ArrivalTime</p>
+            <p><strong>Price:</strong> @Model.Flight.Price</p>
+        </div>
+    </div>
+</div>
+

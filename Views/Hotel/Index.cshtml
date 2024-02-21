@@ -70,6 +70,10 @@
     </p>
 }
 
+@* TEST *@
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
 
 <div class="white-opaque">
     <table class="table">
@@ -97,7 +101,8 @@
         <tbody>
             @if (Model.Any())
             
-                @foreach (var item in Model) {
+                @foreach (var item in Model)
+                {
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Name)
@@ -122,6 +127,10 @@
                                     <a asp-action="Edits" asp-route-id="@item.HotelId">Edit</a> 
                                     <a asp-action="Delete" asp-route-id="@item.HotelId">Delete</a>
                                 }
+
+                            @* TEST *@
+                            <a asp-action="Edits" asp-route-id="@item.HotelId">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.HotelId">Delete</a>
                                 
                             </td>
                         </tr>

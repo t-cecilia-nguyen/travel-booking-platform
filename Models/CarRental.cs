@@ -11,8 +11,7 @@ namespace GBC_Travel_Group_90.Models
 		}
 
         public int CarRentalId { get; set; }
-
-        [Required]  
+        [Required]
         public string RentalCompany { get; set; }
 
         [Required]

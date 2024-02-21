@@ -1,6 +1,4 @@
-﻿@model User
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <style>
@@ -9,11 +7,11 @@
             color: #fce1e4;
             font-weight: bold;
         }
-        
+
         h2 {
             margin-top: 50px;
         }
-        
+
         .container {
             padding: 0;
             margin: 0;
@@ -22,13 +20,6 @@
             align-items: stretch;
         }
     </style>
-
-    <script>
-        function showForm() {
-            var form = document.getElementById("userForm");
-            form.style.display = "block";
-        }
-    </script>
 </head>
 <body>
     <div class="container-fluid">
@@ -41,42 +32,11 @@
                         <h1>of teetering in the</h1>
                         <h1>unknown.”</h1>
                         <h1>- Anthony Bourdain</h1>
-                        <div class="center-button">
-                            <button class="btn btn-primary" onclick="showForm()">Explore Now</button>
-                        </div>
                     </div>
                 </div>
-            </div>
-
-                <div class="col-md-6">
-                <div class="user_container">
-                    <div class="form user_form" id="userForm" style="display: none;">
-                        <form asp-controller="Home" asp-action="Create" method="post">
-                            <div class="form-group">
-                                <label asp-for="FirstName">First Name:</label>
-                                <input asp-for="FirstName" class="form-control" />
-                                <span asp-validation-for="FirstName" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="LastName">Last Name:</label>
-                                <input asp-for="LastName" class="form-control" />
-                                <span asp-validation-for="LastName" class="text-danger"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label asp-for="Email">Email:</label>
-                                <input asp-for="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            </div>           
         </div>
     </div>
-
-
     <div class="about_us_container">
         <div class="about_us col-md-6">
             <h1 class="title">About Us</h1>
@@ -98,12 +58,10 @@
                 <li>Flight Bookings: We work with a wide range of airlines to provide you with the best possible options.</li>
                 <li>Car Rentals: We offer a variety of car rental options to ensure you have the freedom to explore at your own pace.</li>
                 <li>Hotel Reservations: From luxury resorts to budget-friendly hotels, we’ve got you covered.</li>
-            
+
             </ul>
         </div>
     </div>
-
-
     <div class="contact_container">
         <div class="contact col-md-6 offset-md-6">
             <h1 class="title">Contact Us</h1>
