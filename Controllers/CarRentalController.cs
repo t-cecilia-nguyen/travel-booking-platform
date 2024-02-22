@@ -50,11 +50,24 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
 
-
-        [HttpGet("Success")]
-        public IActionResult Success()
+        [HttpGet("Success/{carRentalId:int}/{userId:int}")]
+        public IActionResult Success(int carRentalId, int userId)
         {
-            return View();
+            var user = _db.Users.Find(userId);
+            var carRental = _db.CarRentals.Find(carRentalId);
+
+            if (carRental == null)
+            {
+                return NotFound();
+            }
+
+            var model = new CarSuccess
+            {
+                User = user,
+                CarRental = carRental
+            };
+
+            return View(model);
         }
 
 
@@ -94,13 +107,13 @@ namespace GBC_Travel_Group_90.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Book(int id, string userEmail)
         {
-            var carRental = _db.CarRentals.Find(id); // Find the car rental by id
+
+            var carRental = _db.CarRentals.Find(id);
 
             if (carRental == null)
             {
                 return NotFound(); // Car rental not found, return Not Found status
             }
-
 
             var user = _db.Users.FirstOrDefault(u => u.Email == userEmail);
 
@@ -116,12 +129,16 @@ namespace GBC_Travel_Group_90.Controllers
                 _db.SaveChanges();
             }
 
+            ViewBag.User = user;
+
+            ViewBag.CarRental = carRental;
+
             carRental.Available = false;
             carRental.UserId = user.UserId;
             _db.SaveChanges();
 
 
-            return RedirectToAction("Success", "Car");
+            return RedirectToAction("Success", new { carRentalId = carRental.CarRentalId, userId = user.UserId });
         }
 
 
@@ -208,6 +225,36 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
 
+
+        [HttpGet("Search")]
+        public async Task<IActionResult> Search(string RentalCompany, string CarModel, DateTime? PickUpDate, DateTime? DropOffDate)
+        {
+            var carQuery = from f in _db.CarRentals select f;
+
+            if (!string.IsNullOrEmpty(RentalCompany))
+            {
+                carQuery = carQuery.Where(f => f.RentalCompany.Contains(RentalCompany));
+            }
+
+            if (!string.IsNullOrEmpty(CarModel))
+            {
+                carQuery = carQuery.Where(f => f.CarModel.Contains(CarModel));
+            }
+
+            if (PickUpDate.HasValue)
+            {
+                carQuery = carQuery.Where(f => f.PickUpDate.Date == PickUpDate.Value.Date);
+            }
+
+            if (DropOffDate.HasValue)
+            {
+                carQuery = carQuery.Where(f => f.DropOffDate.Date == DropOffDate.Value.Date);
+            }
+
+            var car = await carQuery.ToListAsync();
+
+            return View("Index", car); // Reuse the Index view to display results
+        }
 
 
 

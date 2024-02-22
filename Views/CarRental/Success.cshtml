@@ -1,7 +1,67 @@
-﻿@model CarRental
+﻿@model GBC_Travel_Group_90.Models.CarSuccess
 
-<h2>Success!</h2>
 
-<div>
-    <h3>Your booking has been completed!</h3>
+<div class="container mt-5">
+    <div class="white-opaque">
+        <h2 class="mb-3">Congratulations! Your car rental has been successfully booked.</h2>
+        <h2 class="mb-3">Please see below for details.</h2>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            User Details
+        </div>
+        <div class="card-body">
+            <p><strong>Email:</strong> @Model.User?.Email</p>
+            <p><strong>First Name:</strong> @Model.User?.FirstName</p>
+            <p><strong>Last Name:</strong> @Model.User?.LastName</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            Car Rental Details
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CarRental.RentalCompany)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CarRental.RentalCompany)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CarRental.PickUpLocation)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CarRental.PickUpLocation)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CarRental.PickUpDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CarRental.PickUpDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CarRental.DropOffDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CarRental.DropOffDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CarRental.CarModel)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CarRental.CarModel)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CarRental.Price)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CarRental.Price)
+                </dd>
+            </dl>
+        </div>
+    </div>
 </div>
+
