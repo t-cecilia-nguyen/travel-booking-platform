@@ -43,6 +43,10 @@ body {
     margin-left: 50px;
 }
 
+.front_quote * {
+    color: #fce1e4;
+}
+
 .quote-container, .user_container {
     display: flex;
     flex-direction: column;
@@ -59,13 +63,21 @@ body {
 }
 
 .about_us {
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.3);
     padding: 80px;
 }
+
+    .about_us * {
+        color: #ddedea;
+    }
 .contact {
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.3);
     padding: 80px;
 }
+
+    .contact * {
+        color: #fcf4dd;
+    }
 
 .about_us_container, .contact_container {
     box-sizing: border-box;
@@ -137,4 +149,75 @@ body {
 
     .input-icon > .form-control {
         padding-left: 40px;
+    }
+
+/*BootStrap Button Replacement Colours*/
+.btn-primary {
+    color: #475F77 !important;
+    background-color: #daeaf6 !important;
+    border-color: #475F77 !important;
+}
+
+    .btn-primary:hover,
+    .btn-primary:focus,
+    .btn-primary:active {
+        color: #475F77 !important;
+        background-color: #C9DCE5 !important;
+        border-color: #475F77 !important;
+    }
+
+.btn-secondary {
+    color: #9FA9A3 !important;
+    background-color: #ddedea !important;
+    border-color: #9FA9A3 !important;
+}
+
+    .btn-secondary:hover,
+    .btn-secondary:focus,
+    .btn-secondary:active {
+        color: #9FA9A3 !important;
+        background-color: #BDCBC8 !important;
+        border-color: #9FA9A3 !important;
+    }
+
+.btn-info {
+    color: #B1A0B6 !important;
+    background-color: #e8dff5 !important;
+    border-color: #B1A0B6 !important;
+}
+
+    .btn-info:hover,
+    .btn-info:focus,
+    .btn-info:active {
+        color: #B1A0B6 !important;
+        background-color: #CDBED2 !important;
+        border-color: #B1A0B6 !important;
+    }
+
+.btn-danger {
+    color: #FF7F7F !important;
+    background-color: #fce1e4 !important;
+    border-color: #FF7F7F !important;
+}
+
+    .btn-danger:hover,
+    .btn-danger:focus,
+    .btn-danger:active {
+        color: #FF7F7F !important;
+        background-color: #D9BFC2 !important;
+        border-color: #FF7F7F !important;
+    }
+
+.btn-warning {
+    color: #D9B300 !important;
+    background-color: #fcf4dd !important;
+    border-color: #D9B300 !important;
+}
+
+    .btn-warning:hover,
+    .btn-warning:focus,
+    .btn-warning:active {
+        color: #D9B300 !important;
+        background-color: #ebe2c9 !important;
+        border-color: #D9B300 !important;
     }
