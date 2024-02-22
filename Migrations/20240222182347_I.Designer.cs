@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GBC_Travel_Group_90.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240222055617_Ini")]
-    partial class Ini
+    [Migration("20240222182347_I")]
+    partial class I
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,6 +102,44 @@ namespace GBC_Travel_Group_90.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("CarRentals");
+
+                    b.HasData(
+                        new
+                        {
+                            CarRentalId = 1,
+                            Available = true,
+                            CarModel = "Cool Car",
+                            DropOffDate = new DateTime(2024, 5, 5, 13, 23, 47, 377, DateTimeKind.Local).AddTicks(324),
+                            MaxPassengers = 0,
+                            PickUpDate = new DateTime(2024, 3, 15, 13, 23, 47, 377, DateTimeKind.Local).AddTicks(209),
+                            PickUpLocation = "123 str Toronto ON",
+                            Price = 350.00m,
+                            RentalCompany = "Big Company"
+                        },
+                        new
+                        {
+                            CarRentalId = 2,
+                            Available = true,
+                            CarModel = "SUV",
+                            DropOffDate = new DateTime(2024, 2, 29, 13, 23, 47, 377, DateTimeKind.Local).AddTicks(333),
+                            MaxPassengers = 0,
+                            PickUpDate = new DateTime(2024, 2, 24, 13, 23, 47, 377, DateTimeKind.Local).AddTicks(332),
+                            PickUpLocation = "456 Main St, Vancouver",
+                            Price = 500.00m,
+                            RentalCompany = "Rent-A-Car"
+                        },
+                        new
+                        {
+                            CarRentalId = 3,
+                            Available = true,
+                            CarModel = "Compact",
+                            DropOffDate = new DateTime(2024, 2, 28, 13, 23, 47, 377, DateTimeKind.Local).AddTicks(337),
+                            MaxPassengers = 0,
+                            PickUpDate = new DateTime(2024, 2, 25, 13, 23, 47, 377, DateTimeKind.Local).AddTicks(336),
+                            PickUpLocation = "789 Elm St, Calgary",
+                            Price = 250.00m,
+                            RentalCompany = "City Cars"
+                        });
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Models.Flight", b =>
@@ -283,6 +321,16 @@ namespace GBC_Travel_Group_90.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Email = "admin@example.com",
+                            FirstName = "Admin",
+                            IsAdmin = true,
+                            LastName = "User"
+                        });
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Models.Booking", b =>

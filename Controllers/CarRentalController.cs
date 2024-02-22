@@ -21,11 +21,25 @@ namespace GBC_Travel_Group_90.Controllers
 
 
         [HttpGet("")]
-        public IActionResult Index()
+        public IActionResult Index(string email)
         {
+            ViewBag.IsAdmin = false;
+
+            if (email == null || string.IsNullOrEmpty(email))
+            {
+                ViewBag.IsAdmin = false;
+                return View(_db.CarRentals.ToList());
+            }
+
+            var user = _db.Users.FirstOrDefault(u => u.Email == email && u.IsAdmin);
+            if (user != null)
+            {
+                Console.WriteLine("admin is true");
+                ViewBag.IsAdmin = true;
+            }
+
             return View(_db.CarRentals.ToList());
         }
-
 
 
         [HttpGet("Details/{id:int}")]

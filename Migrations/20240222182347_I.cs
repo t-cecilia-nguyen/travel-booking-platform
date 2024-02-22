@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GBC_Travel_Group_90.Migrations
 {
     /// <inheritdoc />
-    public partial class _1 : Migration
+    public partial class I : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -162,6 +162,16 @@ namespace GBC_Travel_Group_90.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "CarRentals",
+                columns: new[] { "CarRentalId", "Available", "CarModel", "DropOffDate", "MaxPassengers", "PickUpDate", "PickUpLocation", "Price", "RentalCompany", "UserId" },
+                values: new object[,]
+                {
+                    { 1, true, "Cool Car", new DateTime(2024, 5, 5, 13, 23, 47, 377, DateTimeKind.Local).AddTicks(324), 0, new DateTime(2024, 3, 15, 13, 23, 47, 377, DateTimeKind.Local).AddTicks(209), "123 str Toronto ON", 350.00m, "Big Company", null },
+                    { 2, true, "SUV", new DateTime(2024, 2, 29, 13, 23, 47, 377, DateTimeKind.Local).AddTicks(333), 0, new DateTime(2024, 2, 24, 13, 23, 47, 377, DateTimeKind.Local).AddTicks(332), "456 Main St, Vancouver", 500.00m, "Rent-A-Car", null },
+                    { 3, true, "Compact", new DateTime(2024, 2, 28, 13, 23, 47, 377, DateTimeKind.Local).AddTicks(337), 0, new DateTime(2024, 2, 25, 13, 23, 47, 377, DateTimeKind.Local).AddTicks(336), "789 Elm St, Calgary", 250.00m, "City Cars", null }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Hotels",
                 columns: new[] { "HotelId", "Location", "Name", "NumberOfRooms", "Price", "StarRate" },
                 values: new object[,]
@@ -171,6 +181,11 @@ namespace GBC_Travel_Group_90.Migrations
                     { 3, "999 str Vancouver BC", "Happy Hotel", 20, 150.00m, 3 },
                     { 4, "012 str Norway", "Angry Hotel", 15, 1000.00m, 5 }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserId", "Email", "FirstName", "IsAdmin", "LastName" },
+                values: new object[] { 1, "admin@example.com", "Admin", true, "User" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bookings_CarRentalId",
