@@ -125,6 +125,7 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
 
+        [HttpGet("Edit/{id:int}")]
         public IActionResult Edit(int id)
         {
             var carRental = _db.CarRentals.Find(id);
@@ -138,7 +139,7 @@ namespace GBC_Travel_Group_90.Controllers
 
 
 
-        [HttpGet("Edit/{id:int}")]
+        [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("CarRentalId, RentalCompany, PickUpLocation, PickUpDate, DropOffDate, CarModel, Price")] CarRental carRental)
         {
@@ -178,7 +179,7 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
 
-
+        [HttpGet("Delete/{id:int}")]
         public IActionResult Delete(int id)
         {
             var carRental = _db.CarRentals.FirstOrDefault(p => p.CarRentalId == id);
