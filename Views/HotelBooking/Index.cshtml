@@ -6,9 +6,11 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (ViewBag.IsAdmin)
+{
+    <a class="btn btn-primary" asp-action="Create">Create New Hotel Booking</a>
+}
+
 <table class="table white-opaque">
     <thead>
         <tr>
@@ -48,11 +50,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Hotel.Location)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.HotelBookingId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.HotelBookingId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.HotelBookingId">Delete</a>
-            </td>
+            
+
+            @if (ViewBag.IsAdmin)         
+            {
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.HotelBookingId">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.HotelBookingId">Details</a> 
+                    <a asp-action="Delete" asp-route-id="@item.HotelBookingId">Delete</a>
+                </td>
+            }
+                              
+                
         </tr>
 }
     </tbody>

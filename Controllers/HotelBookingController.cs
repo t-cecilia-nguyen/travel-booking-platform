@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Models;
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace GBC_Travel_Group_90.Controllers
 {
@@ -18,10 +19,29 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
         // GET: HotelBookings
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string email)
         {
+            ViewBag.IsAdmin = false;
             var applicationDbContext = _context.HotelBookings.Include(h => h.Hotel).Include(h => h.User);
+
+            if (email == null || string.IsNullOrEmpty(email))
+            {
+                ViewBag.IsAdmin = false;
+                
+                return View(await applicationDbContext.ToListAsync());
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.Email == email && u.IsAdmin);
+            if (user != null)
+            {
+                Console.WriteLine("admin is true");
+                ViewBag.IsAdmin = true;
+            }
+
             return View(await applicationDbContext.ToListAsync());
+
+
+           
         }
 
         // GET: HotelBookings/Details/5
