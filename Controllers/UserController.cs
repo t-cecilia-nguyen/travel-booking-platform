@@ -50,22 +50,25 @@ namespace GBC_Travel_Group_90.Controllers
                             .ToList();
 
             var userCarRentals = _context.CarRentals.Where(cr => cr.UserId == user.UserId).ToList();
+            var userHotels = _context.HotelBookings
+                           .Where(b => b.UserId == user.UserId)
+                           .Include(b => b.Hotel)
+                           .ToList();
 
             // Create a ViewModel to hold all this data
             var viewModel = new ViewModel
             {
                 User = user,
                 Bookings = userFlights,
-                CarRentals = userCarRentals
+                CarRentals = userCarRentals,
+                HotelBookings = userHotels
 
             };
             ViewBag.User = user;
             ViewBag.Email = user.Email;
             return View(viewModel);
 
-            /*// Pass both the user and the list of car rentals to the view
-            ViewBag.User = user;
-            return View(userCarRentals);*/
+          
         }
 
 

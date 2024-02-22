@@ -90,3 +90,52 @@
         }
     </div>
 </div>
+
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h3>Hotel</h3>
+    </div>
+    <div class="card-body">
+        @if (Model.HotelBookings.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Hotel Name</th>
+                        <th>Location</th>
+                        <th>Booking Date</th>
+                        <th>Check In Date</th>
+                        <th>Check Out Date</th>
+                        <th>Number Of Rooms</th>
+                        <th>Price Per Night</th>   
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var hotelbooking in Model.HotelBookings)
+                    {
+                        
+                        <tr>
+                            <td>@hotelbooking.Hotel?.Name</td>
+                            <td>@hotelbooking.Hotel?.Location</td>
+                            <td>@hotelbooking.BookingDate</td>
+                            <td>@hotelbooking.CheckInDate.ToShortDateString()</td>
+                            <td>@hotelbooking.CheckOutDate.ToShortDateString()</td>
+                            <td>@hotelbooking.NumOfRoomsToBook</td>
+                            <td>@hotelbooking.Hotel?.Price</td>
+                            <td>@hotelbooking.Status</td>
+                        </tr>
+                        
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No hotel found for this user.</p>
+        }
+    </div>
+</div>
+
+

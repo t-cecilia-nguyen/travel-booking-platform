@@ -5,7 +5,7 @@
         public User User { get; set; }
         public List<Booking>? Bookings { get; set; }
         public List<CarRental>? CarRentals { get; set; }
-        public List<Hotel>? Hotels { get; set; }
+        public List<HotelBooking>? HotelBookings { get; set; }
     }
 
 }
