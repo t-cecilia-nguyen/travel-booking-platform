@@ -1,24 +1,31 @@
 ﻿@model CarRental
 
-<h2>Book Car</h2>
+<div class="card">
+    <div class="card-header">
+        <h2>Book Car</h2>
+    </div>
 
-<div>
-    <h3>Car Details</h3>
-    <p>Car Model: @Model.CarModel</p>
-    <p>Rental Company: @Model.RentalCompany</p>
-    <p>Pickup Location: @Model.PickUpLocation</p>
-    <p>Pick Up Date: @Model.PickUpDate</p>
-    <p>Drop Off Date: @Model.DropOffDate</p>
-    <p>Price: @Model.Price</p>
+    <div class="card-body">
+        <p>Car Model: @Model.CarModel</p>
+        <p>Rental Company: @Model.RentalCompany</p>
+        <p>Pickup Location: @Model.PickUpLocation</p>
+        <p>Pick Up Date: @Model.PickUpDate</p>
+        <p>Drop Off Date: @Model.DropOffDate</p>
+        <p>Price: @Model.Price</p>
+    </div>
 </div>
 
-<div>
-    <h3>Enter Your Email Address</h3>
-    <form method="post" asp-action="Book">
-        <input type="hidden" name="id" value="@Model.CarRentalId" />
-        <label for="userEmail">Email:</label>
-        <input type="email" id="userEmail" name="userEmail" required />
-        @Html.AntiForgeryToken() 
-        <button type="submit">Book Car</button>
-    </form>
+<div class="card">
+    <div class="card-header">
+        <h3>Enter Your Email Address</h3>
+    </div>
+    <div class="card-body">
+        <form method="post" asp-action="Book">
+            <input type="hidden" name="id" value="@Model.CarRentalId" />
+            <label for="userEmail">Email:</label>
+            <input type="email" id="userEmail" name="userEmail" required />
+            @Html.AntiForgeryToken() 
+            <button type="submit" class="btn btn-secondary">Book Car</button>
+        </form>
+    </div>
 </div>

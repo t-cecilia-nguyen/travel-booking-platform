@@ -16,13 +16,29 @@ namespace GBC_Travel_Group_90.Controllers
         {
             _db = db;
         }
-        public IActionResult Index()
+        public IActionResult Index(string email)
         {
-            var flights = _db.Flights.ToList();
+			ViewBag.IsAdmin = false;
 
-            var availableFlights = flights.Where(f => f.CurrentPassengers < f.MaxPassengers).ToList();
+            // If not Admin - view available Flights
+			if (email == null || string.IsNullOrEmpty(email))
+			{
+				ViewBag.IsAdmin = false;
+				var flights = _db.Flights.ToList();
+				var availableFlights = flights.Where(f => f.CurrentPassengers < f.MaxPassengers).ToList();
+				return View(availableFlights);
+			}
 
-            return View(availableFlights);
+            // If Admin - view all Flights
+			var user = _db.Users.FirstOrDefault(u => u.Email == email && u.IsAdmin);
+			if (user != null)
+			{
+				Console.WriteLine("admin is true");
+				ViewBag.IsAdmin = true;
+			}
+
+			var allflights = _db.Flights.ToList();
+            return View(allflights);
         }
 
         public IActionResult Create()
@@ -128,7 +144,9 @@ namespace GBC_Travel_Group_90.Controllers
         [HttpGet("Search")]
         public async Task<IActionResult> Search(string origin, string destination, DateTime? departureDate, DateTime? arrivalDate)
         {
-            var flightsQuery = from f in _db.Flights select f;
+			ViewBag.IsAdmin = false;
+
+			var flightsQuery = from f in _db.Flights select f;
 
             if (!string.IsNullOrEmpty(origin))
             {

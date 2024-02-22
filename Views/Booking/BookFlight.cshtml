@@ -2,7 +2,7 @@
 
 <div class="card">
     <div class="card-header">
-        Book Flight
+        <h5>Book Flight</h5>
     </div>
     <div class="card-body">
         <p><strong>Flight Number:</strong> @Model.FlightNumber</p>
@@ -15,15 +15,19 @@
     </div>
 </div>
 
-<div class="white-opaque">
-    <h3>Enter Your Email Address</h3>
-    <form asp-controller="Booking" asp-action="BookFlight" method="post">
-        <div class="form-group">
-            <input type="hidden" name="flightId" value="@Model?.FlightId" />
-            <label for="email">Enter your email address:</label>
-            <input name="email" type="email" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-success">Book Flight</button>
-        <a asp-controller="Flight" asp-action="Index" class="btn btn-secondary">Back to Flights</a>
-    </form>
+<div class="card">
+    <div class="card-header">
+        <h5>Enter Your Email Address</h5>
+    </div>
+    <div class="card-body">
+        <form asp-controller="Booking" asp-action="BookFlight" method="post">
+            <div class="form-group">
+                <input type="hidden" name="flightId" value="@Model?.FlightId" />
+                <label for="email">Enter your email address:</label>
+                <input name="email" type="email" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-secondary">Book Flight</button>
+            <a asp-controller="Flight" asp-action="Index" class="btn btn-warning">Back to Flights</a>
+        </form>
+    </div>
 </div>
