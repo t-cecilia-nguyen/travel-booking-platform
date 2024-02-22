@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+
 using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Models;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GBC_Travel_Group_90.Controllers
 {
@@ -81,18 +77,16 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
         // GET: HotelBookings/Create
-        public IActionResult Create(int hotelId, int userId)
+        public IActionResult Create(int hotelId)
         {
-            var user = _context.Users.Find(userId);
-            if (user == null) return NotFound("User not found");
 
             var hotel = _context.Hotels.Find(hotelId);
             if (hotel == null) return NotFound("Hotel not found");
 
-            var hotelBooking = new HotelBooking { HotelId = hotelId, UserId = userId , Status = Status.Pending };
+            var hotelBooking = new HotelBooking { HotelId = hotelId, Status = Status.Pending };
 
             ViewBag.HotelId = hotelId;
-            ViewBag.UserId = userId;
+            
 
             return View(hotelBooking);
         }
@@ -100,7 +94,7 @@ namespace GBC_Travel_Group_90.Controllers
         // POST: HotelBookings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HotelBookingId, CheckInDate,CheckOutDate, NumOfRoomsToBook,UserId,HotelId")] HotelBooking hotelBooking)
+        public async Task<IActionResult> Create([Bind("HotelBookingId, CheckInDate,CheckOutDate, NumOfRoomsToBook,HotelId")] HotelBooking hotelBooking, string userEmail)
         {
             if (ModelState.IsValid)
             {
@@ -117,7 +111,24 @@ namespace GBC_Travel_Group_90.Controllers
                     // Update the NumberOfRooms property
                     UpdateNumberOfRooms(hotelBooking.HotelId, hotelBooking.NumOfRoomsToBook);
 
+                    //Check User
+                    var user = _context.Users.FirstOrDefault(u => u.Email == userEmail);
+
+                    if (user == null)
+                    {
+                        user = new User
+                        {
+                            Email = userEmail,
+                            FirstName = "Guest",
+                            LastName = "Guest"
+                        };
+                        _context.Users.Add(user);
+                        _context.SaveChanges();
+                    }
+
+                    
                     // Continue booking 
+                    hotelBooking.UserId = user.UserId;
                     hotelBooking.BookingDate = DateTime.Now;
                     hotelBooking.Status = Status.Confirmed; 
                     _context.HotelBookings.Add(hotelBooking);
@@ -159,7 +170,7 @@ namespace GBC_Travel_Group_90.Controllers
             {
                 return NotFound();
             }
-            //Repopulate the hotel selectList if returning to the form
+           
 
             return View(hotelBooking);
         }
@@ -168,7 +179,7 @@ namespace GBC_Travel_Group_90.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("HotelBookingId,CheckInDate,CheckOutDate,UserId,HotelId")] HotelBooking hotelBooking)
+        public async Task<IActionResult> Edit(int id, [Bind("HotelBookingId,CheckInDate,CheckOutDate, UserId,HotelId")] HotelBooking hotelBooking)
         {
             if (id != hotelBooking.HotelBookingId)
             {
