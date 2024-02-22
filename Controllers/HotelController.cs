@@ -39,14 +39,14 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
         // GET: Hotels/Details/5
-        public async Task<IActionResult> Details(int? id, int? userId)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
           
-            if(userId == null) return RedirectToAction("Create", "User", new { hotelId = id });
+            
 
             var hotel = await _context.Hotels
                 .FirstOrDefaultAsync(m => m.HotelId == id);
@@ -54,7 +54,7 @@ namespace GBC_Travel_Group_90.Controllers
             {
                 return NotFound();
             }
-            ViewBag.UserId = userId;
+          
             ViewBag.HotelId = hotel.HotelId;
 
             return View(hotel);
