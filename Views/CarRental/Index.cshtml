@@ -18,8 +18,10 @@
     </div>
 </div>
 
-<a class="btn btn-primary" asp-area="" asp-controller="CarRental" asp-action="Create">Create New Car Rental</a>
-
+@if (ViewBag.IsAdmin)
+{
+    <a class="btn btn-primary" asp-area="" asp-controller="CarRental" asp-action="Create">Create New Car Rental</a>
+}
 <div class="white-opaque">
     @if (Model.Any())
     {
