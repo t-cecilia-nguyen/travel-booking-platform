@@ -45,6 +45,13 @@
     </div>
 </div>
 <div>
-    <a class="btn btn-primary" asp-controller="HotelBooking" asp-action="Create" asp-route-hotelId="@Model?.HotelId">Book Hotel</a> |
-    <a asp-action="Index" asp-route-isAdmin="true" class="btn btn-warning">Back to Hotels</a>
+    @if (ViewBag.IsAdmin)
+    {
+        <a class="btn btn-primary" asp-controller="HotelBooking" asp-action="Create" asp-route-isAdmin="true" asp-route-hotelId="@Model?.HotelId">Book Hotel</a>
+        <a asp-action="Index" asp-route-isAdmin="true" class="btn btn-warning">Back to Hotels</a>
+    }else
+    {
+       <a class="btn btn-primary" asp-controller="HotelBooking" asp-action="Create" asp-route-hotelId="@Model?.HotelId">Book Hotel</a>
+        <a asp-action= "Index"  class="btn btn-warning">Back to Hotels</a>
+    }
 </div>

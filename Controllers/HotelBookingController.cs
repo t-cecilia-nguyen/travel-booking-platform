@@ -97,8 +97,13 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
         // GET: HotelBookings/Create
-        public IActionResult Create(int hotelId)
+        public IActionResult Create(int hotelId, bool isAdmin=false)
         {
+            ViewBag.IsAdmin = false;
+            if (isAdmin)
+            {
+                ViewBag.IsAdmin=true;
+            }
 
             var hotel = _context.Hotels.Find(hotelId);
             if (hotel == null) return NotFound("Hotel not found");

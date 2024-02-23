@@ -63,14 +63,18 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
         // GET: Hotels/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, bool isAdmin=false)
         {
+            ViewBag.IsAdmin = false;
             if (id == null)
             {
                 return NotFound();
             }
-          
-            
+
+            if (isAdmin)
+            {
+                ViewBag.IsAdmin = true;
+            }
 
             var hotel = await _context.Hotels
                 .FirstOrDefaultAsync(m => m.HotelId == id);

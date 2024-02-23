@@ -136,14 +136,18 @@
                                 </td>
                             
                             <td>
-                                <a asp-action="Details" asp-route-id="@item.HotelId" >Details</a>
+                                
                                 @if (ViewBag.IsAdmin)
                                 {
-                                    <a asp-action="Edit" asp-route-isAdmin="true" asp-route-id="@item.HotelId">Edit</a>
-                                    <a asp-action="Delete" asp-route-isAdmin="true" asp-route-id="@item.HotelId">Delete</a>
-                                }
-
-                            </td>
+                                <a asp-action="Details" asp-route-isAdmin="true" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
+                                    <a asp-action="Edit" asp-route-isAdmin="true" asp-route-id="@item.HotelId" class="btn btn-warning">Edit</a>
+                                <a asp-action="Delete" asp-route-isAdmin="true" asp-route-id="@item.HotelId" class="btn btn-danger">Delete</a>
+                            }
+                            else
+                            {
+                                <a asp-action="Details" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
+                            }
+                        </td>
                         </tr>
                 }
             else
