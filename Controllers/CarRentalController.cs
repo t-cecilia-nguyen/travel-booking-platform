@@ -20,10 +20,10 @@ namespace GBC_Travel_Group_90.Controllers
 
 
 
-        [HttpGet("")]
-        public IActionResult Index(string email)
-        {
-            ViewBag.IsAdmin = false;
+		[HttpGet("")]
+		public IActionResult Index(string email)
+		{
+			
 
             if (email == null || string.IsNullOrEmpty(email))
             {

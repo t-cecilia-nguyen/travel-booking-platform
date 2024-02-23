@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Models;
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace GBC_Travel_Group_90.Controllers
 {
@@ -18,10 +19,29 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
         // GET: HotelBookings
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string email)
         {
+            ViewBag.IsAdmin = false;
             var applicationDbContext = _context.HotelBookings.Include(h => h.Hotel).Include(h => h.User);
+
+            if (email == null || string.IsNullOrEmpty(email))
+            {
+                ViewBag.IsAdmin = false;
+                
+                return View(await applicationDbContext.ToListAsync());
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.Email == email && u.IsAdmin);
+            if (user != null)
+            {
+                Console.WriteLine("admin is true");
+                ViewBag.IsAdmin = true;
+            }
+
             return View(await applicationDbContext.ToListAsync());
+
+
+           
         }
 
         // GET: HotelBookings/Details/5
@@ -31,7 +51,7 @@ namespace GBC_Travel_Group_90.Controllers
             {
                 return NotFound();
             }
-
+           
             var hotelBooking = await _context.HotelBookings
                 .Include(h => h.Hotel)
                 .Include(h => h.User)
@@ -83,6 +103,7 @@ namespace GBC_Travel_Group_90.Controllers
             var hotel = _context.Hotels.Find(hotelId);
             if (hotel == null) return NotFound("Hotel not found");
 
+           
             var hotelBooking = new HotelBooking { HotelId = hotelId, Status = Status.Pending };
 
             ViewBag.HotelId = hotelId;
@@ -98,6 +119,29 @@ namespace GBC_Travel_Group_90.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                // Check if the user already booked the hotel
+                var user = _context.Users.FirstOrDefault(u => u.Email == userEmail);
+                if (user == null)
+                {
+                    user = new User
+                    {
+                        Email = userEmail,
+                        FirstName = "Guest",
+                        LastName = "Guest"
+                    };
+                    _context.Users.Add(user);
+                    _context.SaveChanges();
+                }
+
+                var existingBooking = _context.HotelBookings.FirstOrDefault(b => b.UserId == user.UserId && b.HotelId == hotelBooking.HotelId);
+
+                if (existingBooking != null)
+                {
+                    TempData["AlreadyBooked"] = "You have already booked this hotel.";
+                    return RedirectToAction("Index", "Hotel", new { email = userEmail });
+                }
+
                 // Check if CheckInDate is smaller than or equal to CheckOutDate
                 if (!IsValidBookingDates(hotelBooking.CheckInDate, hotelBooking.CheckOutDate))
                 {
@@ -111,23 +155,9 @@ namespace GBC_Travel_Group_90.Controllers
                     // Update the NumberOfRooms property
                     UpdateNumberOfRooms(hotelBooking.HotelId, hotelBooking.NumOfRoomsToBook);
 
-                    //Check User
-                    var user = _context.Users.FirstOrDefault(u => u.Email == userEmail);
-
-                    if (user == null)
-                    {
-                        user = new User
-                        {
-                            Email = userEmail,
-                            FirstName = "Guest",
-                            LastName = "Guest"
-                        };
-                        _context.Users.Add(user);
-                        _context.SaveChanges();
-                    }
-
-                    
+                   
                     // Continue booking 
+                    
                     hotelBooking.UserId = user.UserId;
                     hotelBooking.BookingDate = DateTime.Now;
                     hotelBooking.Status = Status.Confirmed; 
@@ -179,7 +209,7 @@ namespace GBC_Travel_Group_90.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("HotelBookingId,CheckInDate,CheckOutDate, UserId,HotelId")] HotelBooking hotelBooking)
+        public async Task<IActionResult> Edit(int id, [Bind("HotelBookingId, NumOfRoomsToBook, CheckInDate,CheckOutDate,UserId, HotelId")] HotelBooking hotelBooking)
         {
             if (id != hotelBooking.HotelBookingId)
             {
@@ -190,6 +220,7 @@ namespace GBC_Travel_Group_90.Controllers
             {
                 try
                 {
+                    hotelBooking.BookingDate = DateTime.Now;
                     hotelBooking.Status = Status.Confirmed;
                     _context.Update(hotelBooking);
                     await _context.SaveChangesAsync();
