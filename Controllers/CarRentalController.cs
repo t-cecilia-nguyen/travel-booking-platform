@@ -243,6 +243,7 @@ namespace GBC_Travel_Group_90.Controllers
         [HttpGet("Search")]
         public async Task<IActionResult> Search(string RentalCompany, string CarModel, DateTime? PickUpDate, DateTime? DropOffDate)
         {
+            ViewBag.IsAdmin = false;
             var carQuery = from f in _db.CarRentals select f;
 
             if (!string.IsNullOrEmpty(RentalCompany))
