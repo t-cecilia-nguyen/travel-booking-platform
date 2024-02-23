@@ -20,10 +20,14 @@ namespace GBC_Travel_Group_90.Controllers
 
 
 
-        [HttpGet("")]
-        public IActionResult Index(string email)
-        {
-            ViewBag.IsAdmin = false;
+		[HttpGet("")]
+		public IActionResult Index(string email)
+		{
+			if (_db.CarRentals.Any()) { 
+				return View(_db.CarRentals.ToList());
+			}
+		
+
 
             if (email == null || string.IsNullOrEmpty(email))
             {
