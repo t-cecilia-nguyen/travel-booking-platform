@@ -10,15 +10,15 @@
    
 }
 
-<h2 class="white-opaque">Welcome To Hotel Page</h2>
+@* <h2 class="white-opaque">Welcome To Hotel Page</h2> *@
 
 <div class="container">
     
-    <div class="d-flex justify-content-end">
+@*     <div class="d-flex justify-content-end">
         <p class="text-white bg-black">
             Hello, @userEmail!
         </p>
-    </div>
+    </div> *@
     
     <div class="row justify-content-center">
         <div class="col-md-10">
@@ -69,78 +69,71 @@
     </p>
 }
 
-@* TEST *@
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
-<div class="white-opaque">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Location)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StarRate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.NumberOfRooms)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.Any())
-            
-                @foreach (var item in Model)
-                {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Location)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.StarRate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NumberOfRooms)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Price)
-                            </td>
-                            
-                            <td>
-                                <a asp-action="Details" asp-route-id="@item.HotelId" asp-route-userId="@ViewBag.UserId">Details</a> 
-                                @if (isAdmin) 
-                                {
-                                    <a asp-action="Edits" asp-route-id="@item.HotelId">Edit</a> 
-                                    <a asp-action="Delete" asp-route-id="@item.HotelId">Delete</a>
-                                }
-
-                            @* TEST *@
-                            <a asp-action="Edits" asp-route-id="@item.HotelId">Edit</a>
-                            <a asp-action="Delete" asp-route-id="@item.HotelId">Delete</a>
-                                
-                            </td>
-                        </tr>
-                }
-            else
-            {
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td class="text-danger">No hotels available.</td>
-                </tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Location)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StarRate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NumberOfRooms)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </th>
                 
-            }
-        </tbody>
-    </table>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+            
+                    @foreach (var item in Model)
+                    {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Location)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StarRate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumberOfRooms)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                            
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.HotelId" asp-route-userId="@ViewBag.UserId" class="btn btn-info">Details</a> 
+                                    @if (isAdmin) 
+                                    {
+                                        <a asp-action="Edits" asp-route-id="@item.HotelId" class="btn btn-secondary">Edit</a> 
+                                        <a asp-action="Delete" asp-route-id="@item.HotelId" class="btn btn-danger">Delete</a>
+                                    }
+                                
+                                </td>
+                            </tr>
+                    }
+                else
+                {
+                    <tr>
+                        <td class="text-danger">No hotels available.</td>
+                    </tr>
+                
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
