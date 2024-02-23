@@ -26,10 +26,61 @@ namespace GBC_Travel_Group_90.Data
             modelBuilder.Entity<CarRental>()
                 .Property(c => c.Price)
                 .HasPrecision(18, 2);
+
             modelBuilder.Entity<Hotel>()
                 .Property(c => c.Price)
                 .HasPrecision(18, 2);
 
+            // Seed Flight Data
+            modelBuilder.Entity<Flight>().HasData(
+                new Flight
+                {
+                    FlightId = 1,
+                    FlightNumber = "F8 1602",
+                    Airline = "Flair Airlines",
+                    Origin = "Toronto",
+                    Destination = "Fort Lauderdale",
+                    DepartureTime = new DateTime(2024, 4, 15, 6, 30, 0),
+                    ArrivalTime = new DateTime(2024, 4, 15, 9, 50, 0),
+                    Price = 143.00m,
+                    MaxPassengers = 4
+                },
+                new Flight
+                {
+                    FlightId = 2,
+                    FlightNumber = "AC 9",
+                    Airline = "Air Canada",
+                    Origin = "Toronto",
+                    Destination = "Hanoi",
+                    DepartureTime = new DateTime(2024, 4, 15, 13, 30, 0),
+                    ArrivalTime = new DateTime(2024, 4, 16, 22, 15, 0),
+                    Price = 1693.00m,
+                    MaxPassengers = 4
+                },
+                new Flight
+                {
+                    FlightId = 3,
+                    FlightNumber = "AC 7952",
+                    Airline = "Air Canada",
+                    Origin = "Toronto",
+                    Destination = "Montreal",
+                    DepartureTime = new DateTime(2024, 4, 15, 7, 45, 0),
+                    ArrivalTime = new DateTime(2024, 4, 15, 8, 40, 0),
+                    Price = 434.00m,
+                    MaxPassengers = 2
+                },
+                new Flight
+                {
+                    FlightId = 4,
+                    FlightNumber = "PD 372",
+                    Airline = "Porter Airlines",
+                    Origin = "Vancouver",
+                    Destination = "Montreal",
+                    DepartureTime = new DateTime(2024, 4, 15, 7, 55, 0),
+                    ArrivalTime = new DateTime(2024, 4, 15, 15, 50, 0),
+                    Price = 359.00m,
+                    MaxPassengers = 3
+                });
 
             // Seed Hotel data
             modelBuilder.Entity<Hotel>().HasData(

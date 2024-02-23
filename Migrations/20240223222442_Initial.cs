@@ -166,9 +166,20 @@ namespace GBC_Travel_Group_90.Migrations
                 columns: new[] { "CarRentalId", "Available", "CarModel", "DropOffDate", "MaxPassengers", "PickUpDate", "PickUpLocation", "Price", "RentalCompany", "UserId" },
                 values: new object[,]
                 {
-                    { 1, true, "Cool Car", new DateTime(2024, 5, 5, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7539), 0, new DateTime(2024, 3, 15, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7481), "123 str Toronto ON", 350.00m, "Big Company", null },
-                    { 2, true, "SUV", new DateTime(2024, 2, 29, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7544), 0, new DateTime(2024, 2, 24, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7543), "456 Main St, Vancouver", 500.00m, "Rent-A-Car", null },
-                    { 3, true, "Compact", new DateTime(2024, 2, 28, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7548), 0, new DateTime(2024, 2, 25, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7547), "789 Elm St, Calgary", 250.00m, "City Cars", null }
+                    { 1, true, "Cool Car", new DateTime(2024, 5, 6, 17, 24, 41, 966, DateTimeKind.Local).AddTicks(5490), 4, new DateTime(2024, 3, 16, 17, 24, 41, 966, DateTimeKind.Local).AddTicks(5435), "123 str Toronto ON", 350.00m, "Big Company", null },
+                    { 2, true, "SUV", new DateTime(2024, 3, 1, 17, 24, 41, 966, DateTimeKind.Local).AddTicks(5497), 5, new DateTime(2024, 2, 25, 17, 24, 41, 966, DateTimeKind.Local).AddTicks(5496), "456 Main St, Vancouver", 500.00m, "Rent-A-Car", null },
+                    { 3, true, "Compact", new DateTime(2024, 2, 29, 17, 24, 41, 966, DateTimeKind.Local).AddTicks(5501), 4, new DateTime(2024, 2, 26, 17, 24, 41, 966, DateTimeKind.Local).AddTicks(5500), "789 Elm St, Calgary", 250.00m, "City Cars", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Flights",
+                columns: new[] { "FlightId", "Airline", "ArrivalTime", "CurrentPassengers", "DepartureTime", "Destination", "FlightNumber", "MaxPassengers", "Origin", "Price" },
+                values: new object[,]
+                {
+                    { 1, "Flair Airlines", new DateTime(2024, 4, 15, 9, 50, 0, 0, DateTimeKind.Unspecified), 0, new DateTime(2024, 4, 15, 6, 30, 0, 0, DateTimeKind.Unspecified), "Fort Lauderdale", "F8 1602", 4, "Toronto", 143.00m },
+                    { 2, "Air Canada", new DateTime(2024, 4, 16, 22, 15, 0, 0, DateTimeKind.Unspecified), 0, new DateTime(2024, 4, 15, 13, 30, 0, 0, DateTimeKind.Unspecified), "Hanoi", "AC 9", 4, "Toronto", 1693.00m },
+                    { 3, "Air Canada", new DateTime(2024, 4, 15, 8, 40, 0, 0, DateTimeKind.Unspecified), 0, new DateTime(2024, 4, 15, 7, 45, 0, 0, DateTimeKind.Unspecified), "Montreal", "AC 7952", 2, "Toronto", 434.00m },
+                    { 4, "Porter Airlines", new DateTime(2024, 4, 15, 15, 50, 0, 0, DateTimeKind.Unspecified), 0, new DateTime(2024, 4, 15, 7, 55, 0, 0, DateTimeKind.Unspecified), "Montreal", "PD 372", 3, "Vancouver", 359.00m }
                 });
 
             migrationBuilder.InsertData(

@@ -101,10 +101,10 @@
 <div>
     @if (ViewBag.IsAdmin)
     {
-        <a asp-action="Edit" asp-route-isAdmin="true" asp-route-id="@Model?.HotelBookingId">Edit</a>
-        <a asp-controller="Hotel" asp-route-isAdmin="true" asp-action="Index">Back to Hotel Listing</a>
+        <a asp-action="Edit" asp-route-isAdmin="true" asp-route-id="@Model?.HotelBookingId" class="btn btn-secondary">Edit</a>
+        <a asp-controller="Hotel" asp-route-isAdmin="true" asp-action="Index" class="btn btn-warning">Back to Hotel Listing</a>
     } else
     {
-        <a asp-controller="Hotel" asp-action="Index" >Back to Hotel Listing</a>
+        <a asp-controller="Hotel" asp-action="Index" class="btn btn-warning">Back to Hotel Listing</a>
     }
 </div>

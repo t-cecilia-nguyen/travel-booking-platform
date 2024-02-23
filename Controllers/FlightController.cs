@@ -68,6 +68,8 @@ namespace GBC_Travel_Group_90.Controllers
             }
             return View(flight);
         }
+
+        [HttpGet("Edit/{id:int}")]
         public IActionResult Edit(int id)
         {
             var flight = _db.Flights.Find(id);
@@ -79,9 +81,9 @@ namespace GBC_Travel_Group_90.Controllers
             return View(flight);
         }
 
-        [HttpPost]
+        [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("FlightId, FlightNumber, Airline, Origin, Destination, DepartureTime, ArrivalTime, Price")] Flight flight)
+        public IActionResult Edit(int id, [Bind("FlightId, FlightNumber, Airline, Origin, Destination, DepartureTime, ArrivalTime, Price, MaxPassengers")] Flight flight)
         {
             if (id != flight.FlightId)
             {
