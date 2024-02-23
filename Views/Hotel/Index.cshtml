@@ -10,33 +10,16 @@
    
 }
 
-<h2 class="white-opaque">Welcome To Hotel Page</h2>
+@* <h2 class="white-opaque">Welcome To Hotel Page</h2> *@
 
 <div class="container">
     
-    <div class="d-flex justify-content-end">
+@*     <div class="d-flex justify-content-end">
         <p class="text-white bg-black">
             Hello, @userEmail!
         </p>
-    </div>
-
-
-
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <h3>Admin View</h3>
-                <form method="get" asp-action="Index">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required />
-                    @Html.AntiForgeryToken()
-                    <button type="submit">View</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
+    </div> *@
+    
     <div class="row justify-content-center">
         <div class="col-md-10">
             <form asp-controller="Hotel" asp-action="SearchHotel" method="get">
@@ -87,7 +70,9 @@
 }
 
 @* TEST *@
-
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
 
 <div class="white-opaque">
     <table class="table">
@@ -109,30 +94,30 @@
                     @Html.DisplayNameFor(model => model.Price)
                 </th>
                 
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.Any())
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
             
-                @foreach (var item in Model)
-                {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Location)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.StarRate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NumberOfRooms)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Price)
-                            </td>
+                    @foreach (var item in Model)
+                    {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Location)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StarRate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumberOfRooms)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
                             
                             <td>
                                 <a asp-action="Details" asp-route-id="@item.HotelId" asp-route-userId="@ViewBag.UserId">Details</a> 
@@ -142,6 +127,11 @@
                                     <a asp-action="Delete" asp-route-id="@item.HotelId">Delete</a>
                                 }
 
+                            @* TEST *@
+                            <a asp-action="Edits" asp-route-id="@item.HotelId">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.HotelId">Delete</a>
+                                
+                            </td>
                         </tr>
                 }
             else
@@ -150,7 +140,8 @@
                     <td class="text-danger">No hotels available.</td>
                 </tr>
                 
-            }
-        </tbody>
-    </table>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -4,11 +4,11 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="white-opaque">
-    <h1>Car Rental Details</h1>
-    <div>
-        <h4>CarRental</h4>
-        <hr />
+<div class="card">
+    <div class="card-header">
+        <h1>Car Rental Details</h1>
+    </div>
+    <div class="card-body">
         <dl class="row">
             <dt class = "col-sm-2">
                 @Html.DisplayNameFor(model => model.RentalCompany)
@@ -49,7 +49,7 @@
         </dl>
     </div>
     <div>
-        <a asp-action="Book" asp-route-id="@Model.CarRentalId" class="btn btn-info">Book Now</a>
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Book" asp-route-id="@Model.CarRentalId" class="btn btn-primary">Book Car</a>
+        <a asp-action="Index" class="btn btn-warning">Back to Car Rentals</a>
     </div>
 </div>

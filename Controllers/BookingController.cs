@@ -52,6 +52,14 @@ namespace GBC_Travel_Group_90.Controllers
                 _db.SaveChanges();
             }
 
+            // Check if the user already booked flight
+            var existingBooking = _db.Bookings.FirstOrDefault(b => b.UserId == user.UserId && b.FlightId == id);
+
+            if (existingBooking != null)
+            {
+                return View("AlreadyBooked");
+            }
+
             var booking = new Booking
             {
                 User = user,
