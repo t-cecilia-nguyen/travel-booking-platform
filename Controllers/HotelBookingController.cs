@@ -51,7 +51,7 @@ namespace GBC_Travel_Group_90.Controllers
             {
                 return NotFound();
             }
-
+           
             var hotelBooking = await _context.HotelBookings
                 .Include(h => h.Hotel)
                 .Include(h => h.User)
@@ -103,6 +103,7 @@ namespace GBC_Travel_Group_90.Controllers
             var hotel = _context.Hotels.Find(hotelId);
             if (hotel == null) return NotFound("Hotel not found");
 
+           
             var hotelBooking = new HotelBooking { HotelId = hotelId, Status = Status.Pending };
 
             ViewBag.HotelId = hotelId;
@@ -118,6 +119,29 @@ namespace GBC_Travel_Group_90.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                // Check if the user already booked the hotel
+                var user = _context.Users.FirstOrDefault(u => u.Email == userEmail);
+                if (user == null)
+                {
+                    user = new User
+                    {
+                        Email = userEmail,
+                        FirstName = "Guest",
+                        LastName = "Guest"
+                    };
+                    _context.Users.Add(user);
+                    _context.SaveChanges();
+                }
+
+                var existingBooking = _context.HotelBookings.FirstOrDefault(b => b.UserId == user.UserId && b.HotelId == hotelBooking.HotelId);
+
+                if (existingBooking != null)
+                {
+                    TempData["AlreadyBooked"] = "You have already booked this hotel.";
+                    return RedirectToAction("Index", "Hotel", new { email = userEmail });
+                }
+
                 // Check if CheckInDate is smaller than or equal to CheckOutDate
                 if (!IsValidBookingDates(hotelBooking.CheckInDate, hotelBooking.CheckOutDate))
                 {
@@ -131,23 +155,9 @@ namespace GBC_Travel_Group_90.Controllers
                     // Update the NumberOfRooms property
                     UpdateNumberOfRooms(hotelBooking.HotelId, hotelBooking.NumOfRoomsToBook);
 
-                    //Check User
-                    var user = _context.Users.FirstOrDefault(u => u.Email == userEmail);
-
-                    if (user == null)
-                    {
-                        user = new User
-                        {
-                            Email = userEmail,
-                            FirstName = "Guest",
-                            LastName = "Guest"
-                        };
-                        _context.Users.Add(user);
-                        _context.SaveChanges();
-                    }
-
-                    
+                   
                     // Continue booking 
+                    
                     hotelBooking.UserId = user.UserId;
                     hotelBooking.BookingDate = DateTime.Now;
                     hotelBooking.Status = Status.Confirmed; 
@@ -199,7 +209,7 @@ namespace GBC_Travel_Group_90.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("HotelBookingId,CheckInDate,CheckOutDate, UserId,HotelId")] HotelBooking hotelBooking)
+        public async Task<IActionResult> Edit(int id, [Bind("HotelBookingId, NumOfRoomsToBook, CheckInDate,CheckOutDate,UserId, HotelId")] HotelBooking hotelBooking)
         {
             if (id != hotelBooking.HotelBookingId)
             {
@@ -210,6 +220,7 @@ namespace GBC_Travel_Group_90.Controllers
             {
                 try
                 {
+                    hotelBooking.BookingDate = DateTime.Now;
                     hotelBooking.Status = Status.Confirmed;
                     _context.Update(hotelBooking);
                     await _context.SaveChangesAsync();

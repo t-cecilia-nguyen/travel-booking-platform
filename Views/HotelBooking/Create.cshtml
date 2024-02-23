@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Create Booking";
-    var userId = ViewBag.UserId;
+    
 
 }
 
@@ -47,7 +47,7 @@
 
                     <div class="form-group">
                     <input type="submit" value="Book Hotel" class="btn btn-secondary" />
-                        <a asp-controller="Hotel" asp-action="Index" class="btn btn-warning">Back to Hotels</a>
+                        <a asp-controller="Hotel" asp-action="Index" asp-route-isAdmin="true" class="btn btn-warning">Back to Hotels</a>
 
                     </div>
                 </form>

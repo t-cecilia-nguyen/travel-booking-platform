@@ -21,7 +21,7 @@
         </div>
     </div>
 </div>
-@if (ViewBag.IsAdmin)
+@if (ViewBag.IsAdmin )
 {
     <a class="btn btn-primary" asp-action="Create">Create New Hotel Booking</a>
 }
@@ -70,9 +70,9 @@
             @if (ViewBag.IsAdmin)         
             {
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.HotelBookingId">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.HotelBookingId">Details</a> 
-                    <a asp-action="Delete" asp-route-id="@item.HotelBookingId">Delete</a>
+                        <a asp-action="Edit" asp-route-isAdmin="true" asp-route-id="@item.HotelBookingId">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.HotelBookingId">Details</a>
+                        <a asp-action="Delete" asp-route-isAdmin="true" asp-route-id="@item.HotelBookingId">Delete</a>
                 </td>
             }
                               

@@ -2,39 +2,46 @@
 
 @{
     ViewData["Title"] = "Hotel Home Page";
-    var userEmail = ViewBag.Email ?? "";
-    var isAdmin = ViewBag.IsAdmin ?? false;
-
-    var userId = ViewBag.UserId ?? "";
-
-   
+  
+ 
 }
-
+<div class="white-opaque">
+@if (ViewBag.AlreadyBookedMessage != null)
+{
+    <div class="alert alert-warning">
+        @ViewBag.AlreadyBookedMessage
+    </div>
+}
+</div>
+<!-- The rest of your Details view content goes here -->
 @* <h2 class="white-opaque">Welcome To Hotel Page</h2> *@
 
 <div class="container">
-    
-@*     <div class="d-flex justify-content-end">
-        <p class="text-white bg-black">
-            Hello, @userEmail!
-        </p>
-    </div> *@
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <h3>Admin View</h3>
-                <form method="get" asp-action="Index">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required />
-                    @Html.AntiForgeryToken()
-                    <button type="submit">View</button>
-                </form>
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <p>Admin View</p>
+                </div>
+                <div class="card-body">
+                    <form method="get" asp-action="Index">
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" class="form-control" required />
+                        </div>
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-primary">View</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+</div>
     <div class="row justify-content-center">
         <div class="col-md-10">
             <form asp-controller="Hotel" asp-action="SearchHotel" method="get">
+                
+
                 <div class="search-row">
                     <div class="form-group">
                         <label for="name">Name: </label>
@@ -74,17 +81,14 @@
 </div>
 
 
-@if (isAdmin)
+@if (ViewBag.IsAdmin  )
 {
     <p>
         <a asp-action="Create">Create New</a>
     </p>
 }
 
-@* TEST *@
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 
 <div class="white-opaque">
     <table class="table">
@@ -132,17 +136,13 @@
                                 </td>
                             
                             <td>
-                                <a asp-action="Details" asp-route-id="@item.HotelId" asp-route-userId="@ViewBag.UserId">Details</a> 
-                                @if (isAdmin) 
+                                <a asp-action="Details" asp-route-id="@item.HotelId" >Details</a>
+                                @if (ViewBag.IsAdmin)
                                 {
-                                    <a asp-action="Edits" asp-route-id="@item.HotelId">Edit</a> 
-                                    <a asp-action="Delete" asp-route-id="@item.HotelId">Delete</a>
+                                    <a asp-action="Edit" asp-route-isAdmin="true" asp-route-id="@item.HotelId">Edit</a>
+                                    <a asp-action="Delete" asp-route-isAdmin="true" asp-route-id="@item.HotelId">Delete</a>
                                 }
 
-                            @* TEST *@
-                            <a asp-action="Edits" asp-route-id="@item.HotelId">Edit</a>
-                            <a asp-action="Delete" asp-route-id="@item.HotelId">Delete</a>
-                                
                             </td>
                         </tr>
                 }

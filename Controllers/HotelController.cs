@@ -9,6 +9,10 @@ using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
+using System.Reflection.Metadata;
+using System.Runtime.Intrinsics.X86;
 
 namespace GBC_Travel_Group_90.Controllers
 {
@@ -23,22 +27,33 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
         // GET: Hotels
-        public async Task<IActionResult> Index(string email)
+        public async Task<IActionResult> Index(string email, bool isAdmin = false)
         {
-            ViewBag.IsAdmin = false;
+            
             ViewBag.Email = email;
+
+           
             var applicationDbContext = _context.Hotels;
+
+            //handle isAdmin request
+            if (isAdmin)
+            {
+                ViewBag.IsAdmin = true;
+                return View(await applicationDbContext.ToListAsync());
+            }
+
 
             if (email == null || string.IsNullOrEmpty(email))
             {
                 ViewBag.IsAdmin = false;
                 return View(await applicationDbContext.ToListAsync());
             }
-
+           
             var user = _context.Users.FirstOrDefault(u => u.Email == email && u.IsAdmin);
             if (user != null)
             {
                 Console.WriteLine("admin is true");
+                
                 ViewBag.IsAdmin = true;
             }
 
@@ -63,7 +78,7 @@ namespace GBC_Travel_Group_90.Controllers
             {
                 return NotFound();
             }
-          
+
             ViewBag.HotelId = hotel.HotelId;
 
             return View(hotel);
@@ -87,8 +102,10 @@ namespace GBC_Travel_Group_90.Controllers
             {
                 _context.Add(hotel);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return isAdmin's View
+                return RedirectToAction(nameof(Index) , new {isAdmin = true});
             }
+            
             return View(hotel);
         }
 
@@ -112,7 +129,7 @@ namespace GBC_Travel_Group_90.Controllers
      
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Location,StarRate,NumberOfRooms,Price")] Hotel hotel)
+        public async Task<IActionResult> Edit(int id,  [Bind("HotelId,Name,Location,StarRate,NumberOfRooms,Price")] Hotel hotel)
         {
             if (id != hotel.HotelId)
             {
@@ -137,8 +154,10 @@ namespace GBC_Travel_Group_90.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return isAdmin's View
+                return RedirectToAction(nameof(Index), new { isAdmin = true });
             }
+            
             return View(hotel);
         }
 
@@ -171,8 +190,11 @@ namespace GBC_Travel_Group_90.Controllers
                 _context.Hotels.Remove(hotel);
             }
 
+            
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            //return isAdmin's View
+            return RedirectToAction(nameof(Index), new {isAdmin = true});
         }
 
         private bool HotelExists(int id)
@@ -181,11 +203,15 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
 		[HttpGet("SearchHotel")]
-		public async Task<IActionResult> SearchHotel(string? name, string? location, int? starRate,DateTime? checkInDate, DateTime? checkOutDate, decimal? maxPrice)
+		public async Task<IActionResult> SearchHotel( string? name, string? location, int? starRate,DateTime? checkInDate, DateTime? checkOutDate, decimal? maxPrice)
 		{
-			var hotelsQuery = _context.Hotels.AsQueryable();
+            
+            var hotelsQuery = _context.Hotels.AsQueryable();
 
-			if (!string.IsNullOrEmpty(name))
+            
+            ViewBag.IsAdmin = false;
+            
+            if (!string.IsNullOrEmpty(name))
 			{
                 hotelsQuery = hotelsQuery.Where(h => h.Name != null && h.Name.Contains(name));
 
@@ -227,9 +253,10 @@ namespace GBC_Travel_Group_90.Controllers
             
 
 
+
             var hotels = await hotelsQuery.ToListAsync();
 
-			return View("Index", hotels); // Reuse the Index view to display results
+			return View("Index" , hotels); 
 		}
 
 	}

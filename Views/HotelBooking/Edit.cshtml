@@ -12,9 +12,9 @@
 {
     <div class="row" class="white-opaque">
         <div class="col-md-4">
-            <form asp-action="Edit">
+            <form asp-action="Edit" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="HotelBookingId" />
+                
 
                 <div class="form-group">
                     <label asp-for="NumOfRoomsToBook" class="control-label"></label>
@@ -33,8 +33,9 @@
                     <span asp-validation-for="CheckOutDate" class="text-danger"></span>
                 </div>
                 @Html.HiddenFor(model => model.HotelId)
+                @Html.HiddenFor(model => model.HotelBookingId)
                 @Html.HiddenFor(model => model.UserId)
-                
+
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
                 </div>

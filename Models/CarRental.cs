@@ -10,16 +10,12 @@ namespace GBC_Travel_Group_90.Models
 			Available = true; 
 		}
 
-<<<<<<< Updated upstream
-        public int CarRentalId { get; set; }
-        [Required]
-        public string RentalCompany { get; set; }
-=======
+
 		public int CarRentalId { get; set; }
 
         [Required]  
         public string? RentalCompany { get; set; }
->>>>>>> Stashed changes
+
 
         [Required]
         public string? PickUpLocation { get; set; }

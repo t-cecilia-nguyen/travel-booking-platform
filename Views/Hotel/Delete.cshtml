@@ -40,10 +40,10 @@
                 @Html.DisplayFor(model => model.Price)
             </dd>
         </dl>
-        <form asp-action="Delete">
+        <form asp-action="Delete" method="post">
             <input type="hidden" asp-for="HotelId" />
             <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index" class="btn btn-warning">Cancel</a>
+        <a asp-action="Index" asp-route-isAdmin="true" class="btn btn-warning">Cancel</a>
         </form>
     </div>
 </div>
