@@ -19,9 +19,14 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
         // GET: HotelBookings
-        public async Task<IActionResult> Index(string email)
+        public async Task<IActionResult> Index(string email, bool isAdmin=false)
         {
             ViewBag.IsAdmin = false;
+            if (isAdmin)
+            {
+                ViewBag.IsAdmin = true;
+            }
+
             var applicationDbContext = _context.HotelBookings.Include(h => h.Hotel).Include(h => h.User);
 
             if (email == null || string.IsNullOrEmpty(email))
@@ -45,8 +50,15 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
         // GET: HotelBookings/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, bool isAdmin=false)
         {
+            ViewBag.IsAdmin = false;
+           
+            if (isAdmin)
+            {
+                ViewBag.IsAdmin = true;
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -124,7 +136,7 @@ namespace GBC_Travel_Group_90.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                
                 // Check if the user already booked the hotel
                 var user = _context.Users.FirstOrDefault(u => u.Email == userEmail);
                 if (user == null)
@@ -193,8 +205,15 @@ namespace GBC_Travel_Group_90.Controllers
 
 
         // GET: HotelBookings/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, bool isAdmin=false)
         {
+
+            
+            if (isAdmin)
+            {
+                ViewBag.IsAdmin = true;
+            }
+
             if (id == null)
             {
                 return NotFound();

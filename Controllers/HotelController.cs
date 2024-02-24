@@ -36,6 +36,7 @@ namespace GBC_Travel_Group_90.Controllers
             var applicationDbContext = _context.Hotels;
 
             //handle isAdmin request
+            ViewBag.IsAdmin = isAdmin;
             if (isAdmin)
             {
                 ViewBag.IsAdmin = true;
