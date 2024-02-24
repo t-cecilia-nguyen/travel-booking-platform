@@ -13,6 +13,7 @@
     </div>
 }
 </div>
+
 <!-- The rest of your Details view content goes here -->
 @* <h2 class="white-opaque">Welcome To Hotel Page</h2> *@
 
@@ -90,35 +91,34 @@
 
 
 
-<div class="white-opaque">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Location)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StarRate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.NumberOfRooms)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                
-                    <th></th>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Location)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StarRate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NumberOfRooms)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </th>
+
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @if (Model.Any())
-            
+                 {
                     @foreach (var item in Model)
                     {
                             <tr>
@@ -135,22 +135,34 @@
                                     @Html.DisplayFor(modelItem => item.NumberOfRooms)
                                 </td>
                                 <td>
-                            <td>
-                                <a asp-action="Details" asp-route-id="@item.HotelId" >Details</a>
-                                @if (ViewBag.IsAdmin)
-                                {
-                                    <a asp-action="Edit" asp-route-isAdmin="true" asp-route-id="@item.HotelId">Edit</a>
-                                    <a asp-action="Delete" asp-route-isAdmin="true" asp-route-id="@item.HotelId">Delete</a>
-                                }
 
-                            </td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                            
+                                <td>
+                                
+                                    @if (ViewBag.IsAdmin)
+                                    {
+                                    <a asp-action="Details" asp-route-isAdmin="true" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
+                                        <a asp-action="Edit" asp-route-isAdmin="true" asp-route-id="@item.HotelId" class="btn btn-warning">Edit</a>
+                                    <a asp-action="Delete" asp-route-isAdmin="true" asp-route-id="@item.HotelId" class="btn btn-danger">Delete</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="Details" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
+                                    }
+                                </td>
+                           
+
+                      
                         </tr>
-                }
-            else
-            {
-                <tr>
-                    <td class="text-danger">No hotels available.</td>
-                </tr>
+                        }
+                 }
+                else
+                {
+                    <tr>
+                        <td class="text-danger">No hotels available.</td>
+                    </tr>
                 
                 }
             </tbody>

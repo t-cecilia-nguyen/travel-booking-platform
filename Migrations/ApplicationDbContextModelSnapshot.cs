@@ -106,6 +106,7 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 1,
                             Available = true,
                             CarModel = "Cool Car",
+
                             DropOffDate = new DateTime(2024, 5, 5, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7539),
                             MaxPassengers = 0,
                             PickUpDate = new DateTime(2024, 3, 15, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7481),
@@ -118,9 +119,11 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 2,
                             Available = true,
                             CarModel = "SUV",
+
                             DropOffDate = new DateTime(2024, 2, 29, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7544),
                             MaxPassengers = 0,
                             PickUpDate = new DateTime(2024, 2, 24, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7543),
+
                             PickUpLocation = "456 Main St, Vancouver",
                             Price = 500.00m,
                             RentalCompany = "Rent-A-Car"
@@ -130,9 +133,11 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 3,
                             Available = true,
                             CarModel = "Compact",
+
                             DropOffDate = new DateTime(2024, 2, 28, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7548),
                             MaxPassengers = 0,
                             PickUpDate = new DateTime(2024, 2, 25, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7547),
+
                             PickUpLocation = "789 Elm St, Calgary",
                             Price = 250.00m,
                             RentalCompany = "City Cars"
@@ -182,6 +187,62 @@ namespace GBC_Travel_Group_90.Migrations
                     b.HasKey("FlightId");
 
                     b.ToTable("Flights");
+
+
+                    b.HasData(
+                        new
+                        {
+                            FlightId = 1,
+                            Airline = "Flair Airlines",
+                            ArrivalTime = new DateTime(2024, 4, 15, 9, 50, 0, 0, DateTimeKind.Unspecified),
+                            CurrentPassengers = 0,
+                            DepartureTime = new DateTime(2024, 4, 15, 6, 30, 0, 0, DateTimeKind.Unspecified),
+                            Destination = "Fort Lauderdale",
+                            FlightNumber = "F8 1602",
+                            MaxPassengers = 4,
+                            Origin = "Toronto",
+                            Price = 143.00m
+                        },
+                        new
+                        {
+                            FlightId = 2,
+                            Airline = "Air Canada",
+                            ArrivalTime = new DateTime(2024, 4, 16, 22, 15, 0, 0, DateTimeKind.Unspecified),
+                            CurrentPassengers = 0,
+                            DepartureTime = new DateTime(2024, 4, 15, 13, 30, 0, 0, DateTimeKind.Unspecified),
+                            Destination = "Hanoi",
+                            FlightNumber = "AC 9",
+                            MaxPassengers = 4,
+                            Origin = "Toronto",
+                            Price = 1693.00m
+                        },
+                        new
+                        {
+                            FlightId = 3,
+                            Airline = "Air Canada",
+                            ArrivalTime = new DateTime(2024, 4, 15, 8, 40, 0, 0, DateTimeKind.Unspecified),
+                            CurrentPassengers = 0,
+                            DepartureTime = new DateTime(2024, 4, 15, 7, 45, 0, 0, DateTimeKind.Unspecified),
+                            Destination = "Montreal",
+                            FlightNumber = "AC 7952",
+                            MaxPassengers = 2,
+                            Origin = "Toronto",
+                            Price = 434.00m
+                        },
+                        new
+                        {
+                            FlightId = 4,
+                            Airline = "Porter Airlines",
+                            ArrivalTime = new DateTime(2024, 4, 15, 15, 50, 0, 0, DateTimeKind.Unspecified),
+                            CurrentPassengers = 0,
+                            DepartureTime = new DateTime(2024, 4, 15, 7, 55, 0, 0, DateTimeKind.Unspecified),
+                            Destination = "Montreal",
+                            FlightNumber = "PD 372",
+                            MaxPassengers = 3,
+                            Origin = "Vancouver",
+                            Price = 359.00m
+                        });
+
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Models.Hotel", b =>
