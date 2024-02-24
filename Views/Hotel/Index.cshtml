@@ -111,16 +111,14 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Price)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Price)
-                    </th>
+                    
                 
-                    <th></th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @if (Model.Any())
-            
+                 {
                     @foreach (var item in Model)
                     {
                             <tr>
@@ -140,32 +138,28 @@
                                     @Html.DisplayFor(modelItem => item.Price)
                                 </td>
                             
-                            <td>
+                                <td>
                                 
-                                <a asp-action="Details" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
-                                @if (ViewBag.IsAdmin)
-                                {
-                                <a asp-action="Details" asp-route-isAdmin="true" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
-                                    <a asp-action="Edit" asp-route-isAdmin="true" asp-route-id="@item.HotelId" class="btn btn-warning">Edit</a>
-                                <a asp-action="Delete" asp-route-isAdmin="true" asp-route-id="@item.HotelId" class="btn btn-danger">Delete</a>
-                            }
-                            else
-                            {
-                                <a asp-action="Details" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
-                            }
-                        </td>
-                                    <a asp-action="Edit" asp-route-isAdmin="true" asp-route-id="@item.HotelId" class="btn btn-secondary">Edit</a>
+                                    @if (ViewBag.IsAdmin)
+                                    {
+                                    <a asp-action="Details" asp-route-isAdmin="true" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
+                                        <a asp-action="Edit" asp-route-isAdmin="true" asp-route-id="@item.HotelId" class="btn btn-warning">Edit</a>
                                     <a asp-action="Delete" asp-route-isAdmin="true" asp-route-id="@item.HotelId" class="btn btn-danger">Delete</a>
-                                }
-
-                            </td>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="Details" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
+                                    }
+                                </td>
+                           
                         </tr>
-                }
-            else
-            {
-                <tr>
-                    <td class="text-danger">No hotels available.</td>
-                </tr>
+                        }
+                 }
+                else
+                {
+                    <tr>
+                        <td class="text-danger">No hotels available.</td>
+                    </tr>
                 
                 }
             </tbody>
