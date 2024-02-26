@@ -106,10 +106,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 1,
                             Available = true,
                             CarModel = "Cool Car",
-
-                            DropOffDate = new DateTime(2024, 5, 5, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7539),
+                            DropOffDate = new DateTime(2024, 5, 8, 11, 19, 40, 884, DateTimeKind.Local).AddTicks(1293),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 3, 15, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7481),
+                            PickUpDate = new DateTime(2024, 3, 18, 11, 19, 40, 884, DateTimeKind.Local).AddTicks(1253),
                             PickUpLocation = "123 str Toronto ON",
                             Price = 350.00m,
                             RentalCompany = "Big Company"
@@ -119,11 +118,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 2,
                             Available = true,
                             CarModel = "SUV",
-
-                            DropOffDate = new DateTime(2024, 2, 29, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7544),
+                            DropOffDate = new DateTime(2024, 3, 3, 11, 19, 40, 884, DateTimeKind.Local).AddTicks(1298),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 2, 24, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7543),
-
+                            PickUpDate = new DateTime(2024, 2, 27, 11, 19, 40, 884, DateTimeKind.Local).AddTicks(1297),
                             PickUpLocation = "456 Main St, Vancouver",
                             Price = 500.00m,
                             RentalCompany = "Rent-A-Car"
@@ -133,11 +130,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 3,
                             Available = true,
                             CarModel = "Compact",
-
-                            DropOffDate = new DateTime(2024, 2, 28, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7548),
+                            DropOffDate = new DateTime(2024, 3, 2, 11, 19, 40, 884, DateTimeKind.Local).AddTicks(1301),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 2, 25, 15, 0, 33, 868, DateTimeKind.Local).AddTicks(7547),
-
+                            PickUpDate = new DateTime(2024, 2, 28, 11, 19, 40, 884, DateTimeKind.Local).AddTicks(1300),
                             PickUpLocation = "789 Elm St, Calgary",
                             Price = 250.00m,
                             RentalCompany = "City Cars"
@@ -187,7 +182,6 @@ namespace GBC_Travel_Group_90.Migrations
                     b.HasKey("FlightId");
 
                     b.ToTable("Flights");
-
 
                     b.HasData(
                         new
@@ -242,7 +236,6 @@ namespace GBC_Travel_Group_90.Migrations
                             Origin = "Vancouver",
                             Price = 359.00m
                         });
-
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Models.Hotel", b =>
