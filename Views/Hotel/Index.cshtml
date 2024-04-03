@@ -77,7 +77,7 @@
             </thead>
             <tbody>
                 @if (Model.Any())
-            
+                 {
                     @foreach (var item in Model)
                     {
                             <tr>
@@ -104,12 +104,13 @@
 
                             </td>
                         </tr>
-                }
-            else
-            {
-                <tr>
-                    <td class="text-danger">No hotels available.</td>
-                </tr>
+                        }
+                 }
+                else
+                {
+                    <tr>
+                        <td class="text-danger">No hotels available.</td>
+                    </tr>
                 
                 }
             </tbody>
