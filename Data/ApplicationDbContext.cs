@@ -80,6 +80,18 @@ namespace GBC_Travel_Group_90.Data
                     ArrivalTime = new DateTime(2024, 4, 15, 15, 50, 0),
                     Price = 359.00m,
                     MaxPassengers = 3
+                },
+                new Flight
+                {
+                    FlightId = 5,
+                    FlightNumber = "AC 890",
+                    Airline = "Air Canada",
+                    Origin = "Toronto",
+                    Destination = "Rome",
+                    DepartureTime = new DateTime(2024, 4, 22, 20, 30, 0),
+                    ArrivalTime = new DateTime(2024, 4, 23, 11, 05, 0),
+                    Price = 866.00m,
+                    MaxPassengers = 4
                 });
 
             // Seed Hotel data
