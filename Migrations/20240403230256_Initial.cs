@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GBC_Travel_Group_90.Migrations
 {
     /// <inheritdoc />
-    public partial class Ini : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -166,15 +166,9 @@ namespace GBC_Travel_Group_90.Migrations
                 columns: new[] { "CarRentalId", "Available", "CarModel", "DropOffDate", "MaxPassengers", "PickUpDate", "PickUpLocation", "Price", "RentalCompany", "UserId" },
                 values: new object[,]
                 {
-<<<<<<<< HEAD:Migrations/20240224231339_Initial.cs
-                    { 1, true, "Cool Car", new DateTime(2024, 5, 7, 18, 13, 38, 991, DateTimeKind.Local).AddTicks(7127), 0, new DateTime(2024, 3, 17, 18, 13, 38, 991, DateTimeKind.Local).AddTicks(7068), "123 str Toronto ON", 350.00m, "Big Company", null },
-                    { 2, true, "SUV", new DateTime(2024, 3, 2, 18, 13, 38, 991, DateTimeKind.Local).AddTicks(7134), 0, new DateTime(2024, 2, 26, 18, 13, 38, 991, DateTimeKind.Local).AddTicks(7132), "456 Main St, Vancouver", 500.00m, "Rent-A-Car", null },
-                    { 3, true, "Compact", new DateTime(2024, 3, 1, 18, 13, 38, 991, DateTimeKind.Local).AddTicks(7137), 0, new DateTime(2024, 2, 27, 18, 13, 38, 991, DateTimeKind.Local).AddTicks(7136), "789 Elm St, Calgary", 250.00m, "City Cars", null }
-========
-                    { 1, true, "Cool Car", new DateTime(2024, 5, 8, 11, 19, 40, 884, DateTimeKind.Local).AddTicks(1293), 0, new DateTime(2024, 3, 18, 11, 19, 40, 884, DateTimeKind.Local).AddTicks(1253), "123 str Toronto ON", 350.00m, "Big Company", null },
-                    { 2, true, "SUV", new DateTime(2024, 3, 3, 11, 19, 40, 884, DateTimeKind.Local).AddTicks(1298), 0, new DateTime(2024, 2, 27, 11, 19, 40, 884, DateTimeKind.Local).AddTicks(1297), "456 Main St, Vancouver", 500.00m, "Rent-A-Car", null },
-                    { 3, true, "Compact", new DateTime(2024, 3, 2, 11, 19, 40, 884, DateTimeKind.Local).AddTicks(1301), 0, new DateTime(2024, 2, 28, 11, 19, 40, 884, DateTimeKind.Local).AddTicks(1300), "789 Elm St, Calgary", 250.00m, "City Cars", null }
->>>>>>>> origin/main:Migrations/20240225161941_Ini.cs
+                    { 1, true, "Cool Car", new DateTime(2024, 6, 15, 19, 2, 55, 677, DateTimeKind.Local).AddTicks(1300), 0, new DateTime(2024, 4, 25, 19, 2, 55, 677, DateTimeKind.Local).AddTicks(1241), "123 str Toronto ON", 350.00m, "Big Company", null },
+                    { 2, true, "SUV", new DateTime(2024, 4, 10, 19, 2, 55, 677, DateTimeKind.Local).AddTicks(1307), 0, new DateTime(2024, 4, 5, 19, 2, 55, 677, DateTimeKind.Local).AddTicks(1305), "456 Main St, Vancouver", 500.00m, "Rent-A-Car", null },
+                    { 3, true, "Compact", new DateTime(2024, 4, 9, 19, 2, 55, 677, DateTimeKind.Local).AddTicks(1311), 0, new DateTime(2024, 4, 6, 19, 2, 55, 677, DateTimeKind.Local).AddTicks(1309), "789 Elm St, Calgary", 250.00m, "City Cars", null }
                 });
 
             migrationBuilder.InsertData(
