@@ -166,9 +166,9 @@ namespace GBC_Travel_Group_90.Migrations
                 columns: new[] { "CarRentalId", "Available", "CarModel", "DropOffDate", "MaxPassengers", "PickUpDate", "PickUpLocation", "Price", "RentalCompany", "UserId" },
                 values: new object[,]
                 {
-                    { 1, true, "Cool Car", new DateTime(2024, 5, 6, 17, 24, 41, 966, DateTimeKind.Local).AddTicks(5490), 4, new DateTime(2024, 3, 16, 17, 24, 41, 966, DateTimeKind.Local).AddTicks(5435), "123 str Toronto ON", 350.00m, "Big Company", null },
-                    { 2, true, "SUV", new DateTime(2024, 3, 1, 17, 24, 41, 966, DateTimeKind.Local).AddTicks(5497), 5, new DateTime(2024, 2, 25, 17, 24, 41, 966, DateTimeKind.Local).AddTicks(5496), "456 Main St, Vancouver", 500.00m, "Rent-A-Car", null },
-                    { 3, true, "Compact", new DateTime(2024, 2, 29, 17, 24, 41, 966, DateTimeKind.Local).AddTicks(5501), 4, new DateTime(2024, 2, 26, 17, 24, 41, 966, DateTimeKind.Local).AddTicks(5500), "789 Elm St, Calgary", 250.00m, "City Cars", null }
+                    { 1, true, "Cool Car", new DateTime(2024, 5, 7, 18, 13, 38, 991, DateTimeKind.Local).AddTicks(7127), 0, new DateTime(2024, 3, 17, 18, 13, 38, 991, DateTimeKind.Local).AddTicks(7068), "123 str Toronto ON", 350.00m, "Big Company", null },
+                    { 2, true, "SUV", new DateTime(2024, 3, 2, 18, 13, 38, 991, DateTimeKind.Local).AddTicks(7134), 0, new DateTime(2024, 2, 26, 18, 13, 38, 991, DateTimeKind.Local).AddTicks(7132), "456 Main St, Vancouver", 500.00m, "Rent-A-Car", null },
+                    { 3, true, "Compact", new DateTime(2024, 3, 1, 18, 13, 38, 991, DateTimeKind.Local).AddTicks(7137), 0, new DateTime(2024, 2, 27, 18, 13, 38, 991, DateTimeKind.Local).AddTicks(7136), "789 Elm St, Calgary", 250.00m, "City Cars", null }
                 });
 
             migrationBuilder.InsertData(

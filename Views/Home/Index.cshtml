@@ -1,79 +1,252 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        h1 {
-            text-align: center;
-            font-weight: bold;
-        }
-
-        h2 {
-            margin-top: 50px;
-        }
-
-        .container {
-            padding: 0;
-            margin: 0;
-            max-width: 100%;
-            display: flex;
-            align-items: stretch;
-        }
-    </style>
-</head>
-<body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="quote-container">
-                    <div class="front_quote">
-                        <h1>“Travel is about</h1>
-                        <h1>the gorgeous feeling</h1>
-                        <h1>of teetering in the</h1>
-                        <h1>unknown.”</h1>
-                        <h1>- Anthony Bourdain</h1>
+﻿    <div class="page">
+        <!--Welcome Message-->
+        <section class="section">
+            <div class="wrapper text-left">
+                <div class="context-dark">
+                    <div class="section-md">
+                    <div class="container">
+                            <div class="row">
+                            <div class="col-md-10" style="text-shadow: 1px 1px 1px black;">
+                                    <h6 class="text-uppercase">Travel is about the gorgeous feeling of</h6>
+                                    <h2 class="oh font-weight-light"><span>teetering in the</span><span class="font-weight-bold"> unknown</span></h2>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>           
-        </div>
+            </div>
+        </section>
+
+        <!-- Section Box Categories-->
+        <section class="section section-lg">
+            <div class="container offset-negative-1">
+                <div class="box-categories cta-box-wrap">
+                    <div class="box-categories-content">
+                        <div class="row justify-content-center">
+                            <div class="col-md-4 col-9">
+                                <ul class="list-marked-2 box-categories-list">
+                                    <li>
+                                    <a asp-area="" asp-controller="Flight" asp-action="Index"><img src="/book-flights.jpg" alt="" width="368" height="420" /></a>
+                                        <h5 class="box-categories-title">Flights</h5>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4 col-9">
+                                <ul class="list-marked-2 box-categories-list">
+                                    <li>
+                                    <a asp-area="" asp-controller="CarRental" asp-action="Index"><img src="/book-car-rentals.jpg" alt="" width="368" height="420" /></a>
+                                        <h5 class="box-categories-title">Car Rentals</h5>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4 col-9">
+                                <ul class="list-marked-2 box-categories-list">
+                                    <li>
+                                    <a asp-area="" asp-controller="Hotel" asp-action="Index"><img src="/book-hotels.jpg" alt="" width="368" height="420" /></a>
+                                        <h5 class="box-categories-title">Hotels</h5>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Discover New Horizons-->
+        <section class="section section-sm section-first bg-default text-md-left">
+            <div class="container">
+                <div class="row row-50 align-items-center justify-content-center justify-content-xl-between">
+                    <div class="col-lg-6 text-center">
+                        <img src="/travel-office.jpg" alt="" width="556" height="382" />
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="box-width-lg-470">
+                            <h3>Discover New Horizons</h3>
+                            <!-- Bootstrap tabs-->
+                            <div class="tabs-custom tabs-horizontal tabs-line tabs-line-big tabs-line-style-2 text-center text-md-left" id="tabs-7">
+                                <!-- Nav tabs-->
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-7-1" data-toggle="tab">About us</a></li>
+                                    <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-7-2" data-toggle="tab">Why choose us</a></li>
+                                    <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-7-3" data-toggle="tab">Our mission</a></li>
+                                </ul>
+                                <!-- Tab panes-->
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="tabs-7-1">
+                                        <p>Travel90 is committed to bringing our clients the best in value and quality travel arrangements. We are passionate about travel and sharing the world's wonders with you.</p>
+                                        <div class="group-md group-middle"><a class="button button-secondary button-pipaluk" href="contact-us.html">Get in Touch</a><a class="button button-black-outline button-md" href="about.html">Read More</a></div>
+                                    </div>
+                                    <div class="tab-pane fade" id="tabs-7-2">
+                                        <p>We are proud to offer excellent quality and value for money in our tours, which give you the chance to experience your chosen destination in an authentic and exciting way.</p>
+                                        <div class="group-md group-middle"><a class="button button-secondary button-pipaluk" href="contact-us.html">Get in Touch</a><a class="button button-black-outline button-md" href="about.html">Read More</a></div>
+                                    </div>
+                                    <div class="tab-pane fade" id="tabs-7-3">
+                                        <p>Our mission is to provide the ultimate travel planning experience while becoming a one-stop shop for every travel service available in the industry.</p>
+                                        <div class="group-md group-middle"><a class="button button-secondary button-pipaluk" href="contact-us.html">Get in Touch</a><a class="button button-black-outline button-md" href="about.html">Read More</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Services -->
+        <section class="section section-sm">
+            <div class="container">
+            <h3 style="color: white; text-shadow: 1px 1px 1px black;">Our Services</h3>
+                <div class="row row-30">
+                    <div class="col-sm-6 col-lg-4">
+                        <article class="box-icon-classic">
+                            <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column text-lg-center flex-xl-row text-xl-left">
+                                <div class="unit-left">
+
+                                </div>
+                                <div class="unit-body">
+                                    <h5 class="box-icon-classic-title"><a href="#">Highly Qualified Service</a></h5>
+                                    <p class="box-icon-classic-text">Our tour managers are qualified, skilled, and friendly to bring you the best service.</p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-sm-6 col-lg-4">
+                        <article class="box-icon-classic">
+                            <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column text-lg-center flex-xl-row text-xl-left">
+                                <div class="unit-left">
+
+                                </div>
+                                <div class="unit-body">
+                                    <h5 class="box-icon-classic-title"><a href="#">24/7 Support</a></h5>
+                                    <p class="box-icon-classic-text">You can always get professional support from our staff 24/7 and ask any question you have.</p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-sm-6 col-lg-4">
+                        <article class="box-icon-classic">
+                            <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column text-lg-center flex-xl-row text-xl-left">
+                                <div class="unit-left">
+
+                                </div>
+                                <div class="unit-body">
+                                    <h5 class="box-icon-classic-title"><a href="#">Best Price Guarantee</a></h5>
+                                    <p class="box-icon-classic-text">If you find tours that are cheaper than ours, we will compensate the difference.</p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommended Destinations -->
+        <section class="section section-sm bg-default">
+            <div class="container">
+                <h3 class="oh-desktop"></h3>
+                <div class="row row-sm row-40 row-md-50">
+                    <div class="col-sm-6 col-md-12">
+                        <!-- Destination 1 -->
+                        <article class="product-big">
+                            <div class="unit flex-column flex-md-row align-items-md-stretch">
+                                <div class="unit-left"><a class="product-big-figure" href="#"><img src="/vietnam.jpg" alt="" width="600" height="366" /></a></div>
+                                <div class="unit-body">
+                                    <div class="product-big-body">
+                                    <h5 class="product-big-title"><a href="#">Hạ Long Bay, Vietnam</a></h5>
+                                        <div class="group-sm group-middle justify-content-start">
+                                        <div class="product-big-rating"><i class="fa-solid fa-star fa-sm" style="color: #FFD43B;"></i><i class="fa-solid fa-star fa-sm" style="color: #FFD43B;"></i><i class="fa-solid fa-star fa-sm" style="color: #FFD43B;"></i><i class="fa-solid fa-star fa-sm" style="color: #FFD43B;"></i><i class="fa-solid fa-star-half-stroke fa-sm" style="color: #FFD43B;"></i></div><a class="product-big-reviews" href="#">4 customer reviews</a>
+                                        </div>
+                                    <p class="product-big-text">Hạ Long Bay, in northeast Vietnam, is known for its emerald waters and thousands of towering limestone islands topped by rainforests. Junk boat tours and sea kayak expeditions take visitors past islands named for their shapes.</p><a class="button button-black-outline button-ujarak" href="#">Book this Flight</a>
+                                        <div class="product-big-price-wrap"><span class="product-big-price">$790</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-sm-6 col-md-12">
+                        <!-- Desctionation 2 -->
+                        <article class="product-big">
+                            <div class="unit flex-column flex-md-row align-items-md-stretch">
+                                <div class="unit-left"><a class="product-big-figure" href="#"><img src="/rome.jpg" alt="" width="600" height="366" /></a></div>
+                                <div class="unit-body">
+                                    <div class="product-big-body">
+                                        <h5 class="product-big-title"><a href="#">Rome, Italy</a></h5>
+                                        <div class="group-sm group-middle justify-content-start">
+                                        <div class="product-big-rating"><i class="fa-solid fa-star fa-sm" style="color: #FFD43B;"></i><i class="fa-solid fa-star fa-sm" style="color: #FFD43B;"></i><i class="fa-solid fa-star fa-sm" style="color: #FFD43B;"></i><i class="fa-solid fa-star fa-sm" style="color: #FFD43B;"></i><i class="fa-solid fa-star-half-stroke fa-sm" style="color: #FFD43B;"></i></div><a class="product-big-reviews" href="#">5 customer reviews</a>
+                                        </div>
+                                    <p class="product-big-text">A walk through the streets of Rome is a stroll through History with a capital H. One of the most popular tourist destinations in the world, it offers and almost demands endless new discoveries, thanks to the enormity of its artistic heritage.</p><a class="button button-black-outline button-ujarak" href="#">Book this Flight</a>
+                                        <div class="product-big-price-wrap"><span class="product-big-price">$890</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Meet Our Team -->
+        <section class="section section-sm">
+            <div class="container">
+            <h3 class="title-block find-car oh" style="color: white; text-shadow: 1px 1px 1px black;"><span class="d-inline-block">Meet Our Team</span></h3>
+                <div class="row row-30 justify-content-center box-ordered">
+                    <div class="col-sm-6 col-md-5 col-lg-3">
+                        <!-- Team Member 1 -->
+                        <article class="team-modern">
+                            <div class="team-modern-header">
+                                <a class="team-modern-figure" href="#"><img class="img-circles" src="images/user-1-118x118.jpg" alt="" width="118" height="118" /></a>
+                                <svg x="0px" y="0px" width="270px" height="70px" viewbox="0 0 270 70" enable-background="new 0 0 270 70" xml:space="preserve">
+                                <g>
+                                <path fill="#161616" d="M202.085,0C193.477,28.912,166.708,50,135,50S76.523,28.912,67.915,0H0v70h270V0H202.085z"></path>
+                    </g>
+                  </svg>
+                            </div>
+                            <div class="team-modern-caption">
+                                <h6 class="team-modern-name"><a href="#">Nhu Ly</a></h6>
+                                <p class="team-modern-status">Founder, Owner</p>
+                                <h6 class="team-modern-phone"><a href="tel:#">+1 416-913-4688</a></h6>
+                            </div>
+                        </article>
+                    </div>
+                    
+                    <div class="col-sm-6 col-md-5 col-lg-3">
+                        <!-- Team Member 2 -->
+                        <article class="team-modern">
+                            <div class="team-modern-header">
+                                <a class="team-modern-figure" href="#"><img class="img-circles" src="images/user-3-118x118.jpg" alt="" width="118" height="118" /></a>
+                                <svg x="0px" y="0px" width="270px" height="70px" viewbox="0 0 270 70" enable-background="new 0 0 270 70" xml:space="preserve">
+                                <g>
+                                <path fill="#161616" d="M202.085,0C193.477,28.912,166.708,50,135,50S76.523,28.912,67.915,0H0v70h270V0H202.085z"></path>
+                    </g>
+                  </svg>
+                            </div>
+                            <div class="team-modern-caption">
+                                <h6 class="team-modern-name"><a href="#">Trang Nguyen</a></h6>
+                                <p class="team-modern-status">Tour Consultant</p>
+                                <h6 class="team-modern-phone"><a href="tel:#">+1 416-913-4688</a></h6>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-sm-6 col-md-5 col-lg-3">
+                        <!-- Team Member 3-->
+                        <article class="team-modern">
+                            <div class="team-modern-header">
+                                <a class="team-modern-figure" href="#"><img class="img-circles" src="images/user-4-118x118.jpg" alt="" width="118" height="118" /></a>
+                                <svg x="0px" y="0px" width="270px" height="70px" viewbox="0 0 270 70" enable-background="new 0 0 270 70" xml:space="preserve">
+                                <g>
+                                <path fill="#161616" d="M202.085,0C193.477,28.912,166.708,50,135,50S76.523,28.912,67.915,0H0v70h270V0H202.085z"></path>
+                    </g>
+                  </svg>
+                            </div>
+                            <div class="team-modern-caption">
+                                <h6 class="team-modern-name"><a href="#">Nhan Tran</a></h6>
+                                <p class="team-modern-status">PR Manager</p>
+                                <h6 class="team-modern-phone"><a href="tel:#">+1 416-913-4688</a></h6>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-    <div class="about_us_container">
-        <div class="about_us col-md-6">
-            <h1 class="title">About Us</h1>
-            <p>Welcome to Group90 Travel Agency, your gateway to unforgettable adventures!</p>
-
-            <p>
-                Group90 Travel Agency is a premier travel and booking agency dedicated to offering exceptional travel experiences to our clients.
-                Our team of passionate travel enthusiasts is committed to crafting travel plans that reflect the unique desires and needs of each client.
-            </p>
-
-            <h2 class="title">Our Mission</h2>
-            <p>
-                We believe in the transformative power of travel – it’s not just about going places, but also about experiencing new cultures, meeting new people, and creating memories that last a lifetime.
-            </p>
-
-            <h2 class="title">What We Do</h2>
-            <p>At Group90 Travel Agency, we offer a comprehensive range of services, including:</p>
-            <ul>
-                <li>Flight Bookings: We work with a wide range of airlines to provide you with the best possible options.</li>
-                <li>Car Rentals: We offer a variety of car rental options to ensure you have the freedom to explore at your own pace.</li>
-                <li>Hotel Reservations: From luxury resorts to budget-friendly hotels, we’ve got you covered.</li>
-            </ul>
-        </div>
-    </div>
-    <div class="contact_container">
-        <div class="contact col-md-6 offset-md-6">
-            <h1 class="title pastel_blue">Contact Us</h1>
-
-            <h2 class="title">Phone</h2>
-            <p>+1 416 415 2000</p>
-            <h2 class="title">Email</h2>
-            <p>info@Travel90Agency.com</p>
-            <h2 class="title">Address</h2>
-            <p>160 Kendal Ave</p>
-            <p>Toronto, ON</p>
-            <p>M5R 1M3</p>
-        </div>
-    </div>
-</body>
-</html>
-

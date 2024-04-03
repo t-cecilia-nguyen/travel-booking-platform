@@ -1,42 +1,7 @@
 ﻿@model List<Flight>
 @{
-	ViewData["Title"] = "Flights";}
-
-<div class="container">
-	<div class="row justify-content-center">
-		<div class="col-md-10">
-			<form asp-controller="Flight" asp-action="Search" method="get">
-				<div class="search-row">
-					<div class="form-group">
-						<label for="origin">Origin:</label>
-						<div class="input-icon">
-							<i class="fa-solid fa-location-dot"></i>
-							<input type="text" id="origin" name="origin" class="form-control" placeholder="Origin">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="destination">Destination:</label>
-						<div class="input-icon">
-							<i class="fa-solid fa-plane"></i>
-							<input type="text" id="destination" name="destination" class="form-control" placeholder="Destination">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="departureDate">Departure Date:</label>
-						<input type="date" id="departureDate" name="departureDate" class="form-control" placeholder="Departure Date">
-					</div>
-					<div class="form-group">
-						<label for="arrivalDate">Arrival Date:</label>
-						<input type="date" id="arrivalDate" name="arrivalDate" class="form-control" placeholder="Arrival Date">
-					</div>
-				</div>
-				<div class="form-group" style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
-					<button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Explore</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
+	ViewData["Title"] = "Flights";
+}
 
 <div class="container">
 	<div class="row justify-content-center">

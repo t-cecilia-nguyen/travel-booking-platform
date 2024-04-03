@@ -2,17 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@ViewData["Title"] - GBC_Travel_Group_90</title>
+    <!-- Stylesheets-->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/GBC_Travel_Group_90.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Montserrat:400,500,600,700%7CPoppins:400%7CTeko:300,400">
+    <link rel="stylesheet" href="~/css/bootstrap.css">
+    <link rel="stylesheet" href="~/css/fonts.css">
+    <link rel="stylesheet" href="~/css/style.css">
 </head>
+
 <body>
     <header>
-        <!-- Top Nav Bar -->
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light main_nav border-bottom box-shadow mb-3">
+        <!-- Nav Bar -->
+        <nav class="navbar navbar-expand-lg navbar-toggleable-sm navbar-light main_nav border-bottom box-shadow mb-3">
             <div class="container-fluid d-flex flex-column align-items-start">                
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between w-100">
                     <ul class="navbar-nav flex-grow-1 d-flex justify-content-start">
@@ -28,19 +36,156 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index"><i class="fa-solid fa-circle-info"></i> Your Summary</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Flight" asp-action="Index"><i class="fa-solid fa-plane"></i> Flight Booking</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Flight" asp-action="Index"><i class="fa-solid fa-plane"></i> Flights</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="CarRental" asp-action="Index"><i class="fa-solid fa-car"></i> Car Booking</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="CarRental" asp-action="Index"><i class="fa-solid fa-car"></i> Cars</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Hotel" asp-action="Index"><i class="fa-solid fa-hotel"></i> Hotel Booking</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Hotel" asp-action="Index"><i class="fa-solid fa-hotel"></i> Hotels</a>
                         </li>
                     </ul>
                 </div>
             </div>
-        </nav>        
+        </nav> 
+
+        <!-- Search Bar -->
+        <div class="container">
+            <div class="card">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="flights-tab" data-toggle="tab" href="#flights" role="tab" aria-controls="flights" aria-selected="true">Flights</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="carrentals-tab" data-toggle="tab" href="#carrentals" role="tab" aria-controls="carrentals" aria-selected="false">Car Rentals</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="hotels-tab" data-toggle="tab" href="#hotels" role="tab" aria-controls="hotels" aria-selected="false">Hotels</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="flights" role="tabpanel" aria-labelledby="flights-tab">
+                    <div class="row justify-content-center">
+                        <div class="col-md-10">
+                            <form asp-controller="Flight" asp-action="Search" method="get">
+                                <div class="search-row">
+                                    <div class="form-group">
+                                        <label for="origin">Origin:</label>
+                                        <div class="input-icon">
+                                            <i class="fa-solid fa-location-dot"></i>
+                                            <input type="text" id="origin" name="origin" class="form-control" placeholder="Origin">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="destination">Destination:</label>
+                                        <div class="input-icon">
+                                            <i class="fa-solid fa-plane"></i>
+                                            <input type="text" id="destination" name="destination" class="form-control" placeholder="Destination">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="departureDate">Departure Date:</label>
+                                        <input type="date" id="departureDate" name="departureDate" class="form-control" placeholder="Departure Date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="arrivalDate">Arrival Date:</label>
+                                        <input type="date" id="arrivalDate" name="arrivalDate" class="form-control" placeholder="Arrival Date">
+                                    </div>
+                                </div>
+                                <div class="form-group" style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+                                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Explore</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="carrentals" role="tabpanel" aria-labelledby="carrentals-tab">
+                    <div class="row justify-content-center">
+                        <div class="col-md-10">
+                            <form asp-controller="CarRental" asp-action="Search" method="get">
+                                <div class="search-row">
+                                    <div class="form-group">
+                                        <label for="RentalCompany">Rental Company:</label>
+                                        <div class="input-icon">
+                                            <i class="fa-solid fa-truck-fast"></i>
+                                            <input type="text" id="RentalCompany" name="RentalCompany" class="form-control" placeholder="Rental Company">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="CarModel">Car Model:</label>
+                                        <div class="input-icon">
+                                            <i class="fa-solid fa-car"></i>
+                                            <input type="text" id="CarModel" name="CarModel" class="form-control" placeholder="Car Model">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="PickUpDate">Pickup Date:</label>
+                                        <div class="input-icon">
+                                            <i class="fa-solid fa-location-dot"></i>
+                                            <input type="date" id="PickUpDate" name="PickUpDate" class="form-control" placeholder="Pickup Date">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="DropOffDate">Dropoff Date:</label>
+                                        <div class="input-icon">
+                                            <i class="fa-solid fa-location-dot"></i>
+                                            <input type="date" id="DropOffDate" name="DropOffDate" class="form-control" placeholder="Drop off Date">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+                                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Explore</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="hotels" role="tabpanel" aria-labelledby="hotels-tab">
+                    <div class="row justify-content-center">
+                        <div class="col-md-10">
+                            <form asp-controller="Hotel" asp-action="SearchHotel" method="get">
+                                <div class="search-row">
+                                    <div class="form-group">
+                                        <label for="name">Name: </label>
+                                        <div class="input-icon">
+                                            <i class="fa-solid fa-house"></i>
+                                            <input type="text" id="name" name="name" class="form-control" placeholder="Name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="location">Location:</label>
+                                        <div class="input-icon">
+                                            <i class="fa-solid fa-location-dot"></i>
+                                            <input type="text" id="location" name="location" class="form-control" placeholder="Location">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="starRate">Star Rate:</label>
+                                        <div class="input-icon">
+                                            <i class="fa-solid fa-star"></i>
+                                            <input type="number" id="starRate" name="starRate" class="form-control" placeholder="Star Rate">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="maxPrice">Max Price:</label>
+                                        <div class="input-icon">
+                                            <i class="fa-solid fa-dollar-sign"></i>
+                                            <input type="number" id="maxPrice" name="maxPrice" class="form-control" placeholder="Max Price">
+                                        </div>
+                                    </div>                                
+                                </div>
+                                <div class="form-group" style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+                                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Explore</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
+
+
 
     @{
         var currentPage = ViewContext.RouteData.Values["controller"].ToString() + "/" + ViewContext.RouteData.Values["action"].ToString();
@@ -59,20 +204,83 @@
         }
     }
 
-    <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - GBC_Travel_Group_90 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+    <!-- Page Footer-->
+    <footer class="section footer-corporate context-dark">
+        <div class="footer-corporate-inset">
+            <div class="container">
+                <div class="row row-40 justify-content-lg-between">
+                    <!-- Contact Information -->
+                    <div class="col-sm-6 col-md-12 col-lg-3 col-xl-4">
+                        <div class="oh-desktop">
+                            <h6 class="text-spacing-100 text-uppercase">Contact us</h6>
+                            <ul class="footer-contacts d-inline-block d-sm-block">
+                                <li>
+                                    <div class="unit">
+                                        <div class="unit-left"><span class="icon fa fa-phone"></span></div>
+                                        <div class="unit-body"><a class="link-phone" href="tel:#">+1 416-415-2000</a></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="unit">
+                                        <div class="unit-left"><span class="icon fa fa-envelope"></span></div>
+                                        <div class="unit-body"><a class="link-aemail" href="mailto:#">travel90.agency@domain.org</a></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="unit">
+                                        <div class="unit-left"><span class="icon fa fa-location-arrow"></span></div>
+                                        <div class="unit-body"><a class="link-location" href="https://maps.app.goo.gl/e1LzPqZu5MPHHSpb7">160 Kendal Ave, Toronto, ON M5R 1M3</a></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Quick Links -->
+                    <div class="col-sm-11 col-md-7 col-lg-5 col-xl-4">
+                        <div class="oh-desktop">
+                            <h6 class="text-spacing-100 text-uppercase">Quick links</h6>
+                            <ul class="row-6 list-0 list-marked list-marked-md list-marked-secondary list-custom-2">
+                                <li><a href="about.html">About us</a></li>
+                                <li><a href="#">Our Tours</a></li>
+                                <li><a href="#">Our Team</a></li>
+                                <li><a href="#">Gallery</a></li>
+                                <li><a href="#">Blog</a></li>
+                            </ul>
+                            <div class="group-md group-middle justify-content-sm-start"><a class="button button-lg button-primary button-ujarak" href="#">Get in touch</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rights/Private Policy -->
+        <div class="footer-corporate-bottom-panel">
+            <div class="container">
+                <div class="row justfy-content-xl-space-berween row-10 align-items-md-center2">
+
+                    <div class="col-sm-6 col-md-6 order-sm-first">
+                        <p class="rights"><span>&copy;&nbsp;</span><span class="copyright-year"></span><span>&nbsp;</span><span>Travel90 Agency</span>. All Rights Reserved.</p>
+                    </div>
+                    <div class="col-sm-6 col-md-6 text-md-right">
+                        <p class="rights"><a href="#">Privacy Policy</a></p>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
+
+    <!-- Javascript-->
+    <script src="js/core.min.js"></script>
+    <script src="js/script.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

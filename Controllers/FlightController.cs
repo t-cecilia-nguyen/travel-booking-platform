@@ -16,6 +16,7 @@ namespace GBC_Travel_Group_90.Controllers
         {
             _db = db;
         }
+
         public IActionResult Index(string email)
         {
 			ViewBag.IsAdmin = false;
@@ -58,6 +59,8 @@ namespace GBC_Travel_Group_90.Controllers
             }
             return View(flight);
         }
+
+        [HttpGet("Details/{id:int}")]
         public IActionResult Details(int id)
         {
             var flight = _db.Flights.FirstOrDefault(p => p.FlightId == id);
