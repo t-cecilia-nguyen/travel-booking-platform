@@ -1,0 +1,68 @@
+﻿@model HotelBooking
+
+@{
+    ViewData["Title"] = "Create Booking";
+    
+}
+
+<div class="card">
+    <div class="card-header">
+        <h1>Book a Hotel</h1>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="NumOfRoomsToBook" class="control-label"></label>
+                        <input asp-for="NumOfRoomsToBook" type="number" class="form-control" />
+                        <span asp-validation-for="NumOfRoomsToBook" class="text-danger"></span>
+                    </div>
+           
+                    <div class="form-group">
+                        <label asp-for="CheckInDate" class="control-label"></label>
+                        <input asp-for="CheckInDate" type="datetime-local" class="form-control" />
+                        <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CheckOutDate" class="control-label"></label>
+                        <input asp-for="CheckOutDate" type="datetime-local" class="form-control" />
+                        <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                    </div>
+            
+                    @Html.HiddenFor(model => model.HotelId)
+
+
+                    <div class="m-10">
+                        <h3 >Enter Your Email Address</h3>
+               
+                            <label for="userEmail">Email:</label>
+                            <input type="email" id="userEmail" name="userEmail" required />
+                            @Html.AntiForgeryToken()
+              
+                    </div>
+
+                    <div class="form-group">
+                    <input type="submit" value="Book Hotel" class="btn btn-secondary" />
+                    @if(ViewBag.IsAdmin)
+                    {
+                            <a asp-controller="Hotel" asp-action="Index" asp-route-isAdmin="true" class="btn btn-warning">Back to Hotels</a>
+                    }else
+                    {
+                        <a asp-controller="Hotel" asp-action="Index" class="btn btn-warning">Back to Hotels</a>
+
+                    }
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

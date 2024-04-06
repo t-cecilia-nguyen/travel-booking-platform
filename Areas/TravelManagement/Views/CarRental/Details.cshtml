@@ -1,0 +1,55 @@
+﻿@model CarRental
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h1>Car Rental Details</h1>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.RentalCompany)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.RentalCompany)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.PickUpLocation)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.PickUpLocation)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.PickUpDate)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.PickUpDate)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.DropOffDate)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.DropOffDate)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.CarModel)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.CarModel)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Book" asp-route-id="@Model.CarRentalId" class="btn btn-primary">Book Car</a>
+        <a asp-action="Index" class="btn btn-warning">Back to Car Rentals</a>
+    </div>
+</div>

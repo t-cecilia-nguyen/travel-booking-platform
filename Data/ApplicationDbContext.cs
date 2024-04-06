@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Models;
+using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 
 namespace GBC_Travel_Group_90.Data
 {

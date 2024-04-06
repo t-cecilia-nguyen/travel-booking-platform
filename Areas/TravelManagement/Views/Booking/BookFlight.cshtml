@@ -1,0 +1,49 @@
+﻿@model Flight
+
+<div class="card">
+    <div class="card-header">
+        <h5>Book Flight</h5>
+    </div>
+    <div class="card-body">
+        <p><strong>Flight Number:</strong> @Model.FlightNumber</p>
+        <p><strong>Airline:</strong> @Model.Airline</p>
+        <p><strong>Origin:</strong> @Model.Origin</p>
+        <p><strong>Destination:</strong> @Model.Destination</p>
+        <p><strong>Departure Time:</strong> @Model.DepartureTime</p>
+        <p><strong>Arrival Time:</strong> @Model.ArrivalTime</p>
+        <p><strong>Price:</strong> @Model.Price</p>
+    </div>
+</div>
+
+@* <div class="card">
+    <div class="card-header">
+        <h5>Enter Your Email Address</h5>
+    </div>
+    <div class="card-body">
+        <form asp-controller="Booking" asp-action="BookFlight" method="post">
+            <div class="form-group">
+                <input type="hidden" name="flightId" value="@Model?.FlightId" />
+                <label for="email">Enter your email address:</label>
+                <input name="email" type="email" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-secondary">Book Flight</button>
+            <a asp-controller="Flight" asp-action="Index" class="btn btn-warning">Back to Flights</a>
+        </form>
+    </div>
+</div> *@
+
+<div class="card">
+    <div class="card-header">
+        <h3>Enter Your Email Address</h3>
+    </div>
+    <div class="card-body">
+        <form method="post" asp-action="BookFlight">
+            <input type="hidden" name="id" value="@Model.FlightId" />
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-secondary">Book Flight</button>
+            <a asp-controller="Flight" asp-action="Index" class="btn btn-warning">Back to Flights</a>
+        </form>
+    </div>
+</div>
