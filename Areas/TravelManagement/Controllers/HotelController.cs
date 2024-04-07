@@ -40,7 +40,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 return View(await applicationDbContext.ToListAsync());
             }
 
-            var user = _context.Users.FirstOrDefault(u => u.Email == email && u.IsAdmin);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsAdmin);
             if (user != null)
             {
                 Console.WriteLine("admin is true");
@@ -95,7 +95,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(hotel);
+                await _context.AddAsync(hotel);
                 await _context.SaveChangesAsync();
                 //return isAdmin's View
                 return RedirectToAction(nameof(Index), new { isAdmin = true });
@@ -122,9 +122,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
 
         [HttpGet("Edit/{id:int}")]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            var hotel = _context.Hotels.Find(id);
+            var hotel = await _context.Hotels.FindAsync(id);
 
             if (hotel == null)
             {
@@ -201,9 +201,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return NotFound();            
         }
 
-        private bool HotelExists(int id)
+        private async Task<bool> HotelExists(int id)
         {
-            return _context.Hotels.Any(e => e.HotelId == id);
+            return await _context.Hotels.AnyAsync(e => e.HotelId == id);
         }
 
         [HttpGet("SearchHotel")]
@@ -234,15 +234,15 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             if (checkInDate.HasValue && checkOutDate.HasValue)
             {
                 // Retrieve bookings for the specified date range only
-                var bookingsForDateRange = _context.HotelBookings
+                var bookingsForDateRange = await _context.HotelBookings
                     .Where(b => b.CheckInDate < checkOutDate && b.CheckOutDate > checkInDate)
-                    .ToList();
+                    .ToListAsync();
 
                 // Filter the hotels based on availability
-                var availableHotelIds = hotelsQuery
+                var availableHotelIds = await hotelsQuery
                     .Where(h => h.IsAvailableForDates(checkInDate, checkOutDate, bookingsForDateRange))
                     .Select(h => h.HotelId)
-                    .ToList();
+                    .ToListAsync();
 
                 // Filter the hotelsQuery based on the availableHotelIds
                 hotelsQuery = hotelsQuery.Where(h => availableHotelIds.Contains(h.HotelId));
@@ -253,10 +253,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
                 hotelsQuery = hotelsQuery.Where(h => h.Price <= maxPrice.Value);
             }
-
-
-
-
 
             var hotels = await hotelsQuery.ToListAsync();
 

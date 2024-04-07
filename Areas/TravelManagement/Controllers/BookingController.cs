@@ -17,10 +17,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             _db = db;
         }
 
-        [HttpGet]
-        public IActionResult BookFlight(int id)
+        [HttpGet("BookFlight/{id:int}")]
+        public async Task<IActionResult> BookFlight(int id)
         {
-            var flight = _db.Flights.Find(id);
+            var flight = await _db.Flights.FindAsync(id);
 
             if (flight == null)
             {
@@ -30,18 +30,18 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(flight);
         }
 
-        [HttpPost]
-        public IActionResult BookFlight(string email, int id)
+        [HttpPost("BookFlight/{id:int}")]
+        public async Task<IActionResult> BookFlight(string email, int id)
         {
 
-            var flight = _db.Flights.FirstOrDefault(f => f.FlightId == id);
+            var flight = await _db.Flights.FirstOrDefaultAsync(f => f.FlightId == id);
 
             if (flight == null)
             {
                 return NotFound();
             }
 
-            var user = _db.Users.FirstOrDefault(u => u.Email == email);
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
 
             if (user == null)
             {
@@ -51,12 +51,12 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                     FirstName = "Guest",
                     LastName = "Guest"
                 };
-                _db.Users.Add(user);
-                _db.SaveChanges();
+                await _db.Users.AddAsync(user);
+                await _db.SaveChangesAsync();
             }
 
             // Check if the user already booked flight
-            var existingBooking = _db.Bookings.FirstOrDefault(b => b.UserId == user.UserId && b.FlightId == id);
+            var existingBooking = await _db.Bookings.FirstOrDefaultAsync(b => b.UserId == user.UserId && b.FlightId == id);
 
             if (existingBooking != null)
             {
@@ -71,20 +71,20 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 Flight = flight
             };
 
-            _db.Bookings.Add(booking);
+            await _db.Bookings.AddAsync(booking);
             flight.CurrentPassengers++;
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return RedirectToAction("Success", new { id = booking.BookingId });
 
         }
 
-        [HttpGet]
-        public IActionResult Success(int id)
+        [HttpGet("SuccessBooking/{id:int}")]
+        public async Task<IActionResult> Success(int id)
         {
             // Retrieve the booking from the database
-            var booking = _db.Bookings.Include(b => b.User)
+            var booking = await _db.Bookings.Include(b => b.User)
                                       .Include(b => b.Flight)
-                                      .FirstOrDefault(b => b.BookingId == id);
+                                      .FirstOrDefaultAsync(b => b.BookingId == id);
 
             if (booking == null)
             {

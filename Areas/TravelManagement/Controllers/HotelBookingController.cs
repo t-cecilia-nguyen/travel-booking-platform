@@ -77,9 +77,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
 
-        private bool IsRoomAvailable(int? hotelId, int numOfRoomsToBook)
+        private async Task<bool> IsRoomAvailable(int? hotelId, int numOfRoomsToBook)
         {
-            var hotel = _context.Hotels.Find(hotelId);
+            var hotel = await _context.Hotels.FindAsync(hotelId);
 
             if (hotel == null || numOfRoomsToBook <= 0)
             {
@@ -109,7 +109,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         // GET: HotelBookings/Create
-        public IActionResult Create(int hotelId, bool isAdmin = false)
+        public async Task<IActionResult> Create(int hotelId, bool isAdmin = false)
         {
             ViewBag.IsAdmin = false;
             if (isAdmin)
@@ -117,7 +117,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 ViewBag.IsAdmin = true;
             }
 
-            var hotel = _context.Hotels.Find(hotelId);
+            var hotel = await _context.Hotels.FindAsync(hotelId);
             if (hotel == null) return NotFound("Hotel not found");
 
 
@@ -138,7 +138,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             {
 
                 // Check if the user already booked the hotel
-                var user = _context.Users.FirstOrDefault(u => u.Email == userEmail);
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
                 if (user == null)
                 {
                     user = new User
@@ -147,11 +147,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                         FirstName = "Guest",
                         LastName = "Guest"
                     };
-                    _context.Users.Add(user);
-                    _context.SaveChanges();
+                    await _context.Users.AddAsync(user);
+                    await _context.SaveChangesAsync();
                 }
 
-                var existingBooking = _context.HotelBookings.FirstOrDefault(b => b.UserId == user.UserId && b.HotelId == hotelBooking.HotelId);
+                var existingBooking = await _context.HotelBookings.FirstOrDefaultAsync(b => b.UserId == user.UserId && b.HotelId == hotelBooking.HotelId);
 
                 if (existingBooking != null)
                 {
@@ -167,7 +167,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 }
 
                 // Check if rooms are available
-                if (IsRoomAvailable(hotelBooking.HotelId, hotelBooking.NumOfRoomsToBook))
+                if (await IsRoomAvailable(hotelBooking.HotelId, hotelBooking.NumOfRoomsToBook))
                 {
                     // Update the NumberOfRooms property
                     UpdateNumberOfRooms(hotelBooking.HotelId, hotelBooking.NumOfRoomsToBook);
@@ -178,7 +178,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                     hotelBooking.UserId = user.UserId;
                     hotelBooking.BookingDate = DateTime.Now;
                     hotelBooking.Status = Status.Confirmed;
-                    _context.HotelBookings.Add(hotelBooking);
+                    await _context.HotelBookings.AddAsync(hotelBooking);
                     await _context.SaveChangesAsync();
 
                     return RedirectToAction(nameof(Details), new { id = hotelBooking.HotelBookingId });
@@ -300,9 +300,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return RedirectToAction(nameof(Index), "Hotel");
         }
 
-        private bool HotelBookingExists(int id)
+        private async Task<bool> HotelBookingExists(int id)
         {
-            return _context.HotelBookings.Any(e => e.HotelBookingId == id);
+            return await _context.HotelBookings.AnyAsync(e => e.HotelBookingId == id);
         }
     }
 }

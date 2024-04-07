@@ -14,40 +14,37 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
     {
         private readonly ApplicationDbContext _db;
 
-
         public CarRentalController(ApplicationDbContext db)
         {
             _db = db;
         }
 
-
-
         [HttpGet("")]
-        public IActionResult Index(string email)
+        public async Task<IActionResult> Index(string email)
         {
 
 
             if (email == null || string.IsNullOrEmpty(email))
             {
                 ViewBag.IsAdmin = false;
-                return View(_db.CarRentals.ToList());
+                return View(await _db.CarRentals.ToListAsync());
             }
 
-            var user = _db.Users.FirstOrDefault(u => u.Email == email && u.IsAdmin);
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsAdmin);
             if (user != null)
             {
                 Console.WriteLine("admin is true");
                 ViewBag.IsAdmin = true;
             }
 
-            return View(_db.CarRentals.ToList());
+            return View(await _db.CarRentals.ToListAsync());
         }
 
 
         [HttpGet("Details/{id:int}")]
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var carRental = _db.CarRentals.FirstOrDefault(p => p.CarRentalId == id);
+            var carRental = await _db.CarRentals.FirstOrDefaultAsync(p => p.CarRentalId == id);
 
             if (carRental == null)
             {
@@ -67,10 +64,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
 
         [HttpGet("Success/{carRentalId:int}/{userId:int}")]
-        public IActionResult Success(int carRentalId, int userId)
+        public async Task<IActionResult> Success(int carRentalId, int userId)
         {
-            var user = _db.Users.Find(userId);
-            var carRental = _db.CarRentals.Find(carRentalId);
+            var user = await _db.Users.FindAsync(userId);
+            var carRental = await _db.CarRentals.FindAsync(carRentalId);
 
             if (carRental == null)
             {
@@ -90,12 +87,12 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CarRental carRental)
+        public async Task<IActionResult> Create(CarRental carRental)
         {
             if (ModelState.IsValid)
             {
-                _db.CarRentals.Add(carRental);
-                _db.SaveChanges();
+                await _db.CarRentals.AddAsync(carRental);
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(carRental);
@@ -104,9 +101,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
 
         [HttpGet("Book/{id:int}")]
-        public IActionResult Book(int id)
+        public async Task<IActionResult> Book(int id)
         {
-            var carRental = _db.CarRentals.Find(id);
+            var carRental = await _db.CarRentals.FindAsync(id);
 
             if (carRental == null)
             {
@@ -121,17 +118,17 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [HttpPost("Book/{id:int}")]
         [ValidateAntiForgeryToken]
-        public IActionResult Book(int id, string userEmail)
+        public async Task<IActionResult> Book(int id, string userEmail)
         {
 
-            var carRental = _db.CarRentals.Find(id);
+            var carRental = await _db.CarRentals.FindAsync(id);
 
             if (carRental == null)
             {
                 return NotFound(); // Car rental not found, return Not Found status
             }
 
-            var user = _db.Users.FirstOrDefault(u => u.Email == userEmail);
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
 
             if (user == null)
             {
@@ -141,8 +138,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                     FirstName = "Guest",
                     LastName = "Guest"
                 };
-                _db.Users.Add(user);
-                _db.SaveChanges();
+                await _db.Users.AddAsync(user);
+                await _db.SaveChangesAsync();
             }
 
             ViewBag.User = user;
@@ -151,7 +148,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             carRental.Available = false;
             carRental.UserId = user.UserId;
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
 
 
             return RedirectToAction("Success", new { carRentalId = carRental.CarRentalId, userId = user.UserId });
@@ -159,9 +156,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
 
         [HttpGet("Edit/{id:int}")]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var carRental = _db.CarRentals.Find(id);
+            var carRental = await _db.CarRentals.FindAsync(id);
 
             if (carRental == null)
             {
@@ -174,7 +171,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("CarRentalId, RentalCompany, PickUpLocation, PickUpDate, DropOffDate, CarModel, Price")] CarRental carRental)
+        public async Task<IActionResult> Edit(int id, [Bind("CarRentalId, RentalCompany, PickUpLocation, PickUpDate, DropOffDate, CarModel, Price")] CarRental carRental)
         {
             if (id != carRental.CarRentalId)
             {
@@ -186,7 +183,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 try
                 {
                     _db.Update(carRental);
-                    _db.SaveChanges();
+                    await _db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -206,16 +203,16 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
 
 
-        private bool CarRentalExists(int id)
+        private async Task<bool> CarRentalExists(int id)
         {
-            return _db.CarRentals.Any(e => e.CarRentalId == id);
+            return await _db.CarRentals.AnyAsync(e => e.CarRentalId == id);
         }
 
 
         [HttpGet("Delete/{id:int}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var carRental = _db.CarRentals.FirstOrDefault(p => p.CarRentalId == id);
+            var carRental = await _db.CarRentals.FirstOrDefaultAsync(p => p.CarRentalId == id);
 
             if (carRental == null)
             {
@@ -228,13 +225,13 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int carRentalId)
+        public async Task<IActionResult> DeleteConfirmed(int carRentalId)
         {
-            var carRental = _db.CarRentals.Find(carRentalId);
+            var carRental = await _db.CarRentals.FindAsync(carRentalId);
             if (carRental != null)
             {
                 _db.CarRentals.Remove(carRental);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return NotFound();

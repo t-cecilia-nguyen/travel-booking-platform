@@ -16,7 +16,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             _db = db;
         }
 
-        public IActionResult Index(string email)
+        [HttpGet("")]
+        public async Task<IActionResult> Index(string email)
         {
             ViewBag.IsAdmin = false;
 
@@ -24,13 +25,13 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             if (email == null || string.IsNullOrEmpty(email))
             {
                 ViewBag.IsAdmin = false;
-                var flights = _db.Flights.ToList();
+                var flights = await _db.Flights.ToListAsync();
                 var availableFlights = flights.Where(f => f.CurrentPassengers < f.MaxPassengers).ToList();
                 return View(availableFlights);
             }
 
             // If Admin - view all Flights
-            var user = _db.Users.FirstOrDefault(u => u.Email == email && u.IsAdmin);
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsAdmin);
             if (user != null)
             {
                 Console.WriteLine("admin is true");
@@ -41,28 +42,29 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(allflights);
         }
 
+        [HttpGet("Create")]
         public IActionResult Create()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Flight flight)
+        public async Task<IActionResult> Create(Flight flight)
         {
             if (ModelState.IsValid)
             {
-                _db.Flights.Add(flight);
-                _db.SaveChanges();
+                await _db.Flights.AddAsync(flight);
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(flight);
         }
 
         [HttpGet("Details/{id:int}")]
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var flight = _db.Flights.FirstOrDefault(p => p.FlightId == id);
+            var flight = await _db.Flights.FirstOrDefaultAsync(p => p.FlightId == id);
 
             if (flight == null)
             {
@@ -72,9 +74,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         [HttpGet("Edit/{id:int}")]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var flight = _db.Flights.Find(id);
+            var flight = await _db.Flights.FindAsync(id);
 
             if (flight == null)
             {
@@ -85,7 +87,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("FlightId, FlightNumber, Airline, Origin, Destination, DepartureTime, ArrivalTime, Price, MaxPassengers")] Flight flight)
+        public async Task<IActionResult> Edit(int id, [Bind("FlightId, FlightNumber, Airline, Origin, Destination, DepartureTime, ArrivalTime, Price, MaxPassengers")] Flight flight)
         {
             if (id != flight.FlightId)
             {
@@ -97,11 +99,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 try
                 {
                     _db.Update(flight);
-                    _db.SaveChanges();
+                    await _db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FlightExists(flight.FlightId))
+                    if (!await FlightExists(flight.FlightId))
                     {
                         return NotFound();
                     }
@@ -115,14 +117,15 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(flight);
         }
 
-        private bool FlightExists(int id)
+        private async Task<bool> FlightExists(int id)
         {
-            return _db.Flights.Any(e => e.FlightId == id);
+            return await _db.Flights.AnyAsync(e => e.FlightId == id);
         }
 
-        public IActionResult Delete(int id)
+        [HttpGet("Delete/{id:int}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var flight = _db.Flights.FirstOrDefault(p => p.FlightId == id);
+            var flight = await _db.Flights.FirstOrDefaultAsync(p => p.FlightId == id);
 
             if (flight == null)
             {
@@ -131,15 +134,16 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(flight);
         }
 
+        [HttpPost("DeleteConfirmed/{id:int}")]
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int flightId)
+        public async Task<IActionResult> DeleteConfirmed(int flightId)
         {
-            var flight = _db.Flights.Find(flightId);
+            var flight = await _db.Flights.FindAsync(flightId);
             if (flight != null)
             {
                 _db.Flights.Remove(flight);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return NotFound();

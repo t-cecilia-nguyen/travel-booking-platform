@@ -37,6 +37,9 @@
                             <td>@booking.Flight?.Destination</td>
                             <td>@booking.Flight?.DepartureTime</td>
                             <td>@booking.Flight?.ArrivalTime</td>
+                            <td>
+                                @await Component.InvokeAsync("BookingSummary", new { bookingId = booking.BookingId })
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -122,7 +125,7 @@
                             <td>@hotelbooking.CheckOutDate.ToShortDateString()</td>
                             <td>@hotelbooking.NumOfRoomsToBook</td>
                             <td>@hotelbooking.Hotel?.Price</td>
-                            <td>@hotelbooking.Status</td>
+                            <td>@hotelbooking.Status</td>                            
                         </tr>
                         
                     }
