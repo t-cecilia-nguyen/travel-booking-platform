@@ -153,7 +153,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HotelExists(hotel.HotelId))
+                    if (!await HotelExists(hotel.HotelId))
                     {
                         return NotFound();
                     }

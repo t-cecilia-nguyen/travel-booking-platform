@@ -221,3 +221,22 @@ body {
         background-color: #ebe2c9 !important;
         border-color: #D9B300 !important;
     }
+
+
+.hotelReviews {
+    /* Add a border, some padding, and a margin to each comment */
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.comment {
+    /* Add a border, some padding, and a margin to each comment */
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}

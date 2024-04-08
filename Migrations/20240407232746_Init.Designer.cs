@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GBC_Travel_Group_90.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240406012204_Initial")]
-    partial class Initial
+    [Migration("20240407232746_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,9 +109,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 1,
                             Available = true,
                             CarModel = "Cool Car",
-                            DropOffDate = new DateTime(2024, 6, 17, 21, 22, 3, 829, DateTimeKind.Local).AddTicks(2681),
+                            DropOffDate = new DateTime(2024, 6, 19, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8084),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 27, 21, 22, 3, 829, DateTimeKind.Local).AddTicks(2622),
+                            PickUpDate = new DateTime(2024, 4, 29, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8023),
                             PickUpLocation = "123 str Toronto ON",
                             Price = 350.00m,
                             RentalCompany = "Big Company"
@@ -121,9 +121,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 2,
                             Available = true,
                             CarModel = "SUV",
-                            DropOffDate = new DateTime(2024, 4, 12, 21, 22, 3, 829, DateTimeKind.Local).AddTicks(2688),
+                            DropOffDate = new DateTime(2024, 4, 14, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8089),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 7, 21, 22, 3, 829, DateTimeKind.Local).AddTicks(2687),
+                            PickUpDate = new DateTime(2024, 4, 9, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8088),
                             PickUpLocation = "456 Main St, Vancouver",
                             Price = 500.00m,
                             RentalCompany = "Rent-A-Car"
@@ -133,13 +133,39 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 3,
                             Available = true,
                             CarModel = "Compact",
-                            DropOffDate = new DateTime(2024, 4, 11, 21, 22, 3, 829, DateTimeKind.Local).AddTicks(2692),
+                            DropOffDate = new DateTime(2024, 4, 13, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8093),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 8, 21, 22, 3, 829, DateTimeKind.Local).AddTicks(2690),
+                            PickUpDate = new DateTime(2024, 4, 10, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8092),
                             PickUpLocation = "789 Elm St, Calgary",
                             Price = 250.00m,
                             RentalCompany = "City Cars"
                         });
+                });
+
+            modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.CarRentalReview", b =>
+                {
+                    b.Property<int>("CarRentalReviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarRentalReviewId"));
+
+                    b.Property<int>("CarRentalId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("CarRentalReviewId");
+
+                    b.HasIndex("CarRentalId");
+
+                    b.ToTable("CarRentalReviews");
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.Flight", b =>
@@ -440,6 +466,17 @@ namespace GBC_Travel_Group_90.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.CarRentalReview", b =>
+                {
+                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.CarRental", "CarRental")
+                        .WithMany()
+                        .HasForeignKey("CarRentalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CarRental");
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.HotelBooking", b =>

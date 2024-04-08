@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GBC_Travel_Group_90.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -161,14 +161,35 @@ namespace GBC_Travel_Group_90.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "CarRentalReviews",
+                columns: table => new
+                {
+                    CarRentalReviewId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CarRentalId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarRentalReviews", x => x.CarRentalReviewId);
+                    table.ForeignKey(
+                        name: "FK_CarRentalReviews_CarRentals_CarRentalId",
+                        column: x => x.CarRentalId,
+                        principalTable: "CarRentals",
+                        principalColumn: "CarRentalId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "CarRentals",
                 columns: new[] { "CarRentalId", "Available", "CarModel", "DropOffDate", "MaxPassengers", "PickUpDate", "PickUpLocation", "Price", "RentalCompany", "UserId" },
                 values: new object[,]
                 {
-                    { 1, true, "Cool Car", new DateTime(2024, 6, 17, 21, 22, 3, 829, DateTimeKind.Local).AddTicks(2681), 0, new DateTime(2024, 4, 27, 21, 22, 3, 829, DateTimeKind.Local).AddTicks(2622), "123 str Toronto ON", 350.00m, "Big Company", null },
-                    { 2, true, "SUV", new DateTime(2024, 4, 12, 21, 22, 3, 829, DateTimeKind.Local).AddTicks(2688), 0, new DateTime(2024, 4, 7, 21, 22, 3, 829, DateTimeKind.Local).AddTicks(2687), "456 Main St, Vancouver", 500.00m, "Rent-A-Car", null },
-                    { 3, true, "Compact", new DateTime(2024, 4, 11, 21, 22, 3, 829, DateTimeKind.Local).AddTicks(2692), 0, new DateTime(2024, 4, 8, 21, 22, 3, 829, DateTimeKind.Local).AddTicks(2690), "789 Elm St, Calgary", 250.00m, "City Cars", null }
+                    { 1, true, "Cool Car", new DateTime(2024, 6, 19, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8084), 0, new DateTime(2024, 4, 29, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8023), "123 str Toronto ON", 350.00m, "Big Company", null },
+                    { 2, true, "SUV", new DateTime(2024, 4, 14, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8089), 0, new DateTime(2024, 4, 9, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8088), "456 Main St, Vancouver", 500.00m, "Rent-A-Car", null },
+                    { 3, true, "Compact", new DateTime(2024, 4, 13, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8093), 0, new DateTime(2024, 4, 10, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8092), "789 Elm St, Calgary", 250.00m, "City Cars", null }
                 });
 
             migrationBuilder.InsertData(
@@ -220,6 +241,11 @@ namespace GBC_Travel_Group_90.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CarRentalReviews_CarRentalId",
+                table: "CarRentalReviews",
+                column: "CarRentalId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CarRentals_UserId",
                 table: "CarRentals",
                 column: "UserId");
@@ -242,13 +268,16 @@ namespace GBC_Travel_Group_90.Migrations
                 name: "Bookings");
 
             migrationBuilder.DropTable(
+                name: "CarRentalReviews");
+
+            migrationBuilder.DropTable(
                 name: "HotelBookings");
 
             migrationBuilder.DropTable(
-                name: "CarRentals");
+                name: "Flights");
 
             migrationBuilder.DropTable(
-                name: "Flights");
+                name: "CarRentals");
 
             migrationBuilder.DropTable(
                 name: "Hotels");

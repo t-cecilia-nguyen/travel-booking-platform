@@ -193,21 +193,13 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
                     return View(hotelBooking);
                 }
-
-
             }
-
             return View(hotelBooking);
         }
-
-
-
-
 
         // GET: HotelBookings/Edit/5
         public async Task<IActionResult> Edit(int? id, bool isAdmin = false)
         {
-
 
             if (isAdmin)
             {
@@ -251,7 +243,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HotelBookingExists(hotelBooking.HotelBookingId))
+                    if (!await HotelBookingExists(hotelBooking.HotelBookingId))
                     {
                         return NotFound();
                     }

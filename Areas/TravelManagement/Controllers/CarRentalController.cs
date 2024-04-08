@@ -187,7 +187,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CarRentalExists(carRental.CarRentalId))
+                    if (!await CarRentalExists(carRental.CarRentalId))
                     {
                         return NotFound();
                     }
