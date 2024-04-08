@@ -17,10 +17,85 @@ namespace GBC_Travel_Group_90.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("Identity")
                 .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("ProfilePicture")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("User", "Identity");
+                });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.Booking", b =>
                 {
@@ -29,6 +104,9 @@ namespace GBC_Travel_Group_90.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("CarRentalId")
                         .HasColumnType("int");
@@ -44,6 +122,8 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasKey("BookingId");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.HasIndex("CarRentalId");
 
                     b.HasIndex("FlightId");
@@ -52,7 +132,7 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", "Identity");
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.CarRental", b =>
@@ -98,7 +178,7 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CarRentals");
+                    b.ToTable("CarRentals", "Identity");
 
                     b.HasData(
                         new
@@ -106,9 +186,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 1,
                             Available = true,
                             CarModel = "Cool Car",
-                            DropOffDate = new DateTime(2024, 6, 20, 8, 17, 24, 445, DateTimeKind.Local).AddTicks(2593),
+                            DropOffDate = new DateTime(2024, 6, 20, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8982),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 30, 8, 17, 24, 445, DateTimeKind.Local).AddTicks(2522),
+                            PickUpDate = new DateTime(2024, 4, 30, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8921),
                             PickUpLocation = "123 str Toronto ON",
                             Price = 350.00m,
                             RentalCompany = "Big Company"
@@ -118,9 +198,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 2,
                             Available = true,
                             CarModel = "SUV",
-                            DropOffDate = new DateTime(2024, 4, 15, 8, 17, 24, 445, DateTimeKind.Local).AddTicks(2600),
+                            DropOffDate = new DateTime(2024, 4, 15, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8988),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 10, 8, 17, 24, 445, DateTimeKind.Local).AddTicks(2598),
+                            PickUpDate = new DateTime(2024, 4, 10, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8986),
                             PickUpLocation = "456 Main St, Vancouver",
                             Price = 500.00m,
                             RentalCompany = "Rent-A-Car"
@@ -130,9 +210,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 3,
                             Available = true,
                             CarModel = "Compact",
-                            DropOffDate = new DateTime(2024, 4, 14, 8, 17, 24, 445, DateTimeKind.Local).AddTicks(2604),
+                            DropOffDate = new DateTime(2024, 4, 14, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8992),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 11, 8, 17, 24, 445, DateTimeKind.Local).AddTicks(2603),
+                            PickUpDate = new DateTime(2024, 4, 11, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8990),
                             PickUpLocation = "789 Elm St, Calgary",
                             Price = 250.00m,
                             RentalCompany = "City Cars"
@@ -162,7 +242,7 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasIndex("CarRentalId");
 
-                    b.ToTable("CarRentalReviews");
+                    b.ToTable("CarRentalReviews", "Identity");
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.Flight", b =>
@@ -211,7 +291,7 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasKey("FlightId");
 
-                    b.ToTable("Flights");
+                    b.ToTable("Flights", "Identity");
 
                     b.HasData(
                         new
@@ -309,7 +389,7 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasKey("HotelId");
 
-                    b.ToTable("Hotels");
+                    b.ToTable("Hotels", "Identity");
 
                     b.HasData(
                         new
@@ -358,6 +438,9 @@ namespace GBC_Travel_Group_90.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HotelBookingId"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("datetime2");
 
@@ -381,11 +464,13 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasKey("HotelBookingId");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.HasIndex("HotelId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("HotelBookings");
+                    b.ToTable("HotelBookings", "Identity");
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.HotelReview", b =>
@@ -411,7 +496,7 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasIndex("HotelId");
 
-                    b.ToTable("HotelReviews");
+                    b.ToTable("HotelReviews", "Identity");
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Models.User", b =>
@@ -440,7 +525,7 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", "Identity");
 
                     b.HasData(
                         new
@@ -477,7 +562,7 @@ namespace GBC_Travel_Group_90.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("Role", "Identity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -502,72 +587,7 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("RoleClaims", "Identity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -592,7 +612,7 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
+                    b.ToTable("UserClaims", "Identity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -616,7 +636,7 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
+                    b.ToTable("UserLogins", "Identity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -631,7 +651,7 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
+                    b.ToTable("UserRoles", "Identity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -652,11 +672,15 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens", (string)null);
+                    b.ToTable("UserTokens", "Identity");
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.Booking", b =>
                 {
+                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.ApplicationUser", null)
+                        .WithMany("Bookings")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.CarRental", "CarRental")
                         .WithMany()
                         .HasForeignKey("CarRentalId");
@@ -706,6 +730,10 @@ namespace GBC_Travel_Group_90.Migrations
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.HotelBooking", b =>
                 {
+                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.ApplicationUser", null)
+                        .WithMany("HotelBookings")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.Hotel", "Hotel")
                         .WithMany("HotelBookings")
                         .HasForeignKey("HotelId")
@@ -745,7 +773,7 @@ namespace GBC_Travel_Group_90.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -754,7 +782,7 @@ namespace GBC_Travel_Group_90.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -769,7 +797,7 @@ namespace GBC_Travel_Group_90.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -778,11 +806,18 @@ namespace GBC_Travel_Group_90.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Bookings");
+
+                    b.Navigation("HotelBookings");
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.Flight", b =>

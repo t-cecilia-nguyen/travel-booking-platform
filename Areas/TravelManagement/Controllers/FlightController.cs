@@ -2,6 +2,7 @@
 using GBC_Travel_Group_90.Data;
 using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
