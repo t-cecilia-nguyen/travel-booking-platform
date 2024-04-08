@@ -19,7 +19,7 @@
 
 <body>
     <!-- Home background image -->
-    @{
+   @*  @{
         var currentPage = ViewContext.RouteData.Values["controller"].ToString() + "/" + ViewContext.RouteData.Values["action"].ToString();
 
         if (currentPage.Equals("Home/Index", StringComparison.OrdinalIgnoreCase))
@@ -34,7 +34,7 @@
                 }
             </style>
         }
-    }
+    } *@
 
     <!-- Header -->
     @Html.Partial("_Header")

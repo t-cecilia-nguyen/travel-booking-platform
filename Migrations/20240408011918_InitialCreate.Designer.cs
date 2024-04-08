@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GBC_Travel_Group_90.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240407232746_Init")]
-    partial class Init
+    [Migration("20240408011918_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,7 +87,6 @@ namespace GBC_Travel_Group_90.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("RentalCompany")
@@ -102,44 +101,6 @@ namespace GBC_Travel_Group_90.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("CarRentals");
-
-                    b.HasData(
-                        new
-                        {
-                            CarRentalId = 1,
-                            Available = true,
-                            CarModel = "Cool Car",
-                            DropOffDate = new DateTime(2024, 6, 19, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8084),
-                            MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 29, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8023),
-                            PickUpLocation = "123 str Toronto ON",
-                            Price = 350.00m,
-                            RentalCompany = "Big Company"
-                        },
-                        new
-                        {
-                            CarRentalId = 2,
-                            Available = true,
-                            CarModel = "SUV",
-                            DropOffDate = new DateTime(2024, 4, 14, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8089),
-                            MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 9, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8088),
-                            PickUpLocation = "456 Main St, Vancouver",
-                            Price = 500.00m,
-                            RentalCompany = "Rent-A-Car"
-                        },
-                        new
-                        {
-                            CarRentalId = 3,
-                            Available = true,
-                            CarModel = "Compact",
-                            DropOffDate = new DateTime(2024, 4, 13, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8093),
-                            MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 10, 19, 27, 45, 552, DateTimeKind.Local).AddTicks(8092),
-                            PickUpLocation = "789 Elm St, Calgary",
-                            Price = 250.00m,
-                            RentalCompany = "City Cars"
-                        });
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.CarRentalReview", b =>
@@ -209,79 +170,11 @@ namespace GBC_Travel_Group_90.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("FlightId");
 
                     b.ToTable("Flights");
-
-                    b.HasData(
-                        new
-                        {
-                            FlightId = 1,
-                            Airline = "Flair Airlines",
-                            ArrivalTime = new DateTime(2024, 4, 15, 9, 50, 0, 0, DateTimeKind.Unspecified),
-                            CurrentPassengers = 0,
-                            DepartureTime = new DateTime(2024, 4, 15, 6, 30, 0, 0, DateTimeKind.Unspecified),
-                            Destination = "Fort Lauderdale",
-                            FlightNumber = "F8 1602",
-                            MaxPassengers = 4,
-                            Origin = "Toronto",
-                            Price = 143.00m
-                        },
-                        new
-                        {
-                            FlightId = 2,
-                            Airline = "Air Canada",
-                            ArrivalTime = new DateTime(2024, 4, 16, 22, 15, 0, 0, DateTimeKind.Unspecified),
-                            CurrentPassengers = 0,
-                            DepartureTime = new DateTime(2024, 4, 15, 13, 30, 0, 0, DateTimeKind.Unspecified),
-                            Destination = "Hanoi",
-                            FlightNumber = "AC 9",
-                            MaxPassengers = 4,
-                            Origin = "Toronto",
-                            Price = 1693.00m
-                        },
-                        new
-                        {
-                            FlightId = 3,
-                            Airline = "Air Canada",
-                            ArrivalTime = new DateTime(2024, 4, 15, 8, 40, 0, 0, DateTimeKind.Unspecified),
-                            CurrentPassengers = 0,
-                            DepartureTime = new DateTime(2024, 4, 15, 7, 45, 0, 0, DateTimeKind.Unspecified),
-                            Destination = "Montreal",
-                            FlightNumber = "AC 7952",
-                            MaxPassengers = 2,
-                            Origin = "Toronto",
-                            Price = 434.00m
-                        },
-                        new
-                        {
-                            FlightId = 4,
-                            Airline = "Porter Airlines",
-                            ArrivalTime = new DateTime(2024, 4, 15, 15, 50, 0, 0, DateTimeKind.Unspecified),
-                            CurrentPassengers = 0,
-                            DepartureTime = new DateTime(2024, 4, 15, 7, 55, 0, 0, DateTimeKind.Unspecified),
-                            Destination = "Montreal",
-                            FlightNumber = "PD 372",
-                            MaxPassengers = 3,
-                            Origin = "Vancouver",
-                            Price = 359.00m
-                        },
-                        new
-                        {
-                            FlightId = 5,
-                            Airline = "Air Canada",
-                            ArrivalTime = new DateTime(2024, 4, 23, 11, 5, 0, 0, DateTimeKind.Unspecified),
-                            CurrentPassengers = 0,
-                            DepartureTime = new DateTime(2024, 4, 22, 20, 30, 0, 0, DateTimeKind.Unspecified),
-                            Destination = "Rome",
-                            FlightNumber = "AC 890",
-                            MaxPassengers = 4,
-                            Origin = "Toronto",
-                            Price = 866.00m
-                        });
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.Hotel", b =>
@@ -304,7 +197,6 @@ namespace GBC_Travel_Group_90.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("StarRate")
@@ -313,44 +205,6 @@ namespace GBC_Travel_Group_90.Migrations
                     b.HasKey("HotelId");
 
                     b.ToTable("Hotels");
-
-                    b.HasData(
-                        new
-                        {
-                            HotelId = 1,
-                            Location = "123 str Toronto ON",
-                            Name = "Marriot",
-                            NumberOfRooms = 50,
-                            Price = 350.00m,
-                            StarRate = 4
-                        },
-                        new
-                        {
-                            HotelId = 2,
-                            Location = "234 str Calgary AB",
-                            Name = "Holiday Inn",
-                            NumberOfRooms = 100,
-                            Price = 250.00m,
-                            StarRate = 3
-                        },
-                        new
-                        {
-                            HotelId = 3,
-                            Location = "999 str Vancouver BC",
-                            Name = "Happy Hotel",
-                            NumberOfRooms = 20,
-                            Price = 150.00m,
-                            StarRate = 3
-                        },
-                        new
-                        {
-                            HotelId = 4,
-                            Location = "012 str Norway",
-                            Name = "Angry Hotel",
-                            NumberOfRooms = 15,
-                            Price = 1000.00m,
-                            StarRate = 5
-                        });
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.HotelBooking", b =>
@@ -391,6 +245,32 @@ namespace GBC_Travel_Group_90.Migrations
                     b.ToTable("HotelBookings");
                 });
 
+            modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.HotelReview", b =>
+                {
+                    b.Property<int>("HotelReviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HotelReviewId"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HotelId")
+                        .HasColumnType("int");
+
+                    b.HasKey("HotelReviewId");
+
+                    b.HasIndex("HotelId");
+
+                    b.ToTable("HotelReviews");
+                });
+
             modelBuilder.Entity("GBC_Travel_Group_90.Models.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -418,16 +298,208 @@ namespace GBC_Travel_Group_90.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            Email = "admin@example.com",
-                            FirstName = "Admin",
-                            IsAdmin = true,
-                            LastName = "User"
-                        });
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.Booking", b =>
@@ -496,6 +568,68 @@ namespace GBC_Travel_Group_90.Migrations
                     b.Navigation("Hotel");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.HotelReview", b =>
+                {
+                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.Hotel", "Hotel")
+                        .WithMany()
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.Flight", b =>

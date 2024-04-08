@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Models;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace GBC_Travel_Group_90.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
@@ -20,7 +21,7 @@ namespace GBC_Travel_Group_90.Data
         public DbSet<HotelBooking> HotelBookings { get; set; }
         public DbSet<CarRentalReview> CarRentalReviews { get; set; }
         public DbSet<HotelReview> HotelReviews { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Flight>()
                 .Property(f => f.Price)
@@ -181,6 +182,6 @@ namespace GBC_Travel_Group_90.Data
                 }
             );
 
-        }
+        }*/
     }
 }
