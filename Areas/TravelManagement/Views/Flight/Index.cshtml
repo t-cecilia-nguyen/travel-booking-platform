@@ -3,6 +3,20 @@
 	ViewData["Title"] = "Flights";
 }
 
+<script>
+	$(document).ready(function () {
+		var page = window.location.pathname;
+
+		// Remove the 'active' class from all tabs
+		$('.nav-link').removeClass('active');
+		// Car tab active
+		$('#flights-tab').addClass('active');
+
+	});
+</script>
+
+@Html.Partial("~/Views/Shared/_SearchBar.cshtml")
+
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-4">

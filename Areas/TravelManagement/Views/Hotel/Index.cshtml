@@ -2,9 +2,22 @@
 
 @{
     ViewData["Title"] = "Hotel Home Page";
-  
- 
 }
+
+<script>
+    $(document).ready(function () {
+        var page = window.location.pathname;
+
+        // Remove the 'active' class from all tabs
+        $('.nav-link').removeClass('active');
+        // Car tab active
+        $('#hotels-tab').addClass('active');
+
+    });
+</script>
+
+@Html.Partial("~/Views/Shared/_SearchBar.cshtml")
+
 <div class="white-opaque">
 @if (ViewBag.AlreadyBookedMessage != null)
 {
@@ -13,9 +26,6 @@
     </div>
 }
 </div>
-
-<!-- The rest of your Details view content goes here -->
-@* <h2 class="white-opaque">Welcome To Hotel Page</h2> *@
 
 <div class="container">
     <div class="row justify-content-center">

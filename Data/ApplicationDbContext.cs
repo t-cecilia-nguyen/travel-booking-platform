@@ -21,8 +21,10 @@ namespace GBC_Travel_Group_90.Data
         public DbSet<HotelBooking> HotelBookings { get; set; }
         public DbSet<CarRentalReview> CarRentalReviews { get; set; }
         public DbSet<HotelReview> HotelReviews { get; set; }
-        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Flight>()
                 .Property(f => f.Price)
                 .HasPrecision(18, 2);
@@ -144,8 +146,8 @@ namespace GBC_Travel_Group_90.Data
                     CarRentalId = 1,
                     RentalCompany = "Big Company",
                     PickUpLocation = "123 str Toronto ON",
-                    PickUpDate = DateTime.Now.AddDays(22), 
-                    DropOffDate = DateTime.Now.AddDays(73), 
+                    PickUpDate = DateTime.Now.AddDays(22),
+                    DropOffDate = DateTime.Now.AddDays(73),
                     CarModel = "Cool Car",
                     Price = 350.00m
                 },
@@ -155,7 +157,7 @@ namespace GBC_Travel_Group_90.Data
                     RentalCompany = "Rent-A-Car",
                     PickUpLocation = "456 Main St, Vancouver",
                     PickUpDate = DateTime.Now.AddDays(2),
-                    DropOffDate = DateTime.Now.AddDays(7), 
+                    DropOffDate = DateTime.Now.AddDays(7),
                     CarModel = "SUV",
                     Price = 500.00m
                 },
@@ -182,6 +184,6 @@ namespace GBC_Travel_Group_90.Data
                 }
             );
 
-        }*/
+        }
     }
 }

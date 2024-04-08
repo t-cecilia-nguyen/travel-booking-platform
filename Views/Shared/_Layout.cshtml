@@ -6,6 +6,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@ViewData["Title"] - GBC_Travel_Group_90</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Stylesheets-->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -19,7 +20,7 @@
 
 <body>
     <!-- Home background image -->
-   @*  @{
+    @{
         var currentPage = ViewContext.RouteData.Values["controller"].ToString() + "/" + ViewContext.RouteData.Values["action"].ToString();
 
         if (currentPage.Equals("Home/Index", StringComparison.OrdinalIgnoreCase))
@@ -34,7 +35,7 @@
                 }
             </style>
         }
-    } *@
+    }
 
     <!-- Header -->
     @Html.Partial("_Header")
