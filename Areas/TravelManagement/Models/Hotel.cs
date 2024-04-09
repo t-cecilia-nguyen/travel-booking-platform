@@ -24,8 +24,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
         [Range(1, double.MaxValue)]
         public decimal Price { get; set; }
 
-        public virtual ICollection<Booking>? Bookings { get; set; }
-
         public List<HotelBooking>? HotelBookings { get; set; }
 
         // Check if the hotel is available for the specified date range

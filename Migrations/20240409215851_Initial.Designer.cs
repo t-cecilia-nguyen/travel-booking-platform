@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GBC_Travel_Group_90.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240409201603_Initial")]
+    [Migration("20240409215851_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -114,16 +114,11 @@ namespace GBC_Travel_Group_90.Migrations
                     b.Property<int?>("FlightId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("HotelId")
-                        .HasColumnType("int");
-
                     b.HasKey("BookingId");
 
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("FlightId");
-
-                    b.HasIndex("HotelId");
 
                     b.ToTable("Bookings", "Identity");
                 });
@@ -177,9 +172,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 1,
                             Available = true,
                             CarModel = "Cool Car",
-                            DropOffDate = new DateTime(2024, 6, 21, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5970),
-                            MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 5, 1, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5908),
+                            DropOffDate = new DateTime(2024, 6, 21, 17, 58, 49, 864, DateTimeKind.Local).AddTicks(4323),
+                            MaxPassengers = 4,
+                            PickUpDate = new DateTime(2024, 5, 1, 17, 58, 49, 864, DateTimeKind.Local).AddTicks(4262),
                             PickUpLocation = "123 str Toronto ON",
                             Price = 350.00m,
                             RentalCompany = "Big Company"
@@ -189,9 +184,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 2,
                             Available = true,
                             CarModel = "SUV",
-                            DropOffDate = new DateTime(2024, 4, 16, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5977),
-                            MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 11, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5975),
+                            DropOffDate = new DateTime(2024, 4, 16, 17, 58, 49, 864, DateTimeKind.Local).AddTicks(4330),
+                            MaxPassengers = 5,
+                            PickUpDate = new DateTime(2024, 4, 11, 17, 58, 49, 864, DateTimeKind.Local).AddTicks(4328),
                             PickUpLocation = "456 Main St, Vancouver",
                             Price = 500.00m,
                             RentalCompany = "Rent-A-Car"
@@ -201,9 +196,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 3,
                             Available = true,
                             CarModel = "Compact",
-                            DropOffDate = new DateTime(2024, 4, 15, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5981),
-                            MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 12, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5979),
+                            DropOffDate = new DateTime(2024, 4, 15, 17, 58, 49, 864, DateTimeKind.Local).AddTicks(4333),
+                            MaxPassengers = 4,
+                            PickUpDate = new DateTime(2024, 4, 12, 17, 58, 49, 864, DateTimeKind.Local).AddTicks(4332),
                             PickUpLocation = "789 Elm St, Calgary",
                             Price = 250.00m,
                             RentalCompany = "City Cars"
@@ -651,10 +646,6 @@ namespace GBC_Travel_Group_90.Migrations
                         .WithMany("Bookings")
                         .HasForeignKey("FlightId");
 
-                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.Hotel", null)
-                        .WithMany("Bookings")
-                        .HasForeignKey("HotelId");
-
                     b.Navigation("Flight");
 
                     b.Navigation("User");
@@ -781,8 +772,6 @@ namespace GBC_Travel_Group_90.Migrations
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.Hotel", b =>
                 {
-                    b.Navigation("Bookings");
-
                     b.Navigation("HotelBookings");
                 });
 #pragma warning restore 612, 618

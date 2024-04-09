@@ -199,8 +199,7 @@ namespace GBC_Travel_Group_90.Migrations
                     BookingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    FlightId = table.Column<int>(type: "int", nullable: true),
-                    HotelId = table.Column<int>(type: "int", nullable: true)
+                    FlightId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -211,12 +210,6 @@ namespace GBC_Travel_Group_90.Migrations
                         principalSchema: "Identity",
                         principalTable: "Flights",
                         principalColumn: "FlightId");
-                    table.ForeignKey(
-                        name: "FK_Bookings_Hotels_HotelId",
-                        column: x => x.HotelId,
-                        principalSchema: "Identity",
-                        principalTable: "Hotels",
-                        principalColumn: "HotelId");
                     table.ForeignKey(
                         name: "FK_Bookings_User_ApplicationUserId",
                         column: x => x.ApplicationUserId,
@@ -385,9 +378,9 @@ namespace GBC_Travel_Group_90.Migrations
                 columns: new[] { "CarRentalId", "ApplicationUserId", "Available", "CarModel", "DropOffDate", "MaxPassengers", "PickUpDate", "PickUpLocation", "Price", "RentalCompany" },
                 values: new object[,]
                 {
-                    { 1, null, true, "Cool Car", new DateTime(2024, 6, 21, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5970), 0, new DateTime(2024, 5, 1, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5908), "123 str Toronto ON", 350.00m, "Big Company" },
-                    { 2, null, true, "SUV", new DateTime(2024, 4, 16, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5977), 0, new DateTime(2024, 4, 11, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5975), "456 Main St, Vancouver", 500.00m, "Rent-A-Car" },
-                    { 3, null, true, "Compact", new DateTime(2024, 4, 15, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5981), 0, new DateTime(2024, 4, 12, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5979), "789 Elm St, Calgary", 250.00m, "City Cars" }
+                    { 1, null, true, "Cool Car", new DateTime(2024, 6, 21, 17, 58, 49, 864, DateTimeKind.Local).AddTicks(4323), 4, new DateTime(2024, 5, 1, 17, 58, 49, 864, DateTimeKind.Local).AddTicks(4262), "123 str Toronto ON", 350.00m, "Big Company" },
+                    { 2, null, true, "SUV", new DateTime(2024, 4, 16, 17, 58, 49, 864, DateTimeKind.Local).AddTicks(4330), 5, new DateTime(2024, 4, 11, 17, 58, 49, 864, DateTimeKind.Local).AddTicks(4328), "456 Main St, Vancouver", 500.00m, "Rent-A-Car" },
+                    { 3, null, true, "Compact", new DateTime(2024, 4, 15, 17, 58, 49, 864, DateTimeKind.Local).AddTicks(4333), 4, new DateTime(2024, 4, 12, 17, 58, 49, 864, DateTimeKind.Local).AddTicks(4332), "789 Elm St, Calgary", 250.00m, "City Cars" }
                 });
 
             migrationBuilder.InsertData(
@@ -426,12 +419,6 @@ namespace GBC_Travel_Group_90.Migrations
                 schema: "Identity",
                 table: "Bookings",
                 column: "FlightId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Bookings_HotelId",
-                schema: "Identity",
-                table: "Bookings",
-                column: "HotelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CarRentalReviews_CarRentalId",

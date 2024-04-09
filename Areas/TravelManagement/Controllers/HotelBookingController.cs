@@ -61,6 +61,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         private async Task<bool> IsRoomAvailable(int? hotelId, int numOfRoomsToBook)
         {
+            Console.WriteLine("----------------BEFORE NUM ROOMS---------------: " + numOfRoomsToBook);
+            Console.WriteLine("----------------BEFORE HOTEL ID---------------: " + hotelId);
             var hotel = await _context.Hotels.FindAsync(hotelId);
 
             if (hotel == null || numOfRoomsToBook <= 0)
@@ -70,7 +72,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             }
 
             var numOfRooms = hotel.NumberOfRooms;
-
+            Console.WriteLine("----------------AFTER NUM ROOMS----------------: " + numOfRooms);
             return numOfRooms >= numOfRoomsToBook;
         }
 
@@ -92,7 +94,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         // GET: HotelBookings/Create
-        public async Task<IActionResult> Create(int hotelId, bool isAdmin = false)
+        public async Task<IActionResult> Create(int hotelId)
         {
             var hotel = await _context.Hotels.FindAsync(hotelId);
             if (hotel == null) return NotFound("Hotel not found");
@@ -102,7 +104,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             ViewBag.HotelId = hotelId;
 
-
             return View(hotelBooking);
         }
 
@@ -111,6 +112,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("HotelBookingId, CheckInDate,CheckOutDate, NumOfRoomsToBook,HotelId")] HotelBooking hotelBooking)
         {
+            Console.WriteLine("-------------------- HotelBooking ID: " + hotelBooking.HotelId);
+
             string email;
             ApplicationUser user = null;
 
@@ -136,7 +139,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
                 // Check if the user already booked the hotel
                 //  user = await _context.HotelBookings.FirstOrDefaultAsync(u => u.ApplicationUserId == user.Id);
-
                 var existingBooking = await _context.HotelBookings.FirstOrDefaultAsync(b => b.ApplicationUserId == user.Id && b.HotelId == hotelBooking.HotelId);
 
                 if (existingBooking != null)

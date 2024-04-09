@@ -14,22 +14,22 @@
 
     <div class="card">
         <div class="card-header">
-            <h3>Flight Booking Information</h3>
+            <h3>Flight Information</h3>
         </div>
     </div>
 
     @if (Model.Bookings != null)
     {
-        foreach (var booking in Model.Bookings)
+        foreach (var flightBooking in Model.Bookings)
         {
             <div class="card mb-3">
                 <div class="card-body">
-                    <p>Flight Number: @booking.Flight?.FlightNumber</p>
-                    <p>Airline: @booking.Flight?.Airline</p>
-                    <p>Origin: @booking.Flight?.Origin</p>
-                    <p>Destination: @booking.Flight?.Destination</p>
-                    <p>Departure Time: @booking.Flight?.DepartureTime</p>
-                    <p>Arrival Time: @booking.Flight?.ArrivalTime</p>
+                    <p>Flight Number: @flightBooking.Flight?.FlightNumber</p>
+                    <p>Airline: @flightBooking.Flight?.Airline</p>
+                    <p>Origin: @flightBooking.Flight?.Origin</p>
+                    <p>Destination: @flightBooking.Flight?.Destination</p>
+                    <p>Departure Time: @flightBooking.Flight?.DepartureTime</p>
+                    <p>Arrival Time: @flightBooking.Flight?.ArrivalTime</p>
                 </div>
             </div>
         }      
@@ -58,4 +58,39 @@
         }
     }
 
+    <div class="card">
+        <div class="card-header">
+            <h3>Hotel Information</h3>
+        </div>
+    </div>
+
+    @if (Model.HotelBookings != null)
+    {
+        foreach (var hotelBooking in Model.HotelBookings)
+        {
+            <div class="row" style="margin-top: 0">
+                <div class="col-md-12">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="card-title">Hotel Information</h5>
+                                    <p>Hotel: @hotelBooking.Hotel?.Name</p>
+                                    <p>Location: @hotelBooking.Hotel?.Location</p>
+                                    <p>Price: @hotelBooking.Hotel?.Price</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="card-title">Booking Information</h5>
+                                    <p>Booked On: @hotelBooking.BookingDate</p>
+                                    <p>Check In Date: @hotelBooking.CheckInDate</p>
+                                    <p>Check Out Date: @hotelBooking.CheckOutDate</p>
+                                    <p>Number of Rooms: @hotelBooking.NumOfRoomsToBook</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
 </div>
