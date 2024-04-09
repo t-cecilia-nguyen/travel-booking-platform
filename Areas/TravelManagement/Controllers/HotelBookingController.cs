@@ -117,34 +117,25 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             // If User is signed in
             if (User.Identity.IsAuthenticated)
             {
-                user = await _userManager.GetUserAsync(User);
-                email = user.Email;
+                user = await _userManager.GetUserAsync(User);                
 
-            }
-
-            // If User is not signed in
-            if (user == null)
+            } else
             {
-                return View("NotSignedInOrRegistered");
+                // If User is not signed in
+                if (user == null)
+                {
+                    return View("NotSignedInOrRegistered");
+                }
             }
 
+            email = user.Email;
 
             if (ModelState.IsValid)
             {
-                // Check if the user already booked the hotel
-                /*user = await _context.HotelBookings.FirstOrDefaultAsync(u => u.ApplicationUserId == user.Id);
 
-                if (user == null)
-                {
-                    user = new ApplicationUser
-                    {
-                        Email = userEmail,
-                        FirstName = "Guest",
-                        LastName = "Guest"
-                    };
-                    await _context.Users.AddAsync(user);
-                    await _context.SaveChangesAsync();
-                }*/
+
+                // Check if the user already booked the hotel
+                //  user = await _context.HotelBookings.FirstOrDefaultAsync(u => u.ApplicationUserId == user.Id);
 
                 var existingBooking = await _context.HotelBookings.FirstOrDefaultAsync(b => b.ApplicationUserId == user.Id && b.HotelId == hotelBooking.HotelId);
 

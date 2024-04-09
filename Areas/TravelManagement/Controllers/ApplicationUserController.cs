@@ -28,6 +28,17 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                                     .Where(b => b.ApplicationUserId == user.Id)
                                     .Include(b => b.Flight)
                                     .ToListAsync();
+
+            user.CarSuccesses = await _db.CarSuccess
+                                    .Where(cs => cs.ApplicationUserId == user.Id)
+                                    .Include(cs => cs.CarRental)
+                                    .ToListAsync();
+
+            user.HotelBookings = await _db.HotelBookings
+                                    .Where(hb => hb.ApplicationUserId == user.Id)
+                                    .Include(hb => hb.Hotel)
+                                    .ToListAsync();
+
             return View(user);
         }
     }

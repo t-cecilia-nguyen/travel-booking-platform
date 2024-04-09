@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GBC_Travel_Group_90.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240409025851_Init")]
-    partial class Init
+    [Migration("20240409201603_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,9 +111,6 @@ namespace GBC_Travel_Group_90.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("CarRentalId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("FlightId")
                         .HasColumnType("int");
 
@@ -123,8 +120,6 @@ namespace GBC_Travel_Group_90.Migrations
                     b.HasKey("BookingId");
 
                     b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("CarRentalId");
 
                     b.HasIndex("FlightId");
 
@@ -142,7 +137,7 @@ namespace GBC_Travel_Group_90.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarRentalId"));
 
                     b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Available")
                         .HasColumnType("bit");
@@ -174,8 +169,6 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.HasKey("CarRentalId");
 
-                    b.HasIndex("ApplicationUserId");
-
                     b.ToTable("CarRentals", "Identity");
 
                     b.HasData(
@@ -184,9 +177,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 1,
                             Available = true,
                             CarModel = "Cool Car",
-                            DropOffDate = new DateTime(2024, 6, 20, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(181),
+                            DropOffDate = new DateTime(2024, 6, 21, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5970),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 30, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(126),
+                            PickUpDate = new DateTime(2024, 5, 1, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5908),
                             PickUpLocation = "123 str Toronto ON",
                             Price = 350.00m,
                             RentalCompany = "Big Company"
@@ -196,9 +189,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 2,
                             Available = true,
                             CarModel = "SUV",
-                            DropOffDate = new DateTime(2024, 4, 15, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(187),
+                            DropOffDate = new DateTime(2024, 4, 16, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5977),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 10, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(186),
+                            PickUpDate = new DateTime(2024, 4, 11, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5975),
                             PickUpLocation = "456 Main St, Vancouver",
                             Price = 500.00m,
                             RentalCompany = "Rent-A-Car"
@@ -208,9 +201,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 3,
                             Available = true,
                             CarModel = "Compact",
-                            DropOffDate = new DateTime(2024, 4, 14, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(191),
+                            DropOffDate = new DateTime(2024, 4, 15, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5981),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 11, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(190),
+                            PickUpDate = new DateTime(2024, 4, 12, 16, 15, 59, 182, DateTimeKind.Local).AddTicks(5979),
                             PickUpLocation = "789 Elm St, Calgary",
                             Price = 250.00m,
                             RentalCompany = "City Cars"
@@ -241,6 +234,29 @@ namespace GBC_Travel_Group_90.Migrations
                     b.HasIndex("CarRentalId");
 
                     b.ToTable("CarRentalReviews", "Identity");
+                });
+
+            modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.CarSuccess", b =>
+                {
+                    b.Property<int>("CarSuccessId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarSuccessId"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("CarRentalId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarSuccessId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("CarRentalId");
+
+                    b.ToTable("CarSuccess", "Identity");
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.Flight", b =>
@@ -631,32 +647,15 @@ namespace GBC_Travel_Group_90.Migrations
                         .WithMany("Bookings")
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.CarRental", "CarRental")
-                        .WithMany()
-                        .HasForeignKey("CarRentalId");
-
                     b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.Flight", "Flight")
                         .WithMany("Bookings")
                         .HasForeignKey("FlightId");
 
-                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.Hotel", "Hotel")
+                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.Hotel", null)
                         .WithMany("Bookings")
                         .HasForeignKey("HotelId");
 
-                    b.Navigation("CarRental");
-
                     b.Navigation("Flight");
-
-                    b.Navigation("Hotel");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.CarRental", b =>
-                {
-                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.ApplicationUser", "User")
-                        .WithMany("CarRentals")
-                        .HasForeignKey("ApplicationUserId");
 
                     b.Navigation("User");
                 });
@@ -670,6 +669,21 @@ namespace GBC_Travel_Group_90.Migrations
                         .IsRequired();
 
                     b.Navigation("CarRental");
+                });
+
+            modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.CarSuccess", b =>
+                {
+                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.ApplicationUser", "User")
+                        .WithMany("CarSuccesses")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.CarRental", "CarRental")
+                        .WithMany()
+                        .HasForeignKey("CarRentalId");
+
+                    b.Navigation("CarRental");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.HotelBooking", b =>
@@ -755,7 +769,7 @@ namespace GBC_Travel_Group_90.Migrations
                 {
                     b.Navigation("Bookings");
 
-                    b.Navigation("CarRentals");
+                    b.Navigation("CarSuccesses");
 
                     b.Navigation("HotelBookings");
                 });

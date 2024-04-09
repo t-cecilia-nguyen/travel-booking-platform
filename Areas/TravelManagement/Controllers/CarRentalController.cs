@@ -63,10 +63,15 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             var model = new CarSuccess
             {
                 User = user,
+                ApplicationUserId = userId,
+                CarRentalId = carRentalId,
                 CarRental = carRental
             };
 
+            await _db.CarSuccess.AddAsync(model);
+            await _db.SaveChangesAsync();
             return View(model);
+
         }
 
         [HttpPost("Create")]

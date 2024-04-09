@@ -20,6 +20,7 @@ namespace GBC_Travel_Group_90.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<HotelBooking> HotelBookings { get; set; }
+        public DbSet<CarSuccess> CarSuccess { get; set; }
         public DbSet<CarRentalReview> CarRentalReviews { get; set; }
         public DbSet<HotelReview> HotelReviews { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

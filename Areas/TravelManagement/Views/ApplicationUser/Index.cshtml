@@ -41,21 +41,21 @@
         </div>
     </div>
 
-    @* @if (Model.Bookings != null)
+    @if (Model.CarSuccesses != null)
     {
-        foreach (var carRental in Model.CarRentals)
+        foreach (var carRental in Model.CarSuccesses)
         {
             <div class="card mb-3">
                 <div class="card-body">
-                    <p>Rental Company: @carRental.RentalCompany</p>
-                    <p>Pick Up Location: @carRental.PickUpLocation</p>
-                    <p>Pick Up Date: @carRental.PickUpDate</p>
-                    <p>Drop Off Date: @carRental.DropOffDate</p>
-                    <p>Car Model: @carRental.CarModel</p>
-                    <p>Maximum Passengers: @carRental.MaxPassengers</p>
+                    <p>Rental Company: @carRental.CarRental.RentalCompany</p>
+                    <p>Pick Up Location: @carRental.CarRental.PickUpLocation</p>
+                    <p>Pick Up Date: @carRental.CarRental.PickUpDate</p>
+                    <p>Drop Off Date: @carRental.CarRental.DropOffDate</p>
+                    <p>Car Model: @carRental.CarRental.CarModel</p>
+                    <p>Maximum Passengers: @carRental.CarRental.MaxPassengers</p>
                 </div>
             </div>
         }
-    } *@
+    }
 
 </div>

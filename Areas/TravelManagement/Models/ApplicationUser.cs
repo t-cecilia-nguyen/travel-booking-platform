@@ -15,6 +15,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
 
         public List<HotelBooking>? HotelBookings { get; set; }
 
-        public List<CarRental>? CarRentals { get; set; }
+        public List<CarSuccess>? CarSuccesses { get; set; }
+
     }
 }
