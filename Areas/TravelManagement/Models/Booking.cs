@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using GBC_Travel_Group_90.Models;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
 {
@@ -8,9 +7,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
         [Key]
         public int BookingId { get; set; }
 
-        public int UserId { get; set; }
+        public string? ApplicationUserId { get; set; }
 
-        public User User { get; set; }
+        public ApplicationUser? User { get; set; }
 
         public int? FlightId { get; set; }
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GBC_Travel_Group_90.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240408154012_IdentityCoreInit")]
-    partial class IdentityCoreInit
+    [Migration("20240409025851_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -120,9 +120,6 @@ namespace GBC_Travel_Group_90.Migrations
                     b.Property<int?>("HotelId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("BookingId");
 
                     b.HasIndex("ApplicationUserId");
@@ -132,8 +129,6 @@ namespace GBC_Travel_Group_90.Migrations
                     b.HasIndex("FlightId");
 
                     b.HasIndex("HotelId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Bookings", "Identity");
                 });
@@ -145,6 +140,9 @@ namespace GBC_Travel_Group_90.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarRentalId"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Available")
                         .HasColumnType("bit");
@@ -174,12 +172,9 @@ namespace GBC_Travel_Group_90.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("CarRentalId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("CarRentals", "Identity");
 
@@ -189,9 +184,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 1,
                             Available = true,
                             CarModel = "Cool Car",
-                            DropOffDate = new DateTime(2024, 6, 20, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8982),
+                            DropOffDate = new DateTime(2024, 6, 20, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(181),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 30, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8921),
+                            PickUpDate = new DateTime(2024, 4, 30, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(126),
                             PickUpLocation = "123 str Toronto ON",
                             Price = 350.00m,
                             RentalCompany = "Big Company"
@@ -201,9 +196,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 2,
                             Available = true,
                             CarModel = "SUV",
-                            DropOffDate = new DateTime(2024, 4, 15, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8988),
+                            DropOffDate = new DateTime(2024, 4, 15, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(187),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 10, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8986),
+                            PickUpDate = new DateTime(2024, 4, 10, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(186),
                             PickUpLocation = "456 Main St, Vancouver",
                             Price = 500.00m,
                             RentalCompany = "Rent-A-Car"
@@ -213,9 +208,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 3,
                             Available = true,
                             CarModel = "Compact",
-                            DropOffDate = new DateTime(2024, 4, 14, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8992),
+                            DropOffDate = new DateTime(2024, 4, 14, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(191),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 11, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8990),
+                            PickUpDate = new DateTime(2024, 4, 11, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(190),
                             PickUpLocation = "789 Elm St, Calgary",
                             Price = 250.00m,
                             RentalCompany = "City Cars"
@@ -462,16 +457,11 @@ namespace GBC_Travel_Group_90.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("HotelBookingId");
 
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("HotelId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("HotelBookings", "Identity");
                 });
@@ -500,45 +490,6 @@ namespace GBC_Travel_Group_90.Migrations
                     b.HasIndex("HotelId");
 
                     b.ToTable("HotelReviews", "Identity");
-                });
-
-            modelBuilder.Entity("GBC_Travel_Group_90.Models.User", b =>
-                {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("Users", "Identity");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            Email = "admin@example.com",
-                            FirstName = "Admin",
-                            IsAdmin = true,
-                            LastName = "User"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -621,12 +572,10 @@ namespace GBC_Travel_Group_90.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -663,12 +612,10 @@ namespace GBC_Travel_Group_90.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -680,7 +627,7 @@ namespace GBC_Travel_Group_90.Migrations
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.Booking", b =>
                 {
-                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.ApplicationUser", null)
+                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.ApplicationUser", "User")
                         .WithMany("Bookings")
                         .HasForeignKey("ApplicationUserId");
 
@@ -696,12 +643,6 @@ namespace GBC_Travel_Group_90.Migrations
                         .WithMany("Bookings")
                         .HasForeignKey("HotelId");
 
-                    b.HasOne("GBC_Travel_Group_90.Models.User", "User")
-                        .WithMany("Bookings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("CarRental");
 
                     b.Navigation("Flight");
@@ -713,9 +654,9 @@ namespace GBC_Travel_Group_90.Migrations
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.CarRental", b =>
                 {
-                    b.HasOne("GBC_Travel_Group_90.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.ApplicationUser", "User")
+                        .WithMany("CarRentals")
+                        .HasForeignKey("ApplicationUserId");
 
                     b.Navigation("User");
                 });
@@ -733,19 +674,13 @@ namespace GBC_Travel_Group_90.Migrations
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.HotelBooking", b =>
                 {
-                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.ApplicationUser", null)
+                    b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.ApplicationUser", "User")
                         .WithMany("HotelBookings")
                         .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("GBC_Travel_Group_90.Areas.TravelManagement.Models.Hotel", "Hotel")
                         .WithMany("HotelBookings")
                         .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GBC_Travel_Group_90.Models.User", "User")
-                        .WithMany("HotelBookings")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -820,6 +755,8 @@ namespace GBC_Travel_Group_90.Migrations
                 {
                     b.Navigation("Bookings");
 
+                    b.Navigation("CarRentals");
+
                     b.Navigation("HotelBookings");
                 });
 
@@ -829,13 +766,6 @@ namespace GBC_Travel_Group_90.Migrations
                 });
 
             modelBuilder.Entity("GBC_Travel_Group_90.Areas.TravelManagement.Models.Hotel", b =>
-                {
-                    b.Navigation("Bookings");
-
-                    b.Navigation("HotelBookings");
-                });
-
-            modelBuilder.Entity("GBC_Travel_Group_90.Models.User", b =>
                 {
                     b.Navigation("Bookings");
 

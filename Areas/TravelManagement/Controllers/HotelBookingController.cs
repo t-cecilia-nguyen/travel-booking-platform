@@ -4,6 +4,9 @@ using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Models;
 using Microsoft.CodeAnalysis;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using System.Diagnostics;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
@@ -12,53 +15,31 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
     public class HotelBookingController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public HotelBookingController(ApplicationDbContext context)
+        public HotelBookingController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: HotelBookings
-        public async Task<IActionResult> Index(string email, bool isAdmin = false)
+        public async Task<IActionResult> Index(string email)
         {
-            ViewBag.IsAdmin = false;
-            if (isAdmin)
-            {
-                ViewBag.IsAdmin = true;
-            }
-
             var applicationDbContext = _context.HotelBookings.Include(h => h.Hotel).Include(h => h.User);
 
             if (email == null || string.IsNullOrEmpty(email))
             {
-                ViewBag.IsAdmin = false;
-
                 return View(await applicationDbContext.ToListAsync());
             }
 
-            var user = _context.Users.FirstOrDefault(u => u.Email == email && u.IsAdmin);
-            if (user != null)
-            {
-                Console.WriteLine("admin is true");
-                ViewBag.IsAdmin = true;
-            }
-
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
             return View(await applicationDbContext.ToListAsync());
-
-
-
         }
 
         // GET: HotelBookings/Details/5
-        public async Task<IActionResult> Details(int? id, bool isAdmin = false)
+        public async Task<IActionResult> Details(int? id)
         {
-            ViewBag.IsAdmin = false;
-
-            if (isAdmin)
-            {
-                ViewBag.IsAdmin = true;
-            }
-
             if (id == null)
             {
                 return NotFound();
@@ -68,6 +49,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 .Include(h => h.Hotel)
                 .Include(h => h.User)
                 .FirstOrDefaultAsync(m => m.HotelBookingId == id);
+
             if (hotelBooking == null)
             {
                 return NotFound();
@@ -99,6 +81,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             if (hotel != null && numOfRoomsToBook > 0)
             {
                 hotel.NumberOfRooms -= numOfRoomsToBook;
+                _context.Hotels.Update(hotel);
                 _context.SaveChanges();
             }
         }
@@ -111,12 +94,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         // GET: HotelBookings/Create
         public async Task<IActionResult> Create(int hotelId, bool isAdmin = false)
         {
-            ViewBag.IsAdmin = false;
-            if (isAdmin)
-            {
-                ViewBag.IsAdmin = true;
-            }
-
             var hotel = await _context.Hotels.FindAsync(hotelId);
             if (hotel == null) return NotFound("Hotel not found");
 
@@ -132,16 +109,34 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         // POST: HotelBookings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HotelBookingId, CheckInDate,CheckOutDate, NumOfRoomsToBook,HotelId")] HotelBooking hotelBooking, string userEmail)
+        public async Task<IActionResult> Create([Bind("HotelBookingId, CheckInDate,CheckOutDate, NumOfRoomsToBook,HotelId")] HotelBooking hotelBooking)
         {
+            string email;
+            ApplicationUser user = null;
+
+            // If User is signed in
+            if (User.Identity.IsAuthenticated)
+            {
+                user = await _userManager.GetUserAsync(User);
+                email = user.Email;
+
+            }
+
+            // If User is not signed in
+            if (user == null)
+            {
+                return View("NotSignedInOrRegistered");
+            }
+
+
             if (ModelState.IsValid)
             {
-
                 // Check if the user already booked the hotel
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+                /*user = await _context.HotelBookings.FirstOrDefaultAsync(u => u.ApplicationUserId == user.Id);
+
                 if (user == null)
                 {
-                    user = new User
+                    user = new ApplicationUser
                     {
                         Email = userEmail,
                         FirstName = "Guest",
@@ -149,14 +144,14 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                     };
                     await _context.Users.AddAsync(user);
                     await _context.SaveChangesAsync();
-                }
+                }*/
 
-                var existingBooking = await _context.HotelBookings.FirstOrDefaultAsync(b => b.UserId == user.UserId && b.HotelId == hotelBooking.HotelId);
+                var existingBooking = await _context.HotelBookings.FirstOrDefaultAsync(b => b.ApplicationUserId == user.Id && b.HotelId == hotelBooking.HotelId);
 
                 if (existingBooking != null)
                 {
                     TempData["AlreadyBooked"] = "You have already booked this hotel.";
-                    return RedirectToAction("Index", "Hotel", new { email = userEmail });
+                    return RedirectToAction("Index", "Hotel", new { email = user.Email });
                 }
 
                 // Check if CheckInDate is smaller than or equal to CheckOutDate
@@ -174,13 +169,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
 
                     // Continue booking 
-
-                    hotelBooking.UserId = user.UserId;
+                    hotelBooking.ApplicationUserId = user.Id;
                     hotelBooking.BookingDate = DateTime.Now;
                     hotelBooking.Status = Status.Confirmed;
                     await _context.HotelBookings.AddAsync(hotelBooking);
                     await _context.SaveChangesAsync();
-
                     return RedirectToAction(nameof(Details), new { id = hotelBooking.HotelBookingId });
                 }
                 else
@@ -189,7 +182,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                     ModelState.AddModelError(nameof(hotelBooking.NumOfRoomsToBook), "Not enough rooms available for booking.");
 
                     ViewBag.HotelId = hotelBooking.HotelId;
-                    ViewBag.UserId = hotelBooking.UserId;
+                    ViewBag.UserId = hotelBooking.ApplicationUserId;
 
                     return View(hotelBooking);
                 }
@@ -198,14 +191,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         // GET: HotelBookings/Edit/5
-        public async Task<IActionResult> Edit(int? id, bool isAdmin = false)
+        public async Task<IActionResult> Edit(int? id)
         {
-
-            if (isAdmin)
-            {
-                ViewBag.IsAdmin = true;
-            }
-
             if (id == null)
             {
                 return NotFound();
@@ -216,7 +203,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             {
                 return NotFound();
             }
-
 
             return View(hotelBooking);
         }

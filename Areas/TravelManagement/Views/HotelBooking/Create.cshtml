@@ -1,8 +1,7 @@
 ﻿@model HotelBooking
 
 @{
-    ViewData["Title"] = "Create Booking";
-    
+    ViewData["Title"] = "Create Booking"; 
 }
 
 <div class="card">
@@ -12,7 +11,8 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-4">
-                <form asp-action="Create" method="post">
+                <form asp-area="TravelManagement" asp-controller="HotelBooking" asp-action="Create" method="post">
+                    <input type="hidden" name="id" value="@Model.HotelId" />
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-group">
@@ -31,30 +31,14 @@
                         <input asp-for="CheckOutDate" type="datetime-local" class="form-control" />
                         <span asp-validation-for="CheckOutDate" class="text-danger"></span>
                     </div>
-            
-                    @Html.HiddenFor(model => model.HotelId)
+           
+                    <button type="submit" class="btn btn-secondary">Book Hotel</button>
+                    <a asp-controller="Hotel" asp-action="Index" class="btn btn-warning">Back to Hotels</a>
 
-
-                    <div class="m-10">
-                        <h3 >Enter Your Email Address</h3>
-               
-                            <label for="userEmail">Email:</label>
-                            <input type="email" id="userEmail" name="userEmail" required />
-                            @Html.AntiForgeryToken()
-              
-                    </div>
-
-                    <div class="form-group">
+                    @* <div class="form-group">
                     <input type="submit" value="Book Hotel" class="btn btn-secondary" />
-                    @if(ViewBag.IsAdmin)
-                    {
-                            <a asp-controller="Hotel" asp-action="Index" asp-route-isAdmin="true" class="btn btn-warning">Back to Hotels</a>
-                    }else
-                    {
                         <a asp-controller="Hotel" asp-action="Index" class="btn btn-warning">Back to Hotels</a>
-
-                    }
-                    </div>
+                    </div> *@
                 </form>
             </div>
         </div>

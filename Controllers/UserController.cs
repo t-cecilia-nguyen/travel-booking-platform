@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,10 +22,10 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
         // GET: Users
-        /*public async Task<IActionResult> Index()
+        *//*public async Task<IActionResult> Index()
         {
             return View(await _context.Users.ToListAsync());
-        }*/
+        }*//*
 
         [HttpGet("")]
         public IActionResult Index()
@@ -200,3 +200,4 @@ namespace GBC_Travel_Group_90.Controllers
         }
     }
 }
+*/

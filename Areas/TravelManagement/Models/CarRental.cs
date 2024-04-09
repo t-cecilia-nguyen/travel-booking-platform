@@ -11,12 +11,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
             Available = true;
         }
 
-
         public int CarRentalId { get; set; }
 
         [Required]
         public string? RentalCompany { get; set; }
-
 
         [Required]
         public string? PickUpLocation { get; set; }
@@ -39,10 +37,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
         [Range(1, double.MaxValue)]
         public decimal Price { get; set; }
 
-        public int? UserId { get; set; }
+        public string? ApplicationUserId { get; set; }
 
-        public User? User { get; set; }
+        public ApplicationUser? User { get; set; }
 
         public bool Available { get; set; }
+
     }
 }

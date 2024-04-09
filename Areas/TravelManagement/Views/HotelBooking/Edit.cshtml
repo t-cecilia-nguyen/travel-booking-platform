@@ -13,8 +13,7 @@
     <div class="row" class="white-opaque">
         <div class="col-md-4">
             <form asp-action="Edit" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>               
 
                 <div class="form-group">
                     <label asp-for="NumOfRoomsToBook" class="control-label"></label>
@@ -34,7 +33,7 @@
                 </div>
                 @Html.HiddenFor(model => model.HotelId)
                 @Html.HiddenFor(model => model.HotelBookingId)
-                @Html.HiddenFor(model => model.UserId)
+                @Html.HiddenFor(model => model.ApplicationUserId)
 
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-secondary" />

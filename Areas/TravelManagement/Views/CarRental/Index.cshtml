@@ -17,32 +17,8 @@
 
 @Html.Partial("~/Views/Shared/_SearchBar.cshtml")
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <p>Admin View</p>
-                </div>
-                <div class="card-body">
-                    <form method="get" asp-action="Index">
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" class="form-control" required />
-                        </div>
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-primary">View</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-@if (ViewBag.IsAdmin)
-{
     <a class="btn btn-primary" asp-area="" asp-controller="CarRental" asp-action="Create">Create New Car Rental</a>
-}
+
 <div class="card">
     <div class="card-body">
         @if (Model.Any())
@@ -69,14 +45,13 @@
                             <td>@carRental.DropOffDate</td>
                             <td>@carRental.CarModel</td>
                             <td>@carRental.Price</td>
-                            <td>                                
-                                <a asp-action="Book" asp-route-id="@carRental.CarRentalId" class="btn btn-primary">Book Now</a>
+                            <td>
+
+                                <a asp-action="GetBook" asp-route-id="@carRental.CarRentalId" class="btn btn-primary">Book Now</a>
                                 <a asp-action="Details" asp-route-id="@carRental.CarRentalId" class="btn btn-info">Details</a>
-                                @if (ViewBag.IsAdmin)
-                                {
                                     <a asp-action="Edit" asp-route-id="@carRental.CarRentalId" class="btn btn-secondary">Edit</a>
                                     <a asp-action="Delete" asp-route-id="@carRental.CarRentalId" class="btn btn-danger">Delete</a>
-                                }
+                                
                             </td>
                         </tr>
                     }

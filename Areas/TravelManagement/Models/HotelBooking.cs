@@ -28,8 +28,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
         public int NumOfRoomsToBook { get; set; }
 
         public Status Status { get; set; }
-        public int UserId { get; set; }
-        public User? User { get; set; }
+
+        public string? ApplicationUserId { get; set; }
+
+        public ApplicationUser? User { get; set; }
+
         public int HotelId { get; set; }
         public Hotel? Hotel { get; set; }
 

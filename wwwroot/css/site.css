@@ -12,11 +12,6 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-/*html {
-  position: relative;
-  min-height: 100%;
-}*/
-
 body {
     background-image: url('/pexels-dominika-roseclay-1252500.jpg');
     background-size: cover;
@@ -134,18 +129,36 @@ body {
         border-color: #D9B300 !important;
     }
 
-
-.hotelReviews {
-    /* Add a border, some padding, and a margin to each comment */
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+/*Nav Menu for Identity/..._ManageNav*/
+.btn-nav-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #475F77;
+    background-color: #C9DCE5;
 }
 
-.comment {
-    /* Add a border, some padding, and a margin to each comment */
+    .btn-nav-link:hover, .btn-nav-link:focus {
+        text-decoration: none;
+    }
+
+    .btn-nav-link.disabled {
+        color: #6c757d;
+    }
+
+.nav-pills .btn-nav-link {
+    border-radius: 0.25rem;
+}
+
+    .nav-pills .btn-nav-link.active,
+    .nav-pills .show > .btn-nav-link {
+        color: #475F77;
+        background-color: #d7edf7;
+        border: 1px solid #475F77;
+    }
+
+
+/*Hotel and Car Review*/
+.allReviews {
     border: 1px solid #ddd;
     padding: 15px;
     margin-bottom: 20px;

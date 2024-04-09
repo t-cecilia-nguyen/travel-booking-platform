@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GBC_Travel_Group_90.Migrations
 {
     /// <inheritdoc />
-    public partial class IdentityCoreInit : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -101,23 +101,6 @@ namespace GBC_Travel_Group_90.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                schema: "Identity",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "HotelReviews",
                 schema: "Identity",
                 columns: table => new
@@ -164,6 +147,67 @@ namespace GBC_Travel_Group_90.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CarRentals",
+                schema: "Identity",
+                columns: table => new
+                {
+                    CarRentalId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RentalCompany = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PickUpLocation = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PickUpDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DropOffDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CarModel = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MaxPassengers = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Available = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarRentals", x => x.CarRentalId);
+                    table.ForeignKey(
+                        name: "FK_CarRentals_User_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalSchema: "Identity",
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HotelBookings",
+                schema: "Identity",
+                columns: table => new
+                {
+                    HotelBookingId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CheckInDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NumOfRoomsToBook = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    HotelId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HotelBookings", x => x.HotelBookingId);
+                    table.ForeignKey(
+                        name: "FK_HotelBookings_Hotels_HotelId",
+                        column: x => x.HotelId,
+                        principalSchema: "Identity",
+                        principalTable: "Hotels",
+                        principalColumn: "HotelId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_HotelBookings_User_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalSchema: "Identity",
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserClaims",
                 schema: "Identity",
                 columns: table => new
@@ -191,8 +235,8 @@ namespace GBC_Travel_Group_90.Migrations
                 schema: "Identity",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -241,8 +285,8 @@ namespace GBC_Travel_Group_90.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -258,86 +302,16 @@ namespace GBC_Travel_Group_90.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CarRentals",
-                schema: "Identity",
-                columns: table => new
-                {
-                    CarRentalId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RentalCompany = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PickUpLocation = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PickUpDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DropOffDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CarModel = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MaxPassengers = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    Available = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CarRentals", x => x.CarRentalId);
-                    table.ForeignKey(
-                        name: "FK_CarRentals_Users_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "Identity",
-                        principalTable: "Users",
-                        principalColumn: "UserId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "HotelBookings",
-                schema: "Identity",
-                columns: table => new
-                {
-                    HotelBookingId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CheckInDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NumOfRoomsToBook = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    HotelId = table.Column<int>(type: "int", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HotelBookings", x => x.HotelBookingId);
-                    table.ForeignKey(
-                        name: "FK_HotelBookings_Hotels_HotelId",
-                        column: x => x.HotelId,
-                        principalSchema: "Identity",
-                        principalTable: "Hotels",
-                        principalColumn: "HotelId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_HotelBookings_User_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalSchema: "Identity",
-                        principalTable: "User",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_HotelBookings_Users_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "Identity",
-                        principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Bookings",
                 schema: "Identity",
                 columns: table => new
                 {
                     BookingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     FlightId = table.Column<int>(type: "int", nullable: true),
                     HotelId = table.Column<int>(type: "int", nullable: true),
-                    CarRentalId = table.Column<int>(type: "int", nullable: true),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    CarRentalId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -366,13 +340,6 @@ namespace GBC_Travel_Group_90.Migrations
                         principalSchema: "Identity",
                         principalTable: "User",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Bookings_Users_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "Identity",
-                        principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -401,12 +368,12 @@ namespace GBC_Travel_Group_90.Migrations
             migrationBuilder.InsertData(
                 schema: "Identity",
                 table: "CarRentals",
-                columns: new[] { "CarRentalId", "Available", "CarModel", "DropOffDate", "MaxPassengers", "PickUpDate", "PickUpLocation", "Price", "RentalCompany", "UserId" },
+                columns: new[] { "CarRentalId", "ApplicationUserId", "Available", "CarModel", "DropOffDate", "MaxPassengers", "PickUpDate", "PickUpLocation", "Price", "RentalCompany" },
                 values: new object[,]
                 {
-                    { 1, true, "Cool Car", new DateTime(2024, 6, 20, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8982), 0, new DateTime(2024, 4, 30, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8921), "123 str Toronto ON", 350.00m, "Big Company", null },
-                    { 2, true, "SUV", new DateTime(2024, 4, 15, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8988), 0, new DateTime(2024, 4, 10, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8986), "456 Main St, Vancouver", 500.00m, "Rent-A-Car", null },
-                    { 3, true, "Compact", new DateTime(2024, 4, 14, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8992), 0, new DateTime(2024, 4, 11, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8990), "789 Elm St, Calgary", 250.00m, "City Cars", null }
+                    { 1, null, true, "Cool Car", new DateTime(2024, 6, 20, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(181), 0, new DateTime(2024, 4, 30, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(126), "123 str Toronto ON", 350.00m, "Big Company" },
+                    { 2, null, true, "SUV", new DateTime(2024, 4, 15, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(187), 0, new DateTime(2024, 4, 10, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(186), "456 Main St, Vancouver", 500.00m, "Rent-A-Car" },
+                    { 3, null, true, "Compact", new DateTime(2024, 4, 14, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(191), 0, new DateTime(2024, 4, 11, 22, 58, 50, 696, DateTimeKind.Local).AddTicks(190), "789 Elm St, Calgary", 250.00m, "City Cars" }
                 });
 
             migrationBuilder.InsertData(
@@ -434,12 +401,6 @@ namespace GBC_Travel_Group_90.Migrations
                     { 4, "012 str Norway", "Angry Hotel", 15, 1000.00m, 5 }
                 });
 
-            migrationBuilder.InsertData(
-                schema: "Identity",
-                table: "Users",
-                columns: new[] { "UserId", "Email", "FirstName", "IsAdmin", "LastName" },
-                values: new object[] { 1, "admin@example.com", "Admin", true, "User" });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Bookings_ApplicationUserId",
                 schema: "Identity",
@@ -465,22 +426,16 @@ namespace GBC_Travel_Group_90.Migrations
                 column: "HotelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookings_UserId",
-                schema: "Identity",
-                table: "Bookings",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CarRentalReviews_CarRentalId",
                 schema: "Identity",
                 table: "CarRentalReviews",
                 column: "CarRentalId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CarRentals_UserId",
+                name: "IX_CarRentals_ApplicationUserId",
                 schema: "Identity",
                 table: "CarRentals",
-                column: "UserId");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HotelBookings_ApplicationUserId",
@@ -493,12 +448,6 @@ namespace GBC_Travel_Group_90.Migrations
                 schema: "Identity",
                 table: "HotelBookings",
                 column: "HotelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HotelBookings_UserId",
-                schema: "Identity",
-                table: "HotelBookings",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HotelReviews_HotelId",
@@ -610,10 +559,6 @@ namespace GBC_Travel_Group_90.Migrations
 
             migrationBuilder.DropTable(
                 name: "User",
-                schema: "Identity");
-
-            migrationBuilder.DropTable(
-                name: "Users",
                 schema: "Identity");
         }
     }

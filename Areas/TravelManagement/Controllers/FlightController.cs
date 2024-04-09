@@ -18,29 +18,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         [HttpGet("")]
-        public async Task<IActionResult> Index(string email)
+        public async Task<IActionResult> Index()
         {
-            ViewBag.IsAdmin = false;
-
-            // If not Admin - view available Flights
-            if (email == null || string.IsNullOrEmpty(email))
-            {
-                ViewBag.IsAdmin = false;
-                var flights = await _db.Flights.ToListAsync();
-                var availableFlights = flights.Where(f => f.CurrentPassengers < f.MaxPassengers).ToList();
-                return View(availableFlights);
-            }
-
-            // If Admin - view all Flights
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsAdmin);
-            if (user != null)
-            {
-                Console.WriteLine("admin is true");
-                ViewBag.IsAdmin = true;
-            }
-
-            var allflights = _db.Flights.ToList();
-            return View(allflights);
+            var flights = await _db.Flights.ToListAsync();
+            var availableFlights = flights.Where(f => f.CurrentPassengers < f.MaxPassengers).ToList();
+            return View(availableFlights);
         }
 
         [HttpGet("Create")]

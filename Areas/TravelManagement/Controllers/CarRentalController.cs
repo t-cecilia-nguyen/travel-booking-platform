@@ -3,43 +3,31 @@ using Microsoft.AspNetCore.Mvc;
 using GBC_Travel_Group_90.Models;
 using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
-
     [Area("TravelManagement")]
     [Route("[area]/[controller]/[action]")]
     public class CarRentalController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CarRentalController(ApplicationDbContext db)
+        public CarRentalController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
         {
             _db = db;
+            _userManager = userManager;
         }
 
         [HttpGet("")]
-        public async Task<IActionResult> Index(string email)
+        public async Task<IActionResult> Index()
         {
-
-
-            if (email == null || string.IsNullOrEmpty(email))
-            {
-                ViewBag.IsAdmin = false;
-                return View(await _db.CarRentals.ToListAsync());
-            }
-
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsAdmin);
-            if (user != null)
-            {
-                Console.WriteLine("admin is true");
-                ViewBag.IsAdmin = true;
-            }
-
-            return View(await _db.CarRentals.ToListAsync());
+            var cars = await _db.CarRentals.ToListAsync();
+            return View(cars);
         }
-
 
         [HttpGet("Details/{id:int}")]
         public async Task<IActionResult> Details(int id)
@@ -53,19 +41,17 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(carRental);
         }
 
-
-
         [HttpGet("Create")]
         public IActionResult Create()
         {
-
             return View();
         }
 
-
-        [HttpGet("Success/{carRentalId:int}/{userId:int}")]
-        public async Task<IActionResult> Success(int carRentalId, int userId)
+        [HttpGet("Success/{carRentalId:int}")]
+        public async Task<IActionResult> Success(int carRentalId)
         {
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _db.Users.FindAsync(userId);
             var carRental = await _db.CarRentals.FindAsync(carRentalId);
 
@@ -83,8 +69,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(model);
         }
 
-
-
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CarRental carRental)
@@ -98,10 +82,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(carRental);
         }
 
-
-
-        [HttpGet("Book/{id:int}")]
-        public async Task<IActionResult> Book(int id)
+        [HttpGet("GetBook/{id:int}")]
+        public async Task<IActionResult> GetBook(int id)
         {
             var carRental = await _db.CarRentals.FindAsync(id);
 
@@ -110,15 +92,12 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 return NotFound();
             }
 
-            return View(carRental);
+            return View("Book", carRental);
         }
 
-
-
-
-        [HttpPost("Book/{id:int}")]
+        [HttpPost("Book")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Book(int id, string userEmail)
+        public async Task<IActionResult> Book(int id)
         {
 
             var carRental = await _db.CarRentals.FindAsync(id);
@@ -128,30 +107,32 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 return NotFound(); // Car rental not found, return Not Found status
             }
 
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+            string email;
+            ApplicationUser user = null;
 
-            if (user == null)
+            // Check if User is signed in
+            if (User.Identity.IsAuthenticated)
             {
-                user = new User
+                user = await _userManager.GetUserAsync(User);
+            } 
+            else
+            {
+                // If User is not signed in
+                if (user == null)
                 {
-                    Email = userEmail,
-                    FirstName = "Guest",
-                    LastName = "Guest"
-                };
-                await _db.Users.AddAsync(user);
-                await _db.SaveChangesAsync();
+                    return View("~/Areas/TravelManagement/Views/Booking/NotSignedInOrRegistered.cshtml");
+                }
             }
 
-            ViewBag.User = user;
-
+            email = user.Email;
             ViewBag.CarRental = carRental;
 
             carRental.Available = false;
-            carRental.UserId = user.UserId;
+            carRental.ApplicationUserId = user.Id;
             await _db.SaveChangesAsync();
 
 
-            return RedirectToAction("Success", new { carRentalId = carRental.CarRentalId, userId = user.UserId });
+            return RedirectToAction("Success", new { carRentalId = carRental.CarRentalId, userId = user.Id });
         }
 
 
@@ -221,8 +202,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(carRental);
         }
 
-
-
+        [HttpPost("DeleteConfirmed/{id:int}")]
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int carRentalId)

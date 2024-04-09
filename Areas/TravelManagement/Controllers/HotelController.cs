@@ -17,58 +17,25 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         // GET: Hotels
-        public async Task<IActionResult> Index(string email, bool isAdmin = false)
+        [HttpGet("")]
+        public async Task<IActionResult> Index()
         {
 
-            ViewBag.Email = email;
-
-
             var applicationDbContext = _context.Hotels;
-
-            //handle isAdmin request
-            ViewBag.IsAdmin = isAdmin;
-            if (isAdmin)
-            {
-                ViewBag.IsAdmin = true;
-                return View(await applicationDbContext.ToListAsync());
-            }
-
-
-            if (email == null || string.IsNullOrEmpty(email))
-            {
-                ViewBag.IsAdmin = false;
-                return View(await applicationDbContext.ToListAsync());
-            }
-
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsAdmin);
-            if (user != null)
-            {
-                Console.WriteLine("admin is true");
-
-                ViewBag.IsAdmin = true;
-            }
-
             return View(await applicationDbContext.ToListAsync());
-
-
         }
 
         // GET: Hotels/Details/5
-        public async Task<IActionResult> Details(int? id, bool isAdmin = false)
+        public async Task<IActionResult> Details(int? id)
         {
-            ViewBag.IsAdmin = false;
             if (id == null)
             {
                 return NotFound();
             }
 
-            if (isAdmin)
-            {
-                ViewBag.IsAdmin = true;
-            }
-
             var hotel = await _context.Hotels
                 .FirstOrDefaultAsync(m => m.HotelId == id);
+
             if (hotel == null)
             {
                 return NotFound();
@@ -81,15 +48,14 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
 
         // GET: Hotels/Create
-
+        [HttpGet("Create")]
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: Hotels/Create
-
-        [HttpPost]
+        [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Location,StarRate,NumberOfRooms,Price")] Hotel hotel)
         {
@@ -97,29 +63,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             {
                 await _context.AddAsync(hotel);
                 await _context.SaveChangesAsync();
-                //return isAdmin's View
-                return RedirectToAction(nameof(Index), new { isAdmin = true });
+                return RedirectToAction(nameof(Index));
             }
 
             return View(hotel);
         }
-
-        /*// GET: Hotels/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var hotel = await _context.Hotels.FindAsync(id);
-            if (hotel == null)
-            {
-                return NotFound();
-            }
-            return View(hotel);
-        }*/
-
 
         [HttpGet("Edit/{id:int}")]
         public async Task<IActionResult> Edit(int? id)
@@ -161,7 +109,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                     {
                         throw;
                     }
-                }          
+                }
                 return RedirectToAction(nameof(Index));
             }
 
@@ -169,6 +117,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         // GET: Hotels/Delete/5
+        [HttpGet("Delete")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -187,6 +136,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         // POST: Hotels/Delete/5
+        [HttpPost("DeleteConfirmed/{id:int}")]
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -198,7 +148,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return NotFound();            
+            return NotFound();
         }
 
         private async Task<bool> HotelExists(int id)

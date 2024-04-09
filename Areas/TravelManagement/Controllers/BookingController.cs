@@ -1,8 +1,11 @@
 ﻿using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using GBC_Travel_Group_90.Data;
-using GBC_Travel_Group_90.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using static System.Net.Mime.MediaTypeNames;
+using System.Text.RegularExpressions;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
@@ -11,14 +14,16 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
     public class BookingController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public BookingController(ApplicationDbContext db)
+        public BookingController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
         {
             _db = db;
+            _userManager = userManager;
         }
 
-        [HttpGet("BookFlight/{id:int}")]
-        public async Task<IActionResult> BookFlight(int id)
+        [HttpGet("GetBookFlight/{id:int}")]
+        public async Task<IActionResult> GetBookFlight(int id)
         {
             var flight = await _db.Flights.FindAsync(id);
 
@@ -27,11 +32,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 return NotFound();
             }
 
-            return View(flight);
+            return View("BookFlight", flight);
         }
 
-        [HttpPost("BookFlight/{id:int}")]
-        public async Task<IActionResult> BookFlight(string email, int id)
+        [HttpPost("PostBookFlight")]
+        public async Task<IActionResult> PostBookFlight(int id)
         {
 
             var flight = await _db.Flights.FirstOrDefaultAsync(f => f.FlightId == id);
@@ -41,22 +46,27 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 return NotFound();
             }
 
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
+            string email;
+            ApplicationUser user = null;
 
-            if (user == null)
+            // If User is signed in
+            if (User.Identity.IsAuthenticated)
             {
-                user = new User
+                user = await _userManager.GetUserAsync(User);
+            }
+            else
+            {
+                // If User is not signed in
+                if (user == null)
                 {
-                    Email = email,
-                    FirstName = "Guest",
-                    LastName = "Guest"
-                };
-                await _db.Users.AddAsync(user);
-                await _db.SaveChangesAsync();
+                    return View("NotSignedInOrRegistered");
+                }
+               
             }
 
+            email = user.Email;
             // Check if the user already booked flight
-            var existingBooking = await _db.Bookings.FirstOrDefaultAsync(b => b.UserId == user.UserId && b.FlightId == id);
+            var existingBooking = await _db.Bookings.FirstOrDefaultAsync(b => b.ApplicationUserId == user.Id && b.FlightId == id);
 
             if (existingBooking != null)
             {
@@ -66,7 +76,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             var booking = new Booking
             {
                 User = user,
-                UserId = user.UserId,
+                ApplicationUserId = user.Id,
                 FlightId = id,
                 Flight = flight
             };

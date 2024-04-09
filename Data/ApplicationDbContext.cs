@@ -17,7 +17,7 @@ namespace GBC_Travel_Group_90.Data
         public DbSet<Flight> Flights { get; set; }
         public DbSet<CarRental> CarRentals { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<HotelBooking> HotelBookings { get; set; }
         public DbSet<CarRentalReview> CarRentalReviews { get; set; }
@@ -173,7 +173,7 @@ namespace GBC_Travel_Group_90.Data
                     Price = 250.00m
                 });
 
-            // Seed User data
+            /*// Seed User data
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
@@ -183,7 +183,7 @@ namespace GBC_Travel_Group_90.Data
                     Email = "admin@example.com",
                     IsAdmin = true
                 }
-            );
+            );*/
 
             modelBuilder.HasDefaultSchema("Identity");
 

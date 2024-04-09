@@ -1,0 +1,61 @@
+﻿@model ApplicationUser
+
+<div class="container">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3>User Information</h3>
+        </div>
+        <div class="card-body">
+            <p>Email: @Model.Email</p>
+            <p>First Name: @Model.FirstName</p>
+            <p>Last Name: @Model.LastName</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Flight Booking Information</h3>
+        </div>
+    </div>
+
+    @if (Model.Bookings != null)
+    {
+        foreach (var booking in Model.Bookings)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p>Flight Number: @booking.Flight?.FlightNumber</p>
+                    <p>Airline: @booking.Flight?.Airline</p>
+                    <p>Origin: @booking.Flight?.Origin</p>
+                    <p>Destination: @booking.Flight?.Destination</p>
+                    <p>Departure Time: @booking.Flight?.DepartureTime</p>
+                    <p>Arrival Time: @booking.Flight?.ArrivalTime</p>
+                </div>
+            </div>
+        }      
+    }
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Car Rental Information</h3>
+        </div>
+    </div>
+
+    @if (Model.Bookings != null)
+    {
+        foreach (var carRental in Model.CarRentals)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p>Rental Company: @carRental.RentalCompany</p>
+                    <p>Pick Up Location: @carRental.PickUpLocation</p>
+                    <p>Pick Up Date: @carRental.PickUpDate</p>
+                    <p>Drop Off Date: @carRental.DropOffDate</p>
+                    <p>Car Model: @carRental.CarModel</p>
+                    <p>Maximum Passengers: @carRental.MaxPassengers</p>
+                </div>
+            </div>
+        }
+    }
+
+</div>
