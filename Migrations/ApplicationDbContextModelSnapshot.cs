@@ -186,9 +186,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 1,
                             Available = true,
                             CarModel = "Cool Car",
-                            DropOffDate = new DateTime(2024, 6, 20, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8982),
+                            DropOffDate = new DateTime(2024, 6, 21, 15, 21, 41, 521, DateTimeKind.Local).AddTicks(4931),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 30, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8921),
+                            PickUpDate = new DateTime(2024, 5, 1, 15, 21, 41, 521, DateTimeKind.Local).AddTicks(4884),
                             PickUpLocation = "123 str Toronto ON",
                             Price = 350.00m,
                             RentalCompany = "Big Company"
@@ -198,9 +198,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 2,
                             Available = true,
                             CarModel = "SUV",
-                            DropOffDate = new DateTime(2024, 4, 15, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8988),
+                            DropOffDate = new DateTime(2024, 4, 16, 15, 21, 41, 521, DateTimeKind.Local).AddTicks(4938),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 10, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8986),
+                            PickUpDate = new DateTime(2024, 4, 11, 15, 21, 41, 521, DateTimeKind.Local).AddTicks(4936),
                             PickUpLocation = "456 Main St, Vancouver",
                             Price = 500.00m,
                             RentalCompany = "Rent-A-Car"
@@ -210,9 +210,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 3,
                             Available = true,
                             CarModel = "Compact",
-                            DropOffDate = new DateTime(2024, 4, 14, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8992),
+                            DropOffDate = new DateTime(2024, 4, 15, 15, 21, 41, 521, DateTimeKind.Local).AddTicks(4941),
                             MaxPassengers = 0,
-                            PickUpDate = new DateTime(2024, 4, 11, 11, 40, 11, 253, DateTimeKind.Local).AddTicks(8990),
+                            PickUpDate = new DateTime(2024, 4, 12, 15, 21, 41, 521, DateTimeKind.Local).AddTicks(4940),
                             PickUpLocation = "789 Elm St, Calgary",
                             Price = 250.00m,
                             RentalCompany = "City Cars"
@@ -618,12 +618,10 @@ namespace GBC_Travel_Group_90.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -660,12 +658,10 @@ namespace GBC_Travel_Group_90.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");

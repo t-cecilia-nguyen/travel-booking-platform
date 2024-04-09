@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+using GBC_Travel_Group_90.Filters;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
@@ -206,8 +207,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return await _context.Hotels.AnyAsync(e => e.HotelId == id);
         }
 
-        [HttpGet("SearchHotel")]
-        public async Task<IActionResult> SearchHotel(string? name, string? location, int? starRate, DateTime? checkInDate, DateTime? checkOutDate, decimal? maxPrice)
+        [ServiceFilter(typeof(LoggingFilter))]
+        [HttpGet("Search")]
+        [Route("Search/{searchType}/{name?}/{location?}/{starRate?}/{maxPrice?}")]
+        public async Task<IActionResult> SearchHotel(string? searchType, string? name, string? location, int? starRate, decimal? maxPrice)
         {
 
             var hotelsQuery = _context.Hotels.AsQueryable();
@@ -231,23 +234,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 hotelsQuery = hotelsQuery.Where(h => h.StarRate == starRate);
             }
 
-            if (checkInDate.HasValue && checkOutDate.HasValue)
-            {
-                // Retrieve bookings for the specified date range only
-                var bookingsForDateRange = await _context.HotelBookings
-                    .Where(b => b.CheckInDate < checkOutDate && b.CheckOutDate > checkInDate)
-                    .ToListAsync();
-
-                // Filter the hotels based on availability
-                var availableHotelIds = await hotelsQuery
-                    .Where(h => h.IsAvailableForDates(checkInDate, checkOutDate, bookingsForDateRange))
-                    .Select(h => h.HotelId)
-                    .ToListAsync();
-
-                // Filter the hotelsQuery based on the availableHotelIds
-                hotelsQuery = hotelsQuery.Where(h => availableHotelIds.Contains(h.HotelId));
-            }
-
+            
             if (maxPrice.HasValue)
             {
 

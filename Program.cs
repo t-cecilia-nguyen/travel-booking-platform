@@ -4,8 +4,13 @@ using Microsoft.AspNetCore.Identity;
 using GBC_Travel_Group_90.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+using GBC_Travel_Group_90.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -20,6 +25,11 @@ builder.Services.AddRazorPages();
 
 // Ensures IEmailSender is injected, then an instance is provided
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
+
+
+
+//Register Filters
+builder.Services.AddScoped<LoggingFilter> ();
 
 var app = builder.Build();
 
@@ -49,5 +59,28 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+//Custom Route
+app.MapGet("/CustomRouteError", async context => {
+    await context.Response.WriteAsync("Error StatusCode and Message Here");
+}) ;
+
+//Dynamic Route
+app.Use(async (context, next) =>
+{
+    var path = context.Request.Path.Value;
+    //resolve path to content identifier
+    if (path.StartsWith("/TravelManagement/Flight", StringComparison.OrdinalIgnoreCase))
+    {
+        var slug = path.Substring("/TravelManagement/Flight".Length).Trim('/');
+        //resolve slug to article Id and set route values
+        context.Request.RouteValues["Controller"] = "Flights";
+        context.Request.RouteValues["action"] = "Details";
+        //context.Request.RouteValues["id"] = ResolveSlugToId(slug);
+
+    }
+    await next();
+});
 
 app.Run();

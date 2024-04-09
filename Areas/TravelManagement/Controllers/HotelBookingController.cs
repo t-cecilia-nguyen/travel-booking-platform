@@ -4,6 +4,7 @@ using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Models;
 using Microsoft.CodeAnalysis;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+using GBC_Travel_Group_90.Filters;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
@@ -108,6 +109,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return checkInDate <= checkOutDate;
         }
 
+        [ServiceFilter(typeof(LoggingFilter))]
         // GET: HotelBookings/Create
         public async Task<IActionResult> Create(int hotelId, bool isAdmin = false)
         {
@@ -128,7 +130,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             return View(hotelBooking);
         }
-
+        [ServiceFilter(typeof(LoggingFilter))]
         // POST: HotelBookings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]

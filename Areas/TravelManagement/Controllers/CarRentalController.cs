@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using GBC_Travel_Group_90.Models;
 using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+using GBC_Travel_Group_90.Filters;
 
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
@@ -115,7 +116,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
 
 
-
+        [ServiceFilter(typeof(LoggingFilter))]
         [HttpPost("Book/{id:int}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Book(int id, string userEmail)
@@ -238,8 +239,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
 
-
+        [ServiceFilter(typeof(LoggingFilter))]
         [HttpGet("Search")]
+        [Route("Search/{serachType?}/{RentalCompany?}/{CarModel?}/{PickUpDate?}/{DropoffDate?}")]
         public async Task<IActionResult> Search(string RentalCompany, string CarModel, DateTime? PickUpDate, DateTime? DropOffDate)
         {
             ViewBag.IsAdmin = false;

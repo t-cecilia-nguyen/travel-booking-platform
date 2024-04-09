@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\TravelManagement\Data\" />
+    <Folder Include="CustomMiddlewares\" />
   </ItemGroup>
 
 </Project>

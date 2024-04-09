@@ -1,5 +1,6 @@
 ﻿using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using GBC_Travel_Group_90.Data;
+using GBC_Travel_Group_90.Filters;
 using GBC_Travel_Group_90.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
     [Area("TravelManagement")]
     [Route("[area]/[controller]/[action]")]
+    [ServiceFilter(typeof(LoggingFilter))]
     public class BookingController : Controller
     {
         private readonly ApplicationDbContext _db;

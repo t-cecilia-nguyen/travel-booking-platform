@@ -3,6 +3,7 @@ using GBC_Travel_Group_90.Data;
 using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using Microsoft.AspNetCore.Authorization;
+using GBC_Travel_Group_90.Filters;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
@@ -150,8 +151,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return NotFound();
         }
 
+        [ServiceFilter(typeof(LoggingFilter))]
         [HttpGet("Search")]
-        public async Task<IActionResult> Search(string origin, string destination, DateTime? departureDate, DateTime? arrivalDate)
+        [Route("Search/{searchType?}/{origin?}/{destination?}/{departureDate?}/{arrivalDate?}")]
+        public async Task<IActionResult> Search(string? searchType, string origin, string destination, DateTime? departureDate, DateTime? arrivalDate)
         {
             ViewBag.IsAdmin = false;
 
