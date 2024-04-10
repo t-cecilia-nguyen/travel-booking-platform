@@ -16,7 +16,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             _db = context;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetCarRentalReviews(int carRentalId)
         {
@@ -27,7 +26,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             return Json(carRentalReviews);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> AddCarRentalReview([FromBody] CarRentalReview carRentalReview)

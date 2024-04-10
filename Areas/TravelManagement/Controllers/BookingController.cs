@@ -65,6 +65,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             }
 
             email = user.Email;
+
             // Check if the user already booked flight
             var existingBooking = await _db.Bookings.FirstOrDefaultAsync(b => b.ApplicationUserId == user.Id && b.FlightId == id);
 
@@ -85,7 +86,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             flight.CurrentPassengers++;
             await _db.SaveChangesAsync();
             return RedirectToAction("Success", new { id = booking.BookingId });
-
         }
 
         [HttpGet("SuccessBooking/{id:int}")]

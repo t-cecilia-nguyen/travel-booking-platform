@@ -61,8 +61,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         private async Task<bool> IsRoomAvailable(int? hotelId, int numOfRoomsToBook)
         {
-            Console.WriteLine("----------------BEFORE NUM ROOMS---------------: " + numOfRoomsToBook);
-            Console.WriteLine("----------------BEFORE HOTEL ID---------------: " + hotelId);
             var hotel = await _context.Hotels.FindAsync(hotelId);
 
             if (hotel == null || numOfRoomsToBook <= 0)
@@ -72,7 +70,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             }
 
             var numOfRooms = hotel.NumberOfRooms;
-            Console.WriteLine("----------------AFTER NUM ROOMS----------------: " + numOfRooms);
             return numOfRooms >= numOfRoomsToBook;
         }
 
@@ -112,8 +109,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("HotelBookingId, CheckInDate,CheckOutDate, NumOfRoomsToBook,HotelId")] HotelBooking hotelBooking)
         {
-            Console.WriteLine("-------------------- HotelBooking ID: " + hotelBooking.HotelId);
-
             string email;
             ApplicationUser user = null;
 
@@ -135,10 +130,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             if (ModelState.IsValid)
             {
-
-
                 // Check if the user already booked the hotel
-                //  user = await _context.HotelBookings.FirstOrDefaultAsync(u => u.ApplicationUserId == user.Id);
                 var existingBooking = await _context.HotelBookings.FirstOrDefaultAsync(b => b.ApplicationUserId == user.Id && b.HotelId == hotelBooking.HotelId);
 
                 if (existingBooking != null)
@@ -159,7 +151,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 {
                     // Update the NumberOfRooms property
                     UpdateNumberOfRooms(hotelBooking.HotelId, hotelBooking.NumOfRoomsToBook);
-
 
                     // Continue booking 
                     hotelBooking.ApplicationUserId = user.Id;
@@ -201,7 +192,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         // POST: HotelBookings/Edit/5
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("HotelBookingId, NumOfRoomsToBook, CheckInDate,CheckOutDate,UserId, HotelId")] HotelBooking hotelBooking)

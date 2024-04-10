@@ -14,12 +14,14 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> Home</a>
                 </li>
+
                 @if (SignInManager.IsSignedIn(User))
                 {
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="TravelManagement" asp-controller="ApplicationUser" asp-action="Index"><i class="fa-solid fa-circle-info"></i> Your Summary</a>
                 </li>
                 }
+
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="TravelManagement" asp-controller="Flight" asp-action="Index"><i class="fa-solid fa-plane"></i> Flights</a>
                 </li>

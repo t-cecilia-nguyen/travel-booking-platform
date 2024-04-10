@@ -153,8 +153,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(carRental);
         }
 
-
-
         [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CarRentalId, RentalCompany, PickUpLocation, PickUpDate, DropOffDate, CarModel, Price")] CarRental carRental)
@@ -194,7 +192,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return await _db.CarRentals.AnyAsync(e => e.CarRentalId == id);
         }
 
-
         [HttpGet("Delete/{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -221,8 +218,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             }
             return NotFound();
         }
-
-
 
         [HttpGet("Search")]
         public async Task<IActionResult> Search(string RentalCompany, string CarModel, DateTime? PickUpDate, DateTime? DropOffDate)
@@ -254,9 +249,5 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             return View("Index", car); // Reuse the Index view to display results
         }
-
-
-
-
     }
 }
