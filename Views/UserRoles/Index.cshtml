@@ -1,0 +1,22 @@
+﻿@using GBC_Travel_Group_90.Models.ViewModels
+@model List<UserRolesViewModel>
+
+@{
+    ViewData["Title"] = "User Role Manager";
+}
+
+<h1>User Roles</h1>
+@foreach (var user in Model)
+{
+    <div class="card mb-3">
+        <div class="card-header">
+            <h5>@user.FirstName @user.LastName</h5>
+        </div>
+        <div class="card-body">
+            <p><strong>Email:</strong> @user.Email</p>
+            <p><strong>Roles:</strong> @string.Join(", ", user.Roles.ToList())</p>
+            <a class="btn btn-primary" asp-controller="UserRoles" asp-action="Manage" asp-route-userId="@user.UserId">Manage Roles</a>
+        </div>
+    </div>
+}
+

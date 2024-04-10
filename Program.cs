@@ -5,6 +5,7 @@ using GBC_Travel_Group_90.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -29,9 +30,27 @@ if (!app.Environment.IsDevelopment())
 {
     //app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
-
     app.UseDeveloperExceptionPage();
 }
+
+using var scope = app.Services.CreateScope();
+var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
+
+try
+{
+    ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    await ContextSeed.SeedRolesAsync(userManager, roleManager);
+    await ContextSeed.SeedAdminAsync(userManager, roleManager);
+}
+catch (Exception ex)
+{
+    var logger = loggerFactory.CreateLogger<Program>();
+    logger.LogError(ex, "An error occurred seeding the Roles in the Database");
+}
+
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();

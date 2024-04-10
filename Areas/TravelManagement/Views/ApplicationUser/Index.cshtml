@@ -1,14 +1,36 @@
 ﻿@model ApplicationUser
 
+
 <div class="container">
-    <div class="card mb-3">
+    <div class="card">
         <div class="card-header">
             <h3>User Information</h3>
         </div>
-        <div class="card-body">
-            <p>Email: @Model.Email</p>
-            <p>First Name: @Model.FirstName</p>
-            <p>Last Name: @Model.LastName</p>
+    </div>
+
+    <div class="row" style="margin-top: 0">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">User Information</h5>
+                    <p>Email: @Model.Email</p>
+                    <p>First Name: @Model.FirstName</p>
+                    <p>Last Name: @Model.LastName</p>
+                    <p>Phone Number: @Model.PhoneNumber</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Profile Picture</h5>
+                    @if (Model.ProfilePicture != null)
+                    {
+                        <img style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px; margin-right: 2px;"
+                             src="data:image/*;base64,@(Convert.ToBase64String(Model.ProfilePicture))" />
+                    }
+                </div>
+            </div>
         </div>
     </div>
 

@@ -6,8 +6,6 @@ using System.Diagnostics;
 
 namespace GBC_Travel_Group_90.Controllers
 {
-
-
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -28,7 +26,5 @@ namespace GBC_Travel_Group_90.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-
     }
 }

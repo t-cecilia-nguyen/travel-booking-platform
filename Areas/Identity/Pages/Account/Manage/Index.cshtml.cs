@@ -155,6 +155,7 @@ namespace GBC_Travel_Group_90.Areas.Identity.Pages.Account.Manage
                 }
                 await _userManager.UpdateAsync(user);
             }
+
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
