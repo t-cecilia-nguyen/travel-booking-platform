@@ -129,8 +129,15 @@ namespace GBC_Travel_Group_90.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
+                if (Input.Role == "Admin" && Input.AdminPin != "1234")
+                {
+                    ModelState.AddModelError("", "Invalid Admin passcode.");
+                    return Page();
+                }
+
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using static System.Net.Mime.MediaTypeNames;
 using System.Text.RegularExpressions;
+using System.Runtime.CompilerServices;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
