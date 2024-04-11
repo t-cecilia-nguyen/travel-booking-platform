@@ -109,6 +109,13 @@ namespace GBC_Travel_Group_90.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Display(Name = "Role")]
+            public string Role { get; set; }
+
+            [Display(Name = "Admin PIN")]
+            public string AdminPin { get; set; }
         }
 
 
@@ -146,7 +153,24 @@ namespace GBC_Travel_Group_90.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    await _userManager.AddToRoleAsync(user, Enum.Roles.Traveler.ToString()); // Auto assign traveler
+                    /*await _userManager.AddToRoleAsync(user, Enum.Roles.Traveler.ToString()); // Auto assign traveler*/
+
+                    if (Input.Role == "Admin")
+                    {
+                        if (Input.AdminPin == "1234")
+                        {
+                            await _userManager.AddToRoleAsync(user, Input.Role); // Assign Admin
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Invalid Admin passcode.");
+                            return Page();
+                        }
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, Input.Role); // Assign Traveler
+                    }
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
