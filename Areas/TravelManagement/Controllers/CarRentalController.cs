@@ -4,6 +4,7 @@ using GBC_Travel_Group_90.Models;
 using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using GBC_Travel_Group_90.Filters;
+using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
 
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
@@ -120,41 +121,52 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [ServiceFilter(typeof(LoggingFilter))]
         [HttpPost("Book/{id:int}")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(LoggingFilter))]
         [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Book(int id, string userEmail)
         {
-
-            var carRental = await _db.CarRentals.FindAsync(id);
-
-            if (carRental == null)
+            try
             {
-                return NotFound(); // Car rental not found, return Not Found status
-            }
+                var carRental = await _db.CarRentals.FindAsync(id);
 
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
-
-            if (user == null)
-            {
-                user = new User
+                if (carRental == null)
                 {
-                    Email = userEmail,
-                    FirstName = "Guest",
-                    LastName = "Guest"
-                };
-                await _db.Users.AddAsync(user);
+                    return NotFound(); // Car rental not found, return Not Found status
+                }
+
+                var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+
+                if (user == null)
+                {
+                    user = new User
+                    {
+                        Email = userEmail,
+                        FirstName = "Guest",
+                        LastName = "Guest"
+                    };
+                    await _db.Users.AddAsync(user);
+                    await _db.SaveChangesAsync();
+                }
+
+                ViewBag.User = user;
+
+                ViewBag.CarRental = carRental;
+
+                carRental.Available = false;
+                carRental.UserId = user.UserId;
                 await _db.SaveChangesAsync();
+
+
+                return RedirectToAction("Success", new { carRentalId = carRental.CarRentalId, userId = user.UserId });
             }
-
-            ViewBag.User = user;
-
-            ViewBag.CarRental = carRental;
-
-            carRental.Available = false;
-            carRental.UserId = user.UserId;
-            await _db.SaveChangesAsync();
-
-
-            return RedirectToAction("Success", new { carRentalId = carRental.CarRentalId, userId = user.UserId });
+            catch (BookingValidatorException ex)
+            {
+                throw new BookingValidatorException("Booking validation failed.", ex);
+            }
+            catch (NoSuchUserException ex)
+            {
+                throw new NoSuchUserException("User not found.", ex);
+            }
         }
 
 

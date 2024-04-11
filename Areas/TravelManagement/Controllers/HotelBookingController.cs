@@ -5,6 +5,8 @@ using GBC_Travel_Group_90.Models;
 using Microsoft.CodeAnalysis;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using GBC_Travel_Group_90.Filters;
+using System.Linq.Expressions;
+using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
@@ -138,9 +140,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Create([Bind("HotelBookingId, CheckInDate,CheckOutDate, NumOfRoomsToBook,HotelId")] HotelBooking hotelBooking, string userEmail)
         {
-            if (ModelState.IsValid)
-            {
 
+            try
+            {
                 // Check if the user already booked the hotel
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
                 if (user == null)
@@ -197,8 +199,19 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
                     return View(hotelBooking);
                 }
+
+                return View(hotelBooking);
             }
-            return View(hotelBooking);
+            catch (BookingValidatorException ex)
+            {
+                throw new BookingValidatorException("Booking validation failed.", ex);
+            }
+            catch (NoSuchUserException ex)
+            {
+                throw new NoSuchUserException("User not found.", ex);
+            }
+
+
         }
 
         // GET: HotelBookings/Edit/5

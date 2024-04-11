@@ -8,6 +8,7 @@ using GBC_Travel_Group_90.Filters;
 using CGBC_Travel_Group_90.Services;
 using Serilog;
 using GBC_Travel_Group_90.CustomMiddlewares;
+using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,8 +47,7 @@ builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
 builder.Services.AddScoped<LoggingFilter>();
 
-
-
+builder.Services.AddScoped<ValidateModelFilter>();
 
 
 
@@ -87,7 +87,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
+    //app.UseExceptionHandler("/Error");
+    app.UseMiddleware<ErrorHandlingMiddleware>();
     app.UseStatusCodePagesWithReExecute("/Error/{0}");
 }
 else
@@ -115,7 +116,7 @@ app.UseSession();
 
 
 
-//<<<<   Using Custom Middleware   >>>>>>
+//<<<<   Using Custom Logging Middleware   >>>>>>
 
 
 app.UseLoggingMiddleware();

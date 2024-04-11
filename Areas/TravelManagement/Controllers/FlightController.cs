@@ -160,7 +160,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return NotFound();
         }
 
-        [ServiceFilter(typeof(LoggingFilter), Order =1)]
+        [ServiceFilter(typeof(LoggingFilter))]
         [HttpGet("Search")]
         [Route("Search/{searchType?}/{origin?}/{destination?}/{departureDate?}/{arrivalDate?}")]
         public async Task<IActionResult> Search(string? searchType, string origin, string destination, DateTime? departureDate, DateTime? arrivalDate)

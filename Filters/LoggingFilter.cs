@@ -1,6 +1,9 @@
 ﻿using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+using GBC_Travel_Group_90.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
 
@@ -10,10 +13,12 @@ namespace GBC_Travel_Group_90.Filters
     {
         private readonly ILogger<LoggingFilter> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
-        public LoggingFilter(ILogger<LoggingFilter> logger, UserManager<ApplicationUser> userManager)
+        private readonly ApplicationDbContext _context;
+        public LoggingFilter(ILogger<LoggingFilter> logger, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _logger = logger;
             _userManager = userManager;
+            _context = context;
         }
 
 
@@ -22,24 +27,253 @@ namespace GBC_Travel_Group_90.Filters
             var requestPath = context.HttpContext.Request.Path;
             _logger.LogInformation("---------Request on path: {requestPath} at {DateTime}", requestPath, DateTime.UtcNow);
 
-           
-            var routeData = context.RouteData.Values;
-            var searchParams = ExtractSearchParams(context.HttpContext.Request);
-            var bookingInfo = GetBookingDetails(context.HttpContext.Request);
+            var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
+            if (actionDescriptor != null) {
+                if(  actionDescriptor.ActionName == "Search" || actionDescriptor.ActionName == "SearchHotel")
+                {
+                    var routeData = context.RouteData.Values;
+                    var searchParams = ExtractSearchParams(context.HttpContext.Request);
 
-            if (LogSearchInfo( context, searchParams))
-            {
-                // Log search activities
-                LogSearchInfo(context,  searchParams);
-            }
-            if(LogBookingInfo(context, bookingInfo))
-            {
-                // Log Booking activities
-                LogBookingInfo(context, bookingInfo);
+
+                    if (LogSearchInfo(context, searchParams))
+                    {
+                        // Log search activities
+                        LogSearchInfo(context, searchParams);
+                    }
+
+
+                }
+
+                if (actionDescriptor.ActionName == "Book" || actionDescriptor.ActionName == "Success" || actionDescriptor.ActionName == "Create" || actionDescriptor.ActionName == "BookFlight")
+                {
+                    var bookingInfo = GetBookingDetails<Booking>(context.HttpContext);
+
+                    // Log Booking activities
+                    LogBookingInfo(context, bookingInfo);
+                }
             }
 
-               
+
         }
+
+
+
+
+        private bool LogBookingInfo<T>(ActionExecutingContext context, T bookingInfo)
+        {
+            var user = _userManager.GetUserAsync(context.HttpContext.User).Result;
+
+            if (bookingInfo != null)
+            {
+                string bookingDetails = GetBookingDetails<Booking>(context.HttpContext);
+
+                if (user != null)
+                {
+                    _logger.LogInformation("--------Request Booking: User {userId} Attempting To Book for: {bookingDetails}", user.Id, bookingDetails);
+                }
+                else
+                {
+                    _logger.LogInformation("--------Request Booking: Anonymous User  for: {bookingDetails}", bookingDetails);
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+
+
+        /*
+        private string GetBookingDetails<T>(HttpContext httpContext)
+        {
+            var request = httpContext.Request;
+            string bookingInfo;
+            T? bookingType = default;
+
+
+
+
+
+            var routeData = httpContext.GetRouteData();
+            if (routeData != null)
+            {
+                if (routeData.Values.TryGetValue("id", out object idValue))
+                {
+                    if (int.TryParse(idValue?.ToString(), out int id))
+                    {
+                        // Use the id variable here
+                        // For example, query your database with this id to get booking details
+                    }
+                }
+            }
+
+
+
+
+            // Extract controller name from the context
+            var controllerName = httpContext.GetRouteData().Values["controller"]?.ToString();
+
+            // Check if the request contains the booking ID parameter with different names based on the controller
+            if (controllerName == "Booking" && request.Query.ContainsKey("id"))
+            {
+                // Assign BookingType based on the controller
+                bookingType = (T)(object)new Booking();
+
+                if (int.TryParse(request.Query["id"], out int bookingId))
+                {
+                    bookingInfo = bookingInfo = RetriveBooking(bookingId, bookingType);
+
+                }
+                else
+                {
+                    bookingInfo = "Invalid booking ID format.";
+                }
+            }
+            else if (controllerName == "HotelBooking" && request.Query.ContainsKey("hotelId"))
+            {
+                // Assign BookingType based on the controller
+                bookingType = (T)(object)new HotelBooking();
+
+                if (int.TryParse(request.Query["hotelId"], out int bookingId))
+                {
+                    bookingInfo = bookingInfo = RetriveBooking(bookingId, bookingType);
+
+                }
+                else
+                {
+                    bookingInfo = "Invalid booking ID format.";
+                }
+            }
+            else if (controllerName == "CarRental" && request.Query.ContainsKey("id"))
+            {
+                // Assign BookingType based on the controller
+                bookingType = (T)(object)new CarSuccess();
+
+                if (int.TryParse(request.Query["id"], out int bookingId))
+                {
+                    bookingInfo = RetriveBooking(bookingId, bookingType);
+                }
+                else
+                {
+                    bookingInfo = "Invalid booking ID format.";
+                }
+            }
+            else
+            {
+                // Handle case when the controller or booking ID parameter is not present or unrecognized
+                bookingInfo = "Booking ID or Controller not found or unrecognized in the request.";
+            }
+
+            // Return the booking information as a string
+            return bookingInfo;
+        }
+        */
+
+
+
+
+
+        private string GetBookingDetails<T>(HttpContext httpContext)
+        {
+            var request = httpContext.Request;
+            string bookingInfo;
+            T? bookingType = default;
+
+            // Extract controller name from the context
+            var controllerName = httpContext.GetRouteData().Values["controller"]?.ToString();
+
+            // Extract the booking ID from route data based on the controller name
+            if (controllerName == "Booking" && httpContext.GetRouteData().Values.TryGetValue("id", out object bookingIdObj))
+            {
+                if (int.TryParse(bookingIdObj?.ToString(), out int bookingId))
+                {
+                    // Assign BookingType based on the controller
+                    bookingType = (T)(object)new Booking();
+
+                    bookingInfo = RetriveBooking(bookingId, bookingType);
+                }
+                else
+                {
+                    bookingInfo = "Invalid booking ID format.";
+                }
+            }
+            //else if (controllerName == "HotelBooking" && httpContext.GetRouteData().Values.TryGetValue("hotelId", out object hotelIdObj))
+            else if (controllerName == "HotelBooking" && httpContext.Request.Query.ContainsKey("hotelId"))
+               
+            {
+                if (int.TryParse(request.Query["hotelId"], out int bookingId))
+                {
+                     bookingInfo = RetriveBooking(bookingId, bookingType);
+
+                    bookingType = (T)(object)new HotelBooking();
+
+                }
+                else
+                {
+                    bookingInfo = "Invalid booking ID format.";
+                }
+            }
+            else if (controllerName == "CarRental" && httpContext.GetRouteData().Values.TryGetValue("id", out object carIdObj))
+             
+            {
+                if (int.TryParse(carIdObj?.ToString(), out int bookingId))
+                {
+                    // Assign BookingType based on the controller
+                    bookingType = (T)(object)new CarSuccess();
+
+                    bookingInfo = RetriveBooking(bookingId, bookingType);
+                }
+                else
+                {
+                    bookingInfo = "Invalid booking ID format.";
+                }
+            }
+            else
+            {
+                // Handle case when the controller or booking ID parameter is not present or unrecognized
+                bookingInfo = "Booking ID or Controller not found or unrecognized in the request.";
+            }
+
+            // Return the booking information as a string
+            return bookingInfo;
+        }
+
+
+        private string RetriveBooking<T>(int bookingId, T bookingType)
+        {
+
+            // You can customize this method based on the structure of your booking models
+            if (bookingType is HotelBooking)
+            {
+                var booking = bookingType as HotelBooking;
+                var hotel = booking?.Hotel;
+                return $"Hotel Name: {hotel?.Name}, ID: {booking?.HotelBookingId}, Number of Rooms: {booking?.NumOfRoomsToBook}, Booking Date: {booking?.BookingDate}";
+            }
+            else if (bookingType is Booking)
+            {
+                var booking = bookingType as Booking;
+                var flight = booking?.Flight;
+
+                return $"Flight Id: {booking?.FlightId}, Booking ID: {booking?.BookingId}, Ariline: {flight?.Airline}, Origin: {flight?.Origin}, Destination: {flight?.Destination}, Departure: {flight?.DepartureTime}, Arrival: {flight?.ArrivalTime}";
+
+            }
+            else if (bookingType is CarSuccess)
+            {
+                var booking = bookingType as CarSuccess;
+                var car = booking?.CarRental;
+
+                return $"Model: {car?.CarModel}, Booking ID: {booking?.Id}, Pick-up Date: {booking?.CarRental.PickUpDate}, Pick-up Loaction: {booking?.CarRental.PickUpLocation}";
+            }
+            else
+            {
+                return "Unknown Booking Details";
+            }
+        }
+
+
+
+
 
         private Dictionary<string, string> ExtractSearchParams(HttpRequest request)
         {
@@ -111,66 +345,6 @@ namespace GBC_Travel_Group_90.Filters
             }
             return false;
         }
-
-
-
-        private bool LogBookingInfo<T>(ActionExecutingContext context, T bookingInfo)
-        {
-            var user = _userManager.GetUserAsync(context.HttpContext.User).Result;
-
-            if (bookingInfo != null)
-            {
-                string bookingDetails = GetBookingDetails(bookingInfo);
-
-                if (user != null)
-                {
-                    _logger.LogInformation("--------Request Booking: User {userId} Attempting To Book for: {bookingDetails}", user.Id, bookingDetails);
-                }
-                else
-                {
-                    _logger.LogInformation("--------Request Booking: Anonymous User  for: {bookingDetails}", bookingDetails);
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private string GetBookingDetails<T>(T bookingInfo)
-        {
-            // You can customize this method based on the structure of your booking models
-            if (bookingInfo is HotelBooking)
-            {
-                var booking = bookingInfo as HotelBooking;
-                var hotel = booking?.Hotel;
-                return $"Hotel Name: {hotel?.Name}, ID: {booking?.HotelBookingId}, Number of Rooms: {booking?.NumOfRoomsToBook}, Booking Date: {booking?.BookingDate}";
-            }
-            else if (bookingInfo is Booking)
-            {
-                var booking = bookingInfo as Booking;
-                var flight = booking?.Flight;
-
-                return $"Flight Id: {booking?.FlightId}, Booking ID: {booking?.BookingId}, Ariline: {flight?.Airline}, Origin: {flight?.Origin}, Destination: {flight?.Destination}, Departure: {flight?.DepartureTime}, Arrival: {flight?.ArrivalTime}";
-               
-            }
-            else if (bookingInfo is CarSuccess)
-            {
-                var booking = bookingInfo as CarSuccess;
-                var car = booking?.CarRental;
-
-                return $"Model: {car?.CarModel}, Booking ID: {booking?.Id}, Pick-up Date: {booking?.CarRental.PickUpDate}, Pick-up Loaction: {booking?.CarRental.PickUpLocation}";
-            }
-            else
-            {
-                return "Unknown Booking Details";
-            }
-        }
-
-
-
-
-
 
 
 
