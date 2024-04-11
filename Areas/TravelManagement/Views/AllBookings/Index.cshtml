@@ -1,0 +1,104 @@
+﻿@model AllBookings
+
+<style>
+    .row {
+        margin-top: 0;
+    }
+</style>
+
+<div class="text-center">
+    <h2>All Bookings</h2>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>All Flight Bookings</h3>
+    </div>
+</div>
+    
+<div class="row">
+@foreach (var booking in Model.Bookings)
+{
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-body">
+                <p><strong>Flight Booking ID: </strong>@booking.BookingId</p>
+                <hr>
+                <p><strong>Full Name: </strong>@booking.User.FirstName @booking.User.LastName</p>
+                <p><strong>Phone Number: </strong>@booking.User.PhoneNumber</p>
+                <hr>
+                <p><strong>Flight ID: </strong>@booking.FlightId</p>
+                <p><strong>Flight Number: </strong>@booking.Flight.FlightNumber</p>
+                <p><strong>Airline: </strong>@booking.Flight.Airline</p>
+                <p><strong>Origin: </strong>@booking.Flight.Origin</p>
+                <p><strong>Destination: </strong>@booking.Flight.Destination</p>
+                <p><strong>Departure Time: </strong>@booking.Flight.DepartureTime</p>
+                <p><strong>Arrival Time: </strong>@booking.Flight.ArrivalTime</p>
+                <p><strong>Price: </strong>@booking.Flight.Price</p>
+                <p><strong>Passengers (Current/Max): </strong>@booking.Flight.CurrentPassengers/@booking.Flight.MaxPassengers</p>
+            </div>
+        </div>
+    </div>
+}
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>All Car Rental Bookings</h3>
+    </div>
+</div>
+
+<div class="row">
+@foreach (var carSuccess in Model.CarSuccesses)
+{
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-body">
+                <p><strong>Car Rental Booking ID: </strong>@carSuccess.CarSuccessId</p>
+                <hr>
+                <p><strong>Full Name: </strong>@carSuccess.User.FirstName @carSuccess.User.LastName</p>
+                <p><strong>Phone Number: </strong>@carSuccess.User.PhoneNumber</p>
+                <hr>
+                <p><strong>Car Rental ID: </strong>@carSuccess.CarRental.CarRentalId</p>
+                <p><strong>Rental Company: </strong>@carSuccess.CarRental.RentalCompany</p>
+                <p><strong>Pick Up Location: </strong>@carSuccess.CarRental.PickUpLocation</p>
+                <p><strong>Pick Up Date: </strong>@carSuccess.CarRental.PickUpDate</p>
+                <p><strong>Drop Off Date: </strong>@carSuccess.CarRental.DropOffDate</p>
+                <p><strong>Car Model: </strong>@carSuccess.CarRental.CarModel</p>
+                <p><strong>Max Passengers: </strong>@carSuccess.CarRental.MaxPassengers</p>
+                <p><strong>Price: </strong>@carSuccess.CarRental.Price</p>
+            </div>
+        </div>
+    </div>
+}
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>All Hotel Bookings</h3>
+    </div>
+</div>
+
+<div class="row">
+@foreach (var hotelBooking in Model.HotelBookings)
+{
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-body">
+                <p><strong>Hotel Booking ID: </strong>@hotelBooking.HotelBookingId</p>
+                <hr>
+                <p><strong>Full Name: </strong>@hotelBooking.User.FirstName @hotelBooking.User.LastName</p>
+                <p><strong>Phone Number: </strong>@hotelBooking.User.PhoneNumber</p>
+                <hr>
+                <p><strong>Booking Date: </strong>@hotelBooking.BookingDate</p>
+                <p><strong>Check In Date: </strong>@hotelBooking.CheckInDate</p>
+                <p><strong>Check Out Date: </strong>@hotelBooking.CheckOutDate</p>
+                <p><strong>Number of Rooms: </strong>@hotelBooking.NumOfRoomsToBook</p>
+                <p><strong>Hotel Name: </strong>@hotelBooking.Hotel.Name</p>
+                <p><strong>Location: </strong>@hotelBooking.Hotel.Location</p>
+                <p><strong>Price: </strong>@hotelBooking.Hotel.Price</p>
+            </div>
+        </div>
+    </div>
+}
+</div>
