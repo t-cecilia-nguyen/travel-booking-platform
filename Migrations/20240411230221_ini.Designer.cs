@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GBC_Travel_Group_90.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240411044133_Initial")]
-    partial class Initial
+    [Migration("20240411230221_ini")]
+    partial class ini
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -172,9 +172,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 1,
                             Available = true,
                             CarModel = "Cool Car",
-                            DropOffDate = new DateTime(2024, 6, 23, 0, 41, 32, 976, DateTimeKind.Local).AddTicks(6132),
+                            DropOffDate = new DateTime(2024, 6, 23, 19, 2, 20, 293, DateTimeKind.Local).AddTicks(7510),
                             MaxPassengers = 4,
-                            PickUpDate = new DateTime(2024, 5, 3, 0, 41, 32, 976, DateTimeKind.Local).AddTicks(6074),
+                            PickUpDate = new DateTime(2024, 5, 3, 19, 2, 20, 293, DateTimeKind.Local).AddTicks(7463),
                             PickUpLocation = "123 str Toronto ON",
                             Price = 350.00m,
                             RentalCompany = "Big Company"
@@ -184,9 +184,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 2,
                             Available = true,
                             CarModel = "SUV",
-                            DropOffDate = new DateTime(2024, 4, 18, 0, 41, 32, 976, DateTimeKind.Local).AddTicks(6138),
+                            DropOffDate = new DateTime(2024, 4, 18, 19, 2, 20, 293, DateTimeKind.Local).AddTicks(7516),
                             MaxPassengers = 5,
-                            PickUpDate = new DateTime(2024, 4, 13, 0, 41, 32, 976, DateTimeKind.Local).AddTicks(6136),
+                            PickUpDate = new DateTime(2024, 4, 13, 19, 2, 20, 293, DateTimeKind.Local).AddTicks(7515),
                             PickUpLocation = "456 Main St, Vancouver",
                             Price = 500.00m,
                             RentalCompany = "Rent-A-Car"
@@ -196,9 +196,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 3,
                             Available = true,
                             CarModel = "Compact",
-                            DropOffDate = new DateTime(2024, 4, 17, 0, 41, 32, 976, DateTimeKind.Local).AddTicks(6142),
+                            DropOffDate = new DateTime(2024, 4, 17, 19, 2, 20, 293, DateTimeKind.Local).AddTicks(7520),
                             MaxPassengers = 4,
-                            PickUpDate = new DateTime(2024, 4, 14, 0, 41, 32, 976, DateTimeKind.Local).AddTicks(6140),
+                            PickUpDate = new DateTime(2024, 4, 14, 19, 2, 20, 293, DateTimeKind.Local).AddTicks(7519),
                             PickUpLocation = "789 Elm St, Calgary",
                             Price = 250.00m,
                             RentalCompany = "City Cars"
