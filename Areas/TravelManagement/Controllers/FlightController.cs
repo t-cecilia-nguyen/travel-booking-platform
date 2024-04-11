@@ -8,7 +8,7 @@ using GBC_Travel_Group_90.Filters;
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
     [Area("TravelManagement")]
-    [Route("[area]/[controller]/[action]")]
+    [Route("[area]/[controller]")]
     public class FlightController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -52,6 +52,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Create(Flight flight)
         {
             if (ModelState.IsValid)
@@ -66,11 +67,15 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [HttpGet("Details/{id:int}")]
         public async Task<IActionResult> Details(int id)
         {
+            //TRIGGER AN ERROR
+            throw new Exception("Error in Details View");
+
             var flight = await _db.Flights.FirstOrDefaultAsync(p => p.FlightId == id);
 
             if (flight == null)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("Error", new { StatusCode = 404 });
             }
             return View(flight);
         }
@@ -82,13 +87,15 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             if (flight == null)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("Error", new { StatusCode = 404 });
             }
             return View(flight);
         }
 
         [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Edit(int id, [Bind("FlightId, FlightNumber, Airline, Origin, Destination, DepartureTime, ArrivalTime, Price, MaxPassengers")] Flight flight)
         {
             if (id != flight.FlightId)
@@ -107,7 +114,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 {
                     if (!await FlightExists(flight.FlightId))
                     {
-                        return NotFound();
+                        Response.StatusCode = 404;
+                        return View("Error", new { StatusCode = 404 });
                     }
                     else
                     {
@@ -131,6 +139,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             if (flight == null)
             {
+                Response.StatusCode = 404;
                 return NotFound();
             }
             return View(flight);
@@ -151,7 +160,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return NotFound();
         }
 
-        [ServiceFilter(typeof(LoggingFilter))]
+        [ServiceFilter(typeof(LoggingFilter), Order =1)]
         [HttpGet("Search")]
         [Route("Search/{searchType?}/{origin?}/{destination?}/{departureDate?}/{arrivalDate?}")]
         public async Task<IActionResult> Search(string? searchType, string origin, string destination, DateTime? departureDate, DateTime? arrivalDate)

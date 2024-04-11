@@ -31,7 +31,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             return View(flight);
         }
-
+        [ServiceFilter(typeof(ValidateModelFilter))]
         [HttpPost("BookFlight/{id:int}")]
         public async Task<IActionResult> BookFlight(string email, int id)
         {

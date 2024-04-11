@@ -5,6 +5,9 @@ using GBC_Travel_Group_90.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using GBC_Travel_Group_90.Filters;
+using CGBC_Travel_Group_90.Services;
+using Serilog;
+using GBC_Travel_Group_90.CustomMiddlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +23,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.S
     .AddDefaultUI()
     .AddDefaultTokenProviders();
 
-builder.Services.AddControllersWithViews();
+
 builder.Services.AddRazorPages();
 
 // Ensures IEmailSender is injected, then an instance is provided
@@ -28,20 +31,72 @@ builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
 
 
-//Register Filters
-builder.Services.AddScoped<LoggingFilter> ();
+
+
+
+
+
+
+
+
+//<<<<     >>>>>>
+
+
+//<<<<   Register Filters   >>>>>>
+
+builder.Services.AddScoped<LoggingFilter>();
+
+
+
+
+
+
+//Register global filters for all controllers, actions and razor pages here
+builder.Services.AddControllersWithViews();
+
+
+
+//Inilialize Serilog
+//configure Serilog to read from appsetting.json configuartion
+//result in calling Serilog() on the Host builder
+builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
+    loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration));
+
+//Register Serilog Service
+builder.Services.AddHttpContextAccessor();
+
+// Register Session Service
+builder.Services.AddScoped<ISessionService, SessionService>();
+builder.Services.AddSession();
+
+
+
+
+
+
+
+
+
+
 
 var app = builder.Build();
+
+
 
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    //app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-
+    app.UseExceptionHandler("/Error");
+    app.UseStatusCodePagesWithReExecute("/Error/{0}");
+}
+else
+{
     app.UseDeveloperExceptionPage();
 }
+
+app.UseHsts();
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
@@ -50,23 +105,25 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapRazorPages();
 
-app.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller:exists}/{action=Index}/{id?}");
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseSession();
 
 
-//Custom Route
-app.MapGet("/CustomRouteError", async context => {
-    await context.Response.WriteAsync("Error StatusCode and Message Here");
-}) ;
 
-//Dynamic Route
+
+
+
+
+
+//<<<<   Using Custom Middleware   >>>>>>
+
+
+app.UseLoggingMiddleware();
+
+
+
+// Dynamic Route
+/*
 app.Use(async (context, next) =>
 {
     var path = context.Request.Path.Value;
@@ -82,5 +139,42 @@ app.Use(async (context, next) =>
     }
     await next();
 });
+*/
+
+
+//app.UseEndpoints(endpoints =>)
+
+
+
+/*ERRORRRRRRRRRR
+//Custom Route
+//for each get request on /CustomRoute
+app.MapGet("/CustomRouteError", async context => {
+    await context.Response.WriteAsync("Error StatusCode and Message Here");
+});
+
+
+*/
+
+
+
+
+
+
+app.MapRazorPages();
+
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller:exists}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+
+
+
+
 
 app.Run();

@@ -17,8 +17,9 @@ namespace GBC_Travel_Group_90.Filters
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            _logger.LogInformation("--------Starting action {ActionName} at {DateTime}", context.ActionDescriptor.DisplayName, DateTime.UtcNow);
-
+            var requestPath = context.HttpContext.Request.Path;
+            _logger.LogInformation("---------Request on path: {requestPath} at {DateTime}", requestPath, DateTime.UtcNow);
+            
             var user = _userManager.GetUserAsync(context.HttpContext.User).Result;
 
             var routeData = context.RouteData.Values;
@@ -31,7 +32,7 @@ namespace GBC_Travel_Group_90.Filters
             }
             else
             {
-                _logger.LogInformation("Anonymous User searched for: {searchParams}", string.Join(", ", searchParams.Select(kv => $"{kv.Key}={kv.Value}")));
+                _logger.LogInformation("---------Request Details: Anonymous User searched for: {searchParams}", string.Join(", ", searchParams.Select(kv => $"{kv.Key}={kv.Value}")));
 
             }
         }
@@ -88,7 +89,7 @@ namespace GBC_Travel_Group_90.Filters
         {
             // Log the search parameters 
             // **** adapt Serilog later
-            _logger.LogInformation("--------User {userId} searched for: {searchParams}", user.Id, string.Join(", ", searchParams.Select(kv => $"{kv.Key}={kv.Value}")));
+            _logger.LogInformation("--------Request Details: User {userId} searched for: {searchParams}", user.Id, string.Join(", ", searchParams.Select(kv => $"{kv.Key}={kv.Value}")));
 
 
         }
@@ -98,7 +99,13 @@ namespace GBC_Travel_Group_90.Filters
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            _logger.LogInformation("--------Finished action {ActionName} at {DateTime}", context.ActionDescriptor.DisplayName, DateTime.UtcNow);
+
+            var responseStatusCode = context.HttpContext.Response.StatusCode;
+            var responsePath = context.HttpContext.Request.Path;
+
+
+            _logger.LogInformation("--------Response Status Code: {statuscode} on path {path} at {DateTime}",responseStatusCode, responsePath, DateTime.UtcNow);
+
             base.OnActionExecuted(context);
         }
 

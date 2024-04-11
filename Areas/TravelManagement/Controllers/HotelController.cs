@@ -92,6 +92,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Create([Bind("Name,Location,StarRate,NumberOfRooms,Price")] Hotel hotel)
         {
             if (ModelState.IsValid)
@@ -138,33 +139,33 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Edit(int id, [Bind("HotelId,Name,Location,StarRate,NumberOfRooms,Price")] Hotel hotel)
         {
             if (id != hotel.HotelId)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+           
+            try
             {
-                try
-                {
-                    _context.Update(hotel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!await HotelExists(hotel.HotelId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }          
-                return RedirectToAction(nameof(Index));
+                _context.Update(hotel);
+                await _context.SaveChangesAsync();
             }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await HotelExists(hotel.HotelId))
+               
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }          
+            return RedirectToAction(nameof(Index));
+            
 
             return View(hotel);
         }
