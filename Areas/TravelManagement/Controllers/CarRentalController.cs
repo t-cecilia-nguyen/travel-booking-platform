@@ -88,6 +88,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Create(CarRental carRental)
         {
             if (ModelState.IsValid)
@@ -119,6 +120,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [ServiceFilter(typeof(LoggingFilter))]
         [HttpPost("Book/{id:int}")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Book(int id, string userEmail)
         {
 
@@ -172,6 +174,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Edit(int id, [Bind("CarRentalId, RentalCompany, PickUpLocation, PickUpDate, DropOffDate, CarModel, Price")] CarRental carRental)
         {
             if (id != carRental.CarRentalId)

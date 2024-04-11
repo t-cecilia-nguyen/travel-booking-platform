@@ -134,6 +134,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         // POST: HotelBookings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Create([Bind("HotelBookingId, CheckInDate,CheckOutDate, NumOfRoomsToBook,HotelId")] HotelBooking hotelBooking, string userEmail)
         {
             if (ModelState.IsValid)
@@ -227,11 +229,14 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(ValidateModelFilter))]
+
         public async Task<IActionResult> Edit(int id, [Bind("HotelBookingId, NumOfRoomsToBook, CheckInDate,CheckOutDate,UserId, HotelId")] HotelBooking hotelBooking)
         {
             if (id != hotelBooking.HotelBookingId)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("Error/", new { statusCode = 404});
             }
 
             if (ModelState.IsValid)
