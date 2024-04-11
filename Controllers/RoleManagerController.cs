@@ -22,7 +22,7 @@ namespace GBC_Travel_Group_90.Controllers
         }
 
         [HttpPost]
-/*        [Authorize(Roles = "Admin")]*/
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddRoles(string roleName)
         {
             if (roleName != null)

@@ -17,7 +17,13 @@
 
 @Html.Partial("~/Views/Shared/_SearchBar.cshtml")
 
-	<a class="btn btn-primary" style="margin-bottom: 20px;" asp-area="" asp-controller="Flight" asp-action="Create">Create New Flight</a>
+@if (User.Identity.IsAuthenticated)
+{
+	@if (User.IsInRole("Admin")) 
+	{
+		<a class="btn btn-primary" style="margin: 10px 0;" asp-controller="Flight" asp-action="Create">Create New Flight</a>
+	}
+}
 
 <div class="card">
 	<div class="card-body">
@@ -54,10 +60,14 @@
 								<td>
 									<a asp-controller="Booking" asp-action="GetBookFlight" asp-route-id="@flight.FlightId" class="btn btn-primary">Book Flight</a>
 									<a asp-action="Details" asp-route-id="@flight.FlightId" class="btn btn-info">Details</a>
-
-										<a asp-action="Edit" asp-route-id="@flight.FlightId" class="btn btn-secondary">Edit</a>
-										<a asp-action="Delete" asp-route-id="@flight.FlightId" class="btn btn-danger">Delete</a>
-								
+									@if (User.Identity.IsAuthenticated)
+									{
+										@if (User.IsInRole("Admin"))
+										{
+											<a asp-action="Edit" asp-route-id="@flight.FlightId" class="btn btn-secondary">Edit</a>
+											<a asp-action="Delete" asp-route-id="@flight.FlightId" class="btn btn-danger">Delete</a>
+										}
+									}
 								</td>
 							</tr>
 						}

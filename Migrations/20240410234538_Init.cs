@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GBC_Travel_Group_90.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -378,9 +378,9 @@ namespace GBC_Travel_Group_90.Migrations
                 columns: new[] { "CarRentalId", "ApplicationUserId", "Available", "CarModel", "DropOffDate", "MaxPassengers", "PickUpDate", "PickUpLocation", "Price", "RentalCompany" },
                 values: new object[,]
                 {
-                    { 1, null, true, "Cool Car", new DateTime(2024, 6, 21, 18, 59, 48, 197, DateTimeKind.Local).AddTicks(16), 4, new DateTime(2024, 5, 1, 18, 59, 48, 196, DateTimeKind.Local).AddTicks(9934), "123 str Toronto ON", 350.00m, "Big Company" },
-                    { 2, null, true, "SUV", new DateTime(2024, 4, 16, 18, 59, 48, 197, DateTimeKind.Local).AddTicks(71), 5, new DateTime(2024, 4, 11, 18, 59, 48, 197, DateTimeKind.Local).AddTicks(68), "456 Main St, Vancouver", 500.00m, "Rent-A-Car" },
-                    { 3, null, true, "Compact", new DateTime(2024, 4, 15, 18, 59, 48, 197, DateTimeKind.Local).AddTicks(85), 4, new DateTime(2024, 4, 12, 18, 59, 48, 197, DateTimeKind.Local).AddTicks(75), "789 Elm St, Calgary", 250.00m, "City Cars" }
+                    { 1, null, true, "Cool Car", new DateTime(2024, 6, 22, 19, 45, 36, 118, DateTimeKind.Local).AddTicks(6215), 4, new DateTime(2024, 5, 2, 19, 45, 36, 118, DateTimeKind.Local).AddTicks(6148), "123 str Toronto ON", 350.00m, "Big Company" },
+                    { 2, null, true, "SUV", new DateTime(2024, 4, 17, 19, 45, 36, 118, DateTimeKind.Local).AddTicks(6223), 5, new DateTime(2024, 4, 12, 19, 45, 36, 118, DateTimeKind.Local).AddTicks(6221), "456 Main St, Vancouver", 500.00m, "Rent-A-Car" },
+                    { 3, null, true, "Compact", new DateTime(2024, 4, 16, 19, 45, 36, 118, DateTimeKind.Local).AddTicks(6228), 4, new DateTime(2024, 4, 13, 19, 45, 36, 118, DateTimeKind.Local).AddTicks(6226), "789 Elm St, Calgary", 250.00m, "City Cars" }
                 });
 
             migrationBuilder.InsertData(

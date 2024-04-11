@@ -15,12 +15,10 @@
     </div>
 </div>
 
-<div class="card">
-    <div class="card-body">
-        <form asp-area="TravelManagement" asp-controller="CarRental" asp-action="Book" method="post">
-            <input type="hidden" name="id" value="@Model.CarRentalId" />
-            <button type="submit" class="btn btn-secondary">Book Car Rental</button>
-            <a asp-controller="Flight" asp-action="Index" class="btn btn-warning">Back to Car Rentals</a>
-        </form>
-    </div>
+<div>
+    <form asp-area="TravelManagement" asp-controller="CarRental" asp-action="Book" method="post">
+        <input type="hidden" name="id" value="@Model.CarRentalId" />
+        <button type="submit" class="btn btn-secondary">Book Car Rental</button>
+        <a asp-controller="Flight" asp-action="Index" class="btn btn-warning">Back to Car Rentals</a>
+    </form>
 </div>

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
@@ -41,7 +42,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(carRental);
         }
 
-        [HttpGet("Create")]
+		[HttpGet("Create")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -74,8 +76,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         }
 
-        [HttpPost("Create")]
+		
+		[HttpPost("Create")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(CarRental carRental)
         {
             if (ModelState.IsValid)
@@ -142,6 +146,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
 
         [HttpGet("Edit/{id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var carRental = await _db.CarRentals.FindAsync(id);
@@ -155,6 +160,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("CarRentalId, RentalCompany, PickUpLocation, PickUpDate, DropOffDate, CarModel, Price")] CarRental carRental)
         {
             if (id != carRental.CarRentalId)
@@ -193,6 +199,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         [HttpGet("Delete/{id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var carRental = await _db.CarRentals.FirstOrDefaultAsync(p => p.CarRentalId == id);
@@ -207,6 +214,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [HttpPost("DeleteConfirmed/{id:int}")]
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int carRentalId)
         {
             var carRental = await _db.CarRentals.FindAsync(carRentalId);

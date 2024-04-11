@@ -25,15 +25,19 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(availableFlights);
         }
 
+        
         [HttpGet("Create")]
-        public IActionResult Create()
+        [Authorize(Roles = "Admin")]
+		public IActionResult Create()
         {
             return View();
         }
 
-        [HttpPost("Create")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Flight flight)
+		
+		[HttpPost("Create")]
+		[ValidateAntiForgeryToken]
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> Create(Flight flight)
         {
             if (ModelState.IsValid)
             {
@@ -56,8 +60,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(flight);
         }
 
-        [HttpGet("Edit/{id:int}")]
-        public async Task<IActionResult> Edit(int id)
+		[HttpGet("Edit/{id:int}")]
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> Edit(int id)
         {
             var flight = await _db.Flights.FindAsync(id);
 
@@ -67,10 +72,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             }
             return View(flight);
         }
-
-        [HttpPost("Edit/{id:int}")]
+		
+		[HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FlightId, FlightNumber, Airline, Origin, Destination, DepartureTime, ArrivalTime, Price, MaxPassengers")] Flight flight)
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> Edit(int id, [Bind("FlightId, FlightNumber, Airline, Origin, Destination, DepartureTime, ArrivalTime, Price, MaxPassengers")] Flight flight)
         {
             if (id != flight.FlightId)
             {
@@ -105,8 +111,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return await _db.Flights.AnyAsync(e => e.FlightId == id);
         }
 
-        [HttpGet("Delete/{id:int}")]
-        public async Task<IActionResult> Delete(int id)
+		[HttpGet("Delete/{id:int}")]
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> Delete(int id)
         {
             var flight = await _db.Flights.FirstOrDefaultAsync(p => p.FlightId == id);
 
@@ -117,10 +124,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(flight);
         }
 
-        [HttpPost("DeleteConfirmed/{id:int}")]
+		[HttpPost("DeleteConfirmed/{id:int}")]
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int flightId)
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> DeleteConfirmed(int flightId)
         {
             var flight = await _db.Flights.FindAsync(flightId);
             if (flight != null)

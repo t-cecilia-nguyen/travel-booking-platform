@@ -61,7 +61,10 @@
     </div>
 </div>
 <div>
-    <a asp-controller="Booking" asp-action="BookFlight" asp-route-id="@Model.FlightId" class="btn btn-primary">Book Flight</a>
-    <a asp-action="Index" class="btn btn-warning">Back to Flights</a>
+    <form asp-area="TravelManagement" asp-controller="Booking" asp-action="PostBookFlight" method="post">
+        <input type="hidden" name="id" value="@Model.FlightId" />
+        <button type="submit" class="btn btn-secondary">Book Flight</button>
+        <a asp-controller="Flight" asp-action="Index" class="btn btn-warning">Back to Flights</a>
+    </form>
 </div>
 

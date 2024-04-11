@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
@@ -49,6 +50,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         // GET: Hotels/Create
         [HttpGet("Create")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -57,6 +59,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         // POST: Hotels/Create
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Name,Location,StarRate,NumberOfRooms,Price")] Hotel hotel)
         {
             if (ModelState.IsValid)
@@ -70,6 +73,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         [HttpGet("Edit/{id:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             var hotel = await _context.Hotels.FindAsync(id);
@@ -85,6 +89,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("HotelId,Name,Location,StarRate,NumberOfRooms,Price")] Hotel hotel)
         {
             if (id != hotel.HotelId)
@@ -118,6 +123,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         // GET: Hotels/Delete/5
         [HttpGet("Delete")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -139,6 +145,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [HttpPost("DeleteConfirmed/{id:int}")]
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var hotel = await _context.Hotels.FindAsync(id);
