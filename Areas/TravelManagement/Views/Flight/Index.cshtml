@@ -42,6 +42,13 @@
 						<th>Price</th>
 						<th>Max Passengers</th>
 						<th>Actions</th>
+						@if (User.Identity.IsAuthenticated)
+						{
+							@if (User.IsInRole("Admin"))
+							{
+								<th>Admin Actions</th>
+							}
+						}
 					</tr>
 				</thead>
 				<tbody>
