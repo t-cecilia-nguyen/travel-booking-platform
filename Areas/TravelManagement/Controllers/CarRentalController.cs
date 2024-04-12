@@ -227,11 +227,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return NotFound();
         }
 
-        [HttpGet("Search")]
+        [HttpPost("Search")]
         public async Task<IActionResult> Search(string RentalCompany, string CarModel, DateTime? PickUpDate, DateTime? DropOffDate)
         {
-            ViewBag.IsAdmin = false;
-            var carQuery = from f in _db.CarRentals select f;
+            var carQuery = _db.CarRentals.AsQueryable(); // Queryable to allow further filtering
 
             if (!string.IsNullOrEmpty(RentalCompany))
             {
@@ -253,9 +252,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 carQuery = carQuery.Where(f => f.DropOffDate.Date == DropOffDate.Value.Date);
             }
 
-            var car = await carQuery.ToListAsync();
+            var cars = await carQuery.ToListAsync();
 
-            return View("Index", car); // Reuse the Index view to display results
+            // Return partial view with search results
+            return PartialView("_CarRentalSearchResults", cars);
         }
     }
 }

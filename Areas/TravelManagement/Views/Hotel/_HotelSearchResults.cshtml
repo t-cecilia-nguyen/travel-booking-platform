@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Hotel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StarRate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfRooms)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StarRate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumberOfRooms)
+                    </td>
+                    <td>
+                    <td>
+                        <a class="btn btn-primary" asp-controller="HotelBooking" asp-action="Create" asp-route-hotelId="@item.HotelId">Book Hotel</a>
+                        <a asp-action="Details" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                @if (User.IsInRole("Admin"))
+                                {
+                                <a asp-action="Edit" asp-route-id="@item.HotelId" class="btn btn-secondary">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.HotelId" class="btn btn-danger">Delete</a>
+                                }
+                            }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td class="text-danger">No hotels available.</td>
+            </tr>
+        }
+    </tbody>
+</table>

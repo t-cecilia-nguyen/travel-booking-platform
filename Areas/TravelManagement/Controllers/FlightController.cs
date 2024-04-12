@@ -140,36 +140,36 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return NotFound();
         }
 
-        [HttpGet("Search")]
-        public async Task<IActionResult> Search(string origin, string destination, DateTime? departureDate, DateTime? arrivalDate)
-        {
-            ViewBag.IsAdmin = false;
+		[HttpPost("Search")]
+		public async Task<IActionResult> Search(string origin, string destination, DateTime? departureDate, DateTime? arrivalDate)
+		{
+			ViewBag.IsAdmin = false;
 
-            var flightsQuery = from f in _db.Flights select f;
+			var flightsQuery = from f in _db.Flights select f;
 
-            if (!string.IsNullOrEmpty(origin))
-            {
-                flightsQuery = flightsQuery.Where(f => f.Origin.Contains(origin));
-            }
+			if (!string.IsNullOrEmpty(origin))
+			{
+				flightsQuery = flightsQuery.Where(f => f.Origin.Contains(origin));
+			}
 
-            if (!string.IsNullOrEmpty(destination))
-            {
-                flightsQuery = flightsQuery.Where(f => f.Destination.Contains(destination));
-            }
+			if (!string.IsNullOrEmpty(destination))
+			{
+				flightsQuery = flightsQuery.Where(f => f.Destination.Contains(destination));
+			}
 
-            if (departureDate.HasValue)
-            {
-                flightsQuery = flightsQuery.Where(f => f.DepartureTime.Date == departureDate.Value.Date);
-            }
+			if (departureDate.HasValue)
+			{
+				flightsQuery = flightsQuery.Where(f => f.DepartureTime.Date == departureDate.Value.Date);
+			}
 
-            if (arrivalDate.HasValue)
-            {
-                flightsQuery = flightsQuery.Where(f => f.ArrivalTime.Date == arrivalDate.Value.Date);
-            }
+			if (arrivalDate.HasValue)
+			{
+				flightsQuery = flightsQuery.Where(f => f.ArrivalTime.Date == arrivalDate.Value.Date);
+			}
 
-            var flights = await flightsQuery.ToListAsync();
+			var flights = await flightsQuery.ToListAsync();
 
-            return View("Index", flights); // Reuse the Index view to display results
-        }
-    }
+			return PartialView("_FlightSearchResult", flights); // Return partial view
+		}
+	}
 }

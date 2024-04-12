@@ -163,7 +163,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return await _context.Hotels.AnyAsync(e => e.HotelId == id);
         }
 
-        [HttpGet("SearchHotel")]
+        [HttpPost("SearchHotel")]
         public async Task<IActionResult> SearchHotel(string? name, string? location, int? starRate, DateTime? checkInDate, DateTime? checkOutDate, decimal? maxPrice)
         {
 
@@ -213,7 +213,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             var hotels = await hotelsQuery.ToListAsync();
 
-            return View("Index", hotels);
+            return PartialView("_HotelSearchResults", hotels); // Return partial view
+
         }
 
     }

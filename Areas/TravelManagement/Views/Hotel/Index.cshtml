@@ -4,6 +4,12 @@
     ViewData["Title"] = "Hotel Home Page";
 }
 
+<!-- Load the flight-search.js file -->
+@section Scripts {
+    <script src="~/js/hotelSearch.js"></script>
+}
+
+
 <script>
     $(document).ready(function () {
         var page = window.location.pathname;
@@ -12,11 +18,13 @@
         $('.nav-link').removeClass('active');
         // Hotel tab active
         $('#hotels-tab').addClass('active');
+        $('#loader').hide();
 
     });
 </script>
 
 @Html.Partial("~/Views/Shared/_SearchBar.cshtml")
+@Html.Partial("~/Views/Shared/_LoadingBar.cshtml")
 
 <div class="white-opaque">
 @if (ViewBag.AlreadyBookedMessage != null)
@@ -40,7 +48,7 @@
 }
 
 <div class="card">
-    <div class="card-body">
+    <div id="hotelList" class="card-body">
         <table class="table">
             <thead>
                 <tr>

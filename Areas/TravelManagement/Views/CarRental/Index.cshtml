@@ -3,6 +3,12 @@
     ViewData["Title"] = "Car Rentals";
 }
 
+<!-- Load the flight-search.js file -->
+@section Scripts {
+    <script src="~/js/carRentalSearch.js"></script>
+}
+
+
 <script>
     $(document).ready(function () {
         var page = window.location.pathname;
@@ -11,11 +17,13 @@
         $('.nav-link').removeClass('active');
         // Car tab active
         $('#carrentals-tab').addClass('active');
+        $('#loader').hide();
 
     });
 </script>
 
 @Html.Partial("~/Views/Shared/_SearchBar.cshtml")
+@Html.Partial("~/Views/Shared/_LoadingBar.cshtml")
 
 @if (User.Identity.IsAuthenticated)
 {
@@ -26,7 +34,7 @@
 }
 
 <div class="card">
-    <div class="card-body">
+    <div id="carList" class="card-body">
         @if (Model.Any())
         {
             <table class="table white-opaque">
@@ -74,3 +82,4 @@
         }
     </div>
 </div>
+
