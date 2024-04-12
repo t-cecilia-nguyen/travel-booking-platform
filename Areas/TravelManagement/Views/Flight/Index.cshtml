@@ -12,79 +12,80 @@
     $(document).ready(function () {
         var page = window.location.pathname;
 
-        // Remove the 'active' class from all tabs
-        $('.nav-link').removeClass('active');
-        // Flight tab active
-        $('#flights-tab').addClass('active');
-        $('#loader').hide();
-    });
+		// Remove the 'active' class from all tabs
+		$('.nav-link').removeClass('active');
+		$('.tab-pane').removeClass('show active');
+
+		// Flight tab active
+		$('#flights-tab').addClass('active');
+		$('#flights').addClass('show active');
+		$('#loader').hide();
+	});
 </script>
 
 @Html.Partial("~/Views/Shared/_SearchBar.cshtml")
 @Html.Partial("~/Views/Shared/_LoadingBar.cshtml")
 
-@if (User.Identity.IsAuthenticated)
-{
-    @if (User.IsInRole("Admin"))
-    {
-        <a class="btn btn-primary" style="margin: 10px 0;" asp-controller="Flight" asp-action="Create">Create New Flight</a>
-    }
-}
-
 <div class="card">
-    <div id="flightList" class="card-body">
-        @if (Model.Any())
-        {
-            <table class="table">
-                <thead>
-                    <tr>
-                        <td>Flight Number</td>
-                        <td>Airline</td>
-                        <td>Origin</td>
-                        <td>Destination</td>
-                        <td>Departure</td>
-                        <td>Arrival</td>
-                        <td>Price</td>
-                        <td>Max Passengers</td>
-                        <td>Actions</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var flight in Model)
-                    {
-                        if (flight.CurrentPassengers < flight.MaxPassengers)
-                        {
-                            <tr>
-                                <td>@flight.FlightNumber</td>
-                                <td>@flight.Airline</td>
-                                <td>@flight.Origin</td>
-                                <td>@flight.Destination</td>
-                                <td>@flight.DepartureTime</td>
-                                <td>@flight.ArrivalTime</td>
-                                <td>@flight.Price</td>
-                                <td>@flight.MaxPassengers</td>
-                                <td>
-                                    <a asp-controller="Booking" asp-action="GetBookFlight" asp-route-id="@flight.FlightId" class="btn btn-primary">Book Flight</a>
-                                    <a asp-action="Details" asp-route-id="@flight.FlightId" class="btn btn-info">Details</a>
-                                    @if (User.Identity.IsAuthenticated)
-                                    {
-                                        @if (User.IsInRole("Admin"))
-                                        {
-                                            <a asp-action="Edit" asp-route-id="@flight.FlightId" class="btn btn-secondary">Edit</a>
-                                            <a asp-action="Delete" asp-route-id="@flight.FlightId" class="btn btn-danger">Delete</a>
-                                        }
-                                    }
-                                </td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <p>No flights available.</p>
-        }
-    </div>
+	<div class="card-body" id="flightList">
+		@if (Model.Any())
+		{
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Flight Number</th>
+						<th>Airline</th>
+						<th>Origin</th>
+						<th>Destination</th>
+						<th>Departure</th>
+						<th>Arrival</th>
+						<th>Price</th>
+						<th>Max Passengers</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var flight in Model)
+					{
+						if (flight.CurrentPassengers < flight.MaxPassengers)
+						{
+							<tr>
+								<td>@flight.FlightNumber</td>
+								<td>@flight.Airline</td>
+								<td>@flight.Origin</td>
+								<td>@flight.Destination</td>
+								<td>@flight.DepartureTime</td>
+								<td>@flight.ArrivalTime</td>
+								<td>@flight.Price</td>
+								<td>@flight.MaxPassengers</td>
+								<td>
+									@if (User.Identity.IsAuthenticated)
+									{
+										@if (User.IsInRole("Admin"))
+										{
+											<a class="btn btn-primary" style="margin: 10px 0;" asp-controller="Flight" asp-action="Create">Create New Flight</a>
+										}
+									}
+									<a asp-controller="Booking" asp-action="GetBookFlight" asp-route-id="@flight.FlightId" class="btn btn-primary">Book Flight</a>
+									<a asp-action="Details" asp-route-id="@flight.FlightId" class="btn btn-info">Details</a>
+									@if (User.Identity.IsAuthenticated)
+									{
+										@if (User.IsInRole("Admin"))
+										{
+											<a asp-action="Edit" asp-route-id="@flight.FlightId" class="btn btn-secondary">Edit</a>
+											<a asp-action="Delete" asp-route-id="@flight.FlightId" class="btn btn-danger">Delete</a>
+										}
+									}
+								</td>
+							</tr>
+						}
+					}
+				</tbody>
+			</table>
+		}
+		else
+		{
+			<p>No flights available.</p>
+		}
+	</div>
 </div>
-

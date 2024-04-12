@@ -31,6 +31,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
         [Display(Name = "Number of rooms")]
         public int NumOfRoomsToBook { get; set; }
 
+        public decimal TotalAmount {  get; set; }
+
         public Status Status { get; set; }
 
         public string? ApplicationUserId { get; set; }

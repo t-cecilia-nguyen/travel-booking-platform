@@ -10,5 +10,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
         public ApplicationUser? User { get; set; }
         public int? CarRentalId { get; set; }
         public CarRental CarRental { get; set; }
+
     }
 }

@@ -58,7 +58,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(hotelBooking);
         }
 
-
         private async Task<bool> IsRoomAvailable(int? hotelId, int numOfRoomsToBook)
         {
             var hotel = await _context.Hotels.FindAsync(hotelId);
@@ -152,7 +151,18 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                     // Update the NumberOfRooms property
                     UpdateNumberOfRooms(hotelBooking.HotelId, hotelBooking.NumOfRoomsToBook);
 
+                    // Calculate Hotel Loyalty Points                    
+                    var hotel = await _context.Hotels.FirstOrDefaultAsync(h => h.HotelId == hotelBooking.HotelId);
+                    decimal hotelPrice = hotel.Price;
+
+                    int numberOfDays = (hotelBooking.CheckOutDate - hotelBooking.CheckInDate).Days;
+                    decimal totalPrice = hotelPrice * numberOfDays * hotelBooking.NumOfRoomsToBook;
+
+                    int points = CalculateHotelLoyaltyPoints(totalPrice);
+                    user.HotelLoyaltyPoints += points;
+
                     // Continue booking 
+                    hotelBooking.TotalAmount = totalPrice;
                     hotelBooking.ApplicationUserId = user.Id;
                     hotelBooking.BookingDate = DateTime.Now;
                     hotelBooking.Status = Status.Confirmed;
@@ -223,8 +233,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 }
                 return RedirectToAction(nameof(Details), new { id = hotelBooking.HotelBookingId });
             }
-            return View(hotelBooking);
-        }
+                    return View(hotelBooking);
+                }
 
         // GET: HotelBookings/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -264,6 +274,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         private async Task<bool> HotelBookingExists(int id)
         {
             return await _context.HotelBookings.AnyAsync(e => e.HotelBookingId == id);
+        }
+        public int CalculateHotelLoyaltyPoints(decimal price)
+        {
+            int points = (int)Math.Floor(price / 100);
+            return points;
         }
     }
 }

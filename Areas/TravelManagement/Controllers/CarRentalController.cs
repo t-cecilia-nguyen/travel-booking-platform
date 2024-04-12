@@ -6,6 +6,7 @@ using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using SendGrid.Helpers.Mail;
 
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
@@ -133,13 +134,16 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 }
             }
 
+            // Calculate Car Points
+            int points = CalculateFrequentCarPoints(carRental.Price);
+            user.FrequentCarPoints += points;
+
             email = user.Email;
             ViewBag.CarRental = carRental;
 
             carRental.Available = false;
             carRental.ApplicationUserId = user.Id;
             await _db.SaveChangesAsync();
-
 
             return RedirectToAction("Success", new { carRentalId = carRental.CarRentalId, userId = user.Id });
         }
@@ -256,6 +260,12 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             // Return partial view with search results
             return PartialView("_CarRentalSearchResults", cars);
+        }
+
+        public int CalculateFrequentCarPoints(decimal price)
+        {
+            int points = (int)Math.Floor(price / 10);
+            return points;
         }
     }
 }

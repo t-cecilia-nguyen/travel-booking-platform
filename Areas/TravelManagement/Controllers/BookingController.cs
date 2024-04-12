@@ -74,7 +74,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             {
                 return View("AlreadyBooked");
             }
-
+                        
             var booking = new Booking
             {
                 User = user,
@@ -82,6 +82,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 FlightId = id,
                 Flight = flight
             };
+
+            // Calculate Flyer Points
+            int points = CalculateFrequentFlyerPoints(flight.Price);
+            user.FrequentFlyerPoints += points;
 
             await _db.Bookings.AddAsync(booking);
             flight.CurrentPassengers++;
@@ -104,6 +108,13 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             return View(booking);
         }
+
+        public int CalculateFrequentFlyerPoints(decimal price)
+        {
+            int points = (int)Math.Floor(price / 100);
+            return points;
+        }
+
     }
 
 }
