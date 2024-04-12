@@ -27,6 +27,14 @@
 @Html.Partial("~/Views/Shared/_SearchBar.cshtml")
 @Html.Partial("~/Views/Shared/_LoadingBar.cshtml")
 
+@if (User.Identity.IsAuthenticated)
+{
+    @if (User.IsInRole("Admin"))
+    {
+        <a class="btn btn-primary" asp-controller="CarRental" asp-action="Create">Create New Car Rental</a>
+    }
+}
+
 <div class="card">
     <div id="carList" class="card-body">
         @if (Model.Any())
@@ -41,6 +49,13 @@
                         <th>Car Model</th>
                         <th>Price</th>
                         <th>Actions</th>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <th>Admin Actions</th>
+                            }
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -54,24 +69,21 @@
                             <td>@carRental.CarModel</td>
                             <td>@carRental.Price</td>
                             <td>
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <a class="btn btn-primary" asp-controller="CarRental" asp-action="Create">Create New Car Rental</a>
-                                    }
-                                }
+                                
                                 <a asp-action="GetBook" asp-route-id="@carRental.CarRentalId" class="btn btn-primary">Book Now</a>
                                 <a asp-action="Details" asp-route-id="@carRental.CarRentalId" class="btn btn-info">Details</a>
-                                @if (User.Identity.IsAuthenticated)
+                                
+                            </td>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                @if (User.IsInRole("Admin"))
                                 {
-                                    @if (User.IsInRole("Admin"))
-                                    {
+                                    <td>
                                         <a asp-action="Edit" asp-route-id="@carRental.CarRentalId" class="btn btn-secondary">Edit</a>
                                         <a asp-action="Delete" asp-route-id="@carRental.CarRentalId" class="btn btn-danger">Delete</a>
-                                    }
+                                    </td>
                                 }
-                            </td>
+                            }
                         </tr>
                     }
                 </tbody>
