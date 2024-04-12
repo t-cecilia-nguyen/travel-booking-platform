@@ -1,4 +1,20 @@
-﻿<!-- Search Bar -->
+﻿<script>
+    $(document).ready(function () {
+        $('#flights-tab').click(function () {
+            window.location.href = '@Url.Action("Index", "Flight")';
+        });
+        $('#carrentals-tab').click(function () {
+            window.location.href = '@Url.Action("Index", "CarRental")';
+        });
+        $('#hotels-tab').click(function () {
+            window.location.href = '@Url.Action("Index", "Hotel")';
+        });
+    });
+
+</script>
+
+
+<!-- Search Bar -->
 <div class="container" style="margin-bottom: 10px;">
     <div class="card">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
