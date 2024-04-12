@@ -10,7 +10,7 @@
         setTimeout(function () {
             $.ajax({
                 url: $('#carSearchForm').attr('action'), //from _SearchBar.cshtml
-                type: 'POST', 
+                type: 'GET', 
                 data: formData,
                 success: function (response) {
                     $('#carList').html(response);  // Car > Index
