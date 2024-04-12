@@ -8,9 +8,12 @@
         var page = window.location.pathname;
 
         // Remove the 'active' class from all tabs
-        $('.nav-link').removeClass('active');
-        // Car tab active
-        $('#carrentals-tab').addClass('active');
+		$('.nav-link').removeClass('active');
+		$('.tab-pane').removeClass('show active');
+
+		// Car Rental tab active
+		$('#carrentals-tab').addClass('active');
+		$('#carrentals').addClass('show active');
 
     });
 </script>
