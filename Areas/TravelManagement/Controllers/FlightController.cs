@@ -3,11 +3,12 @@ using GBC_Travel_Group_90.Data;
 using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using Microsoft.AspNetCore.Authorization;
+using GBC_Travel_Group_90.Filters;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
     [Area("TravelManagement")]
-    [Route("[area]/[controller]/[action]")]
+    [Route("[area]/[controller]")]
     public class FlightController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -18,14 +19,31 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         [HttpGet("")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string email)
         {
-            var flights = await _db.Flights.ToListAsync();
-            var availableFlights = flights.Where(f => f.CurrentPassengers < f.MaxPassengers).ToList();
-            return View(availableFlights);
+            ViewBag.IsAdmin = false;
+
+            // If not Admin - view available Flights
+            if (email == null || string.IsNullOrEmpty(email))
+            {
+                ViewBag.IsAdmin = false;
+                var flights = await _db.Flights.ToListAsync();
+                var availableFlights = flights.Where(f => f.CurrentPassengers < f.MaxPassengers).ToList();
+                return View(availableFlights);
+            }
+
+            // If Admin - view all Flights
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsAdmin);
+            if (user != null)
+            {
+                Console.WriteLine("admin is true");
+                ViewBag.IsAdmin = true;
+            }
+
+            var allflights = _db.Flights.ToList();
+            return View(allflights);
         }
 
-        
         [HttpGet("Create")]
         [Authorize(Roles = "Admin")]
 		public IActionResult Create()
@@ -33,6 +51,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View();
         }
 
+        [HttpPost("Create")]
+        [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(ValidateModelFilter))]
+        public async Task<IActionResult> Create(Flight flight)
 		
 		[HttpPost("Create")]
 		[ValidateAntiForgeryToken]
@@ -51,11 +73,15 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [HttpGet("Details/{id:int}")]
         public async Task<IActionResult> Details(int id)
         {
+            //TRIGGER AN ERROR
+            throw new Exception("Error in Details View");
+
             var flight = await _db.Flights.FirstOrDefaultAsync(p => p.FlightId == id);
 
             if (flight == null)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("Error", new { StatusCode = 404 });
             }
             return View(flight);
         }
@@ -68,13 +94,16 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             if (flight == null)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("Error", new { StatusCode = 404 });
             }
             return View(flight);
         }
 		
 		[HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(ValidateModelFilter))]
+        public async Task<IActionResult> Edit(int id, [Bind("FlightId, FlightNumber, Airline, Origin, Destination, DepartureTime, ArrivalTime, Price, MaxPassengers")] Flight flight)
 		[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> Edit(int id, [Bind("FlightId, FlightNumber, Airline, Origin, Destination, DepartureTime, ArrivalTime, Price, MaxPassengers")] Flight flight)
         {
@@ -94,7 +123,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 {
                     if (!await FlightExists(flight.FlightId))
                     {
-                        return NotFound();
+                        Response.StatusCode = 404;
+                        return View("Error", new { StatusCode = 404 });
                     }
                     else
                     {
@@ -119,6 +149,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             if (flight == null)
             {
+                Response.StatusCode = 404;
                 return NotFound();
             }
             return View(flight);
@@ -140,8 +171,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return NotFound();
         }
 
+        [ServiceFilter(typeof(LoggingFilter))]
         [HttpGet("Search")]
-        public async Task<IActionResult> Search(string origin, string destination, DateTime? departureDate, DateTime? arrivalDate)
+        [Route("Search/{searchType?}/{origin?}/{destination?}/{departureDate?}/{arrivalDate?}")]
+        public async Task<IActionResult> Search(string? searchType, string origin, string destination, DateTime? departureDate, DateTime? arrivalDate)
         {
             ViewBag.IsAdmin = false;
 

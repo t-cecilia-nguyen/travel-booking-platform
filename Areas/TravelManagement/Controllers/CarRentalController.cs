@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using GBC_Travel_Group_90.Models;
 using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+using GBC_Travel_Group_90.Filters;
+using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
@@ -30,6 +32,17 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             var cars = await _db.CarRentals.ToListAsync();
             return View(cars);
         }
+
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsAdmin);
+            if (user != null)
+            {
+                Console.WriteLine("admin is true");
+                ViewBag.IsAdmin = true;
+            }
+
+            return View(await _db.CarRentals.ToListAsync());
+        }
+
 
         [HttpGet("Details/{id:int}")]
         public async Task<IActionResult> Details(int id)
@@ -81,6 +94,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 		[HttpPost("Create")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Create(CarRental carRental)
         {
             if (ModelState.IsValid)
@@ -105,17 +119,23 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View("Book", carRental);
         }
 
-        [HttpPost("Book")]
+
+
+        [ServiceFilter(typeof(LoggingFilter))]
+        [HttpPost("Book/{id:int}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Book(int id)
+        [ServiceFilter(typeof(LoggingFilter))]
+        [ServiceFilter(typeof(ValidateModelFilter))]
+        public async Task<IActionResult> Book(int id, string userEmail)
         {
-
-            var carRental = await _db.CarRentals.FindAsync(id);
-
-            if (carRental == null)
+            try
             {
-                return NotFound(); // Car rental not found, return Not Found status
-            }
+                var carRental = await _db.CarRentals.FindAsync(id);
+
+                if (carRental == null)
+                {
+                    return NotFound(); // Car rental not found, return Not Found status
+                }
 
             string email;
             ApplicationUser user = null;
@@ -145,7 +165,17 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             carRental.ApplicationUserId = user.Id;
             await _db.SaveChangesAsync();
 
-            return RedirectToAction("Success", new { carRentalId = carRental.CarRentalId, userId = user.Id });
+
+                return RedirectToAction("Success", new { carRentalId = carRental.CarRentalId, userId = user.UserId });
+            }
+            catch (BookingValidatorException ex)
+            {
+                throw new BookingValidatorException("Booking validation failed.", ex);
+            }
+            catch (NoSuchUserException ex)
+            {
+                throw new NoSuchUserException("User not found.", ex);
+            }
         }
 
 
@@ -165,6 +195,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Edit(int id, [Bind("CarRentalId, RentalCompany, PickUpLocation, PickUpDate, DropOffDate, CarModel, Price")] CarRental carRental)
         {
             if (id != carRental.CarRentalId)
@@ -231,7 +262,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return NotFound();
         }
 
+
+        [ServiceFilter(typeof(LoggingFilter))]
         [HttpGet("Search")]
+        [Route("Search/{serachType?}/{RentalCompany?}/{CarModel?}/{PickUpDate?}/{DropoffDate?}")]
         public async Task<IActionResult> Search(string RentalCompany, string CarModel, DateTime? PickUpDate, DateTime? DropOffDate)
         {
             ViewBag.IsAdmin = false;

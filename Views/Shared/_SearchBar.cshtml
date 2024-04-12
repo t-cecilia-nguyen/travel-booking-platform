@@ -17,6 +17,8 @@
                 <div class="row justify-content-center">
                     <div class="col-md-10">
                         <form asp-area="TravelManagement" asp-controller="Flight" asp-action="Search" method="get">
+                            <input type="hidden" id="searchType" name="searchType" class="form-control" value="Flight">
+
                             <div class="search-row">
                                 <div class="form-group">
                                     <label for="origin">Origin:</label>
@@ -52,6 +54,8 @@
                 <div class="row justify-content-center">
                     <div class="col-md-10">
                         <form asp-area="TravelManagement" asp-controller="CarRental" asp-action="Search" method="get">
+                            <input type="hidden" id="searchType" name="searchType" class="form-control" value="Car">
+
                             <div class="search-row">
                                 <div class="form-group">
                                     <label for="RentalCompany">Rental Company:</label>
@@ -93,6 +97,8 @@
                 <div class="row justify-content-center">
                     <div class="col-md-10">
                         <form asp-area="TravelManagement" asp-controller="Hotel" asp-action="SearchHotel" method="get">
+                            <input type="hidden" id="searchType" name="searchType" class="form-control" value="Hotel">
+
                             <div class="search-row">
                                 <div class="form-group">
                                     <label for="name">Name: </label>

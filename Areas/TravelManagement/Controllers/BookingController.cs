@@ -1,6 +1,9 @@
 ﻿using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
 using GBC_Travel_Group_90.Data;
 using Microsoft.AspNetCore.Identity;
+using GBC_Travel_Group_90.Filters;
+using GBC_Travel_Group_90.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
@@ -12,6 +15,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
     [Area("TravelManagement")]
     [Route("[area]/[controller]/[action]")]
+    [ServiceFilter(typeof(LoggingFilter))]
     public class BookingController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -36,16 +40,17 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View("BookFlight", flight);
         }
 
-        [HttpPost("PostBookFlight")]
-        public async Task<IActionResult> PostBookFlight(int id)
+
+        [ServiceFilter(typeof(LoggingFilter))]
+        [ServiceFilter(typeof(ValidateModelFilter))]
+        [HttpPost("BookFlight/{id:int}")]
+        public async Task<IActionResult> BookFlight(string email, int id)
         {
-
-            var flight = await _db.Flights.FirstOrDefaultAsync(f => f.FlightId == id);
-
-            if (flight == null)
+            try
             {
-                return NotFound();
-            }
+                var flight = await _db.Flights.FirstOrDefaultAsync(f => f.FlightId == id);
+
+                if(flight == null) { return NotFound(); }
 
             string email;
             ApplicationUser user = null;
@@ -96,6 +101,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [HttpGet("SuccessBooking/{id:int}")]
         public async Task<IActionResult> Success(int id)
         {
+
             // Retrieve the booking from the database
             var booking = await _db.Bookings.Include(b => b.User)
                                       .Include(b => b.Flight)

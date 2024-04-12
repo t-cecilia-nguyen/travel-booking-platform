@@ -468,6 +468,9 @@ namespace GBC_Travel_Group_90.Migrations
                     b.Property<int>("HotelId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("NumOfRoomsToBook")
                         .HasColumnType("int");
 

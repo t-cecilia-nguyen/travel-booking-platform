@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using System.Net.Mail;
+using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
 
 namespace GBC_Travel_Group_90.Areas.Identity.Pages.Account
 {
@@ -130,7 +131,7 @@ namespace GBC_Travel_Group_90.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    _logger.LogInformation("User {username} logged in.", username);
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -140,7 +141,8 @@ namespace GBC_Travel_Group_90.Areas.Identity.Pages.Account
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
+                    throw new UserBlockedException("User account locked out.");
+                    //return RedirectToPage("./Lockout");
                 }
                 else
                 {

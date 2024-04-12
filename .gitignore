@@ -368,7 +368,7 @@ appsettings.json
 {
   "Logging": {
     "LogLevel": {
-      "Default": "Information",
+      "Default": "Warning",
       "Microsoft.AspNetCore": "Warning"
     }
   },
@@ -378,5 +378,24 @@ appsettings.json
   },
   "ConnectionStrings": {
     "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=TravelManagementDb;Trusted_Connection=True;MultipleActiveResultSets=true"
+  },
+  "Serilog": {
+    "MinimumLevel": "Information",
+    "WriteTo": [
+      { "Name": "Console" },
+      {
+        "Name": "File",
+        "Args": {
+          "path": "Logs/log-.txt",
+          "rollingInterval": "Day"
+        }
+      }
+    ],
+    "Enrich": [ "FromLogContext" ],
+    "Properties": {
+      "Application": "COMP2139-Labs"
+    }
   }
 }
+
+/Migrations/

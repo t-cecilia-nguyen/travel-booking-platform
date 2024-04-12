@@ -2,12 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
-using Microsoft.AspNetCore.Authorization;
+using GBC_Travel_Group_90.Filters;
+using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
     [Area("TravelManagement")]
-    [Route("[area]/[controller]/[action]")]
+    [Route("[area]/[controller]")]
     public class HotelController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,24 +19,32 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         // GET: Hotels
-        [HttpGet("")]
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
 
+
             var applicationDbContext = _context.Hotels;
+
+            
             return View(await applicationDbContext.ToListAsync());
+            
+
+
+
         }
 
         // GET: Hotels/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [Route("Details/{name}/{id:int}")]
+        public async Task<IActionResult> Details(string? name, int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
+            
             var hotel = await _context.Hotels
-                .FirstOrDefaultAsync(m => m.HotelId == id);
+                .FirstOrDefaultAsync(m => m.HotelId == id && m.Name == name);
 
             if (hotel == null)
             {
@@ -59,18 +68,29 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         // POST: Hotels/Create
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Name,Location,StarRate,NumberOfRooms,Price")] Hotel hotel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await _context.AddAsync(hotel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+                if (ModelState.IsValid)
+                {
+                    await _context.AddAsync(hotel);
+                    await _context.SaveChangesAsync();
+                    //return isAdmin's View
+                    return RedirectToAction(nameof(Index));
+                }
 
-            return View(hotel);
+                return View(hotel);
+            }
+            catch (EntityAlreadyExists ex)
+            {
+                throw new EntityAlreadyExists("Hotel Model Alredy Exits.");
+            }
         }
+
+        
 
         [HttpGet("Edit/{id:int}")]
         [Authorize(Roles = "Admin")]
@@ -90,6 +110,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Edit(int id, [Bind("HotelId,Name,Location,StarRate,NumberOfRooms,Price")] Hotel hotel)
         {
             if (id != hotel.HotelId)
@@ -163,8 +184,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return await _context.Hotels.AnyAsync(e => e.HotelId == id);
         }
 
-        [HttpGet("SearchHotel")]
-        public async Task<IActionResult> SearchHotel(string? name, string? location, int? starRate, DateTime? checkInDate, DateTime? checkOutDate, decimal? maxPrice)
+        [ServiceFilter(typeof(LoggingFilter))]
+        [HttpGet]
+        [Route("SearchHotel/{searchType?}/{name?}/{location?}/{starRate?}/{maxPrice?}")]
+        public async Task<IActionResult> SearchHotel(string? searchType, string? name, string? location, int? starRate, decimal? maxPrice)
         {
 
             var hotelsQuery = _context.Hotels.AsQueryable();
@@ -188,23 +211,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 hotelsQuery = hotelsQuery.Where(h => h.StarRate == starRate);
             }
 
-            if (checkInDate.HasValue && checkOutDate.HasValue)
-            {
-                // Retrieve bookings for the specified date range only
-                var bookingsForDateRange = await _context.HotelBookings
-                    .Where(b => b.CheckInDate < checkOutDate && b.CheckOutDate > checkInDate)
-                    .ToListAsync();
-
-                // Filter the hotels based on availability
-                var availableHotelIds = await hotelsQuery
-                    .Where(h => h.IsAvailableForDates(checkInDate, checkOutDate, bookingsForDateRange))
-                    .Select(h => h.HotelId)
-                    .ToListAsync();
-
-                // Filter the hotelsQuery based on the availableHotelIds
-                hotelsQuery = hotelsQuery.Where(h => availableHotelIds.Contains(h.HotelId));
-            }
-
+            
             if (maxPrice.HasValue)
             {
 
