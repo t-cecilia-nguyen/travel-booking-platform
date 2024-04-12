@@ -246,7 +246,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
 
         [ServiceFilter(typeof(LoggingFilter))]
-        [HttpPost("Search")]
+        [HttpGet("Search")]
         [Route("Search/{searchType?}/{RentalCompany?}/{CarModel?}/{PickUpDate?}/{DropoffDate?}")]
         public async Task<IActionResult> Search(string RentalCompany, string CarModel, DateTime? PickUpDate, DateTime? DropOffDate)
         {

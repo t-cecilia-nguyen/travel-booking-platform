@@ -10,7 +10,7 @@
         setTimeout(function () {
             $.ajax({
                 url: $('#hotelSearchForm').attr('action'), 
-                type: 'POST', 
+                type: 'GET', 
                 data: formData,
                 success: function (response) {
                     $('#hotelList').html(response); 

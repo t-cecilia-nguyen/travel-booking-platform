@@ -89,6 +89,9 @@ namespace GBC_Travel_Group_90.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -178,9 +181,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 1,
                             Available = true,
                             CarModel = "Cool Car",
-                            DropOffDate = new DateTime(2024, 6, 24, 15, 15, 54, 539, DateTimeKind.Local).AddTicks(9518),
+                            DropOffDate = new DateTime(2024, 6, 24, 18, 26, 6, 376, DateTimeKind.Local).AddTicks(2111),
                             MaxPassengers = 4,
-                            PickUpDate = new DateTime(2024, 5, 4, 15, 15, 54, 539, DateTimeKind.Local).AddTicks(9477),
+                            PickUpDate = new DateTime(2024, 5, 4, 18, 26, 6, 376, DateTimeKind.Local).AddTicks(2062),
                             PickUpLocation = "123 str Toronto ON",
                             Price = 400.00m,
                             RentalCompany = "Big Company"
@@ -190,9 +193,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 2,
                             Available = true,
                             CarModel = "SUV",
-                            DropOffDate = new DateTime(2024, 4, 19, 15, 15, 54, 539, DateTimeKind.Local).AddTicks(9525),
+                            DropOffDate = new DateTime(2024, 4, 19, 18, 26, 6, 376, DateTimeKind.Local).AddTicks(2117),
                             MaxPassengers = 5,
-                            PickUpDate = new DateTime(2024, 4, 14, 15, 15, 54, 539, DateTimeKind.Local).AddTicks(9523),
+                            PickUpDate = new DateTime(2024, 4, 14, 18, 26, 6, 376, DateTimeKind.Local).AddTicks(2115),
                             PickUpLocation = "456 Main St, Vancouver",
                             Price = 550.00m,
                             RentalCompany = "Rent-A-Car"
@@ -202,9 +205,9 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 3,
                             Available = true,
                             CarModel = "Compact",
-                            DropOffDate = new DateTime(2024, 4, 18, 15, 15, 54, 539, DateTimeKind.Local).AddTicks(9530),
+                            DropOffDate = new DateTime(2024, 4, 18, 18, 26, 6, 376, DateTimeKind.Local).AddTicks(2121),
                             MaxPassengers = 4,
-                            PickUpDate = new DateTime(2024, 4, 15, 15, 15, 54, 539, DateTimeKind.Local).AddTicks(9528),
+                            PickUpDate = new DateTime(2024, 4, 15, 18, 26, 6, 376, DateTimeKind.Local).AddTicks(2120),
                             PickUpLocation = "789 Elm St, Calgary",
                             Price = 350.00m,
                             RentalCompany = "City Cars"
@@ -467,6 +470,9 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.Property<int>("HotelId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NumOfRoomsToBook")
                         .HasColumnType("int");

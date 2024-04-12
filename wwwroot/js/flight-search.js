@@ -10,7 +10,7 @@
         setTimeout(function () {
             $.ajax({
                 url: $('#flightSearchForm').attr('action'),
-                type: 'POST',
+                type: 'GET',
                 data: formData,
                 success: function (response) {
                     $('#flightList').html(response);
