@@ -33,15 +33,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(cars);
         }
 
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsAdmin);
-            if (user != null)
-            {
-                Console.WriteLine("admin is true");
-                ViewBag.IsAdmin = true;
-            }
 
-            return View(await _db.CarRentals.ToListAsync());
-        }
 
 
         [HttpGet("Details/{id:int}")]
@@ -56,7 +48,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(carRental);
         }
 
-		[HttpGet("Create")]
+        [HttpGet("Create")]
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
@@ -84,14 +76,14 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 CarRental = carRental
             };
 
-            await _db.CarSuccess.AddAsync(model);
+            // await _db.CarSuccess.AddAsync(model);
             await _db.SaveChangesAsync();
             return View(model);
 
         }
 
-		
-		[HttpPost("Create")]
+
+        [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(ValidateModelFilter))]
@@ -128,14 +120,13 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Book(int id, string userEmail)
         {
-            try
-            {
-                var carRental = await _db.CarRentals.FindAsync(id);
 
-                if (carRental == null)
-                {
-                    return NotFound(); // Car rental not found, return Not Found status
-                }
+            var carRental = await _db.CarRentals.FindAsync(id);
+
+            if (carRental == null)
+            {
+                return NotFound(); // Car rental not found, return Not Found status
+            }
 
             string email;
             ApplicationUser user = null;
@@ -144,7 +135,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 user = await _userManager.GetUserAsync(User);
-            } 
+            }
             else
             {
                 // If User is not signed in
@@ -166,17 +157,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             await _db.SaveChangesAsync();
 
 
-                return RedirectToAction("Success", new { carRentalId = carRental.CarRentalId, userId = user.UserId });
-            }
-            catch (BookingValidatorException ex)
-            {
-                throw new BookingValidatorException("Booking validation failed.", ex);
-            }
-            catch (NoSuchUserException ex)
-            {
-                throw new NoSuchUserException("User not found.", ex);
-            }
+            return RedirectToAction("Success", new { carRentalId = carRental.CarRentalId, userId = user.UserId });
+
         }
+
+        
 
 
         [HttpGet("Edit/{id:int}")]

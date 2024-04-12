@@ -14,7 +14,7 @@ using System.Runtime.CompilerServices;
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
     [Area("TravelManagement")]
-    [Route("[area]/[controller]/[action]")]
+    [Route("[area]/[controller]")]
     [ServiceFilter(typeof(LoggingFilter))]
     public class BookingController : Controller
     {
@@ -43,14 +43,16 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [ServiceFilter(typeof(LoggingFilter))]
         [ServiceFilter(typeof(ValidateModelFilter))]
-        [HttpPost("BookFlight/{id:int}")]
-        public async Task<IActionResult> BookFlight(string email, int id)
+        [HttpPost("PostBookFlight")]
+        public async Task<IActionResult> PostBookFlight(int id)
         {
-            try
-            {
-                var flight = await _db.Flights.FirstOrDefaultAsync(f => f.FlightId == id);
 
-                if(flight == null) { return NotFound(); }
+            var flight = await _db.Flights.FirstOrDefaultAsync(f => f.FlightId == id);
+
+            if (flight == null)
+            {
+                return NotFound();
+            }
 
             string email;
             ApplicationUser user = null;
@@ -67,7 +69,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 {
                     return View("NotSignedInOrRegistered");
                 }
-               
+
             }
 
             email = user.Email;
@@ -79,7 +81,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             {
                 return View("AlreadyBooked");
             }
-                        
+
             var booking = new Booking
             {
                 User = user,
@@ -97,7 +99,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             await _db.SaveChangesAsync();
             return RedirectToAction("Success", new { id = booking.BookingId });
         }
-
         [HttpGet("SuccessBooking/{id:int}")]
         public async Task<IActionResult> Success(int id)
         {

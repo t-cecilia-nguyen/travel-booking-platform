@@ -48,13 +48,6 @@
         </div>
     </div>
 </div>
-    
-@if (ViewBag.IsAdmin  )
-{
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-}
 
 
 
@@ -109,11 +102,11 @@
                                 {
                                     @if (User.IsInRole("Admin"))
                                     {
-                                        <a class="btn btn-primary" asp-controller="Hotel" asp-action="Create">Create New Hotel</a>
+                                        <a class="btn btn-primary" asp-controller="Hotel" asp-action="CreateBooking" >Create New Hotel</a>
                                     }
                                 }
-                                <a class="btn btn-primary" asp-controller="HotelBooking" asp-action="Create" asp-route-hotelId="@item.HotelId">Book Hotel</a>
-                                <a asp-action="Details" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
+                                <a class="btn btn-primary" asp-controller="HotelBooking" asp-action="CreateBooking" asp-route-name="@item.Name" asp-route-hotelId="@item.HotelId">Book Hotel</a>
+                                <a asp-action="Details" asp-route-name="@item.Name" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     @if (User.IsInRole("Admin"))
@@ -136,7 +129,7 @@
         </table>
     </div>
 </div>
-*@
+
 
 <div class="container">
     <div class="row row-30   justify-content-center">

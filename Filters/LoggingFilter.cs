@@ -312,7 +312,7 @@ namespace GBC_Travel_Group_90.Filters
                 var booking = bookingType as CarSuccess;
                 var car = booking?.CarRental;
 
-                return $"Model: {car?.CarModel}, Booking ID: {booking?.Id}, Pick-up Date: {booking?.CarRental.PickUpDate}, Pick-up Loaction: {booking?.CarRental.PickUpLocation}";
+                return $"Model: {car?.CarModel}, Booking ID: {booking?.CarSuccessId}, Pick-up Date: {booking?.CarRental.PickUpDate}, Pick-up Loaction: {booking?.CarRental.PickUpLocation}";
             }
             else
             {
@@ -348,7 +348,7 @@ namespace GBC_Travel_Group_90.Filters
             return searchParams;
         }
 
-        private void ExtractFlightSearchParams(HttpRequest request, Dictionary<string, string> searchParams)
+        private static void ExtractFlightSearchParams(HttpRequest request, Dictionary<string, string> searchParams)
         {
             searchParams["origin"] = request.Query["origin"].ToString();
             searchParams["destination"] = request.Query["destination"].ToString();

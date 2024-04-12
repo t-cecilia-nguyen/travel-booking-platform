@@ -4,6 +4,7 @@ using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using GBC_Travel_Group_90.Filters;
 using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
@@ -72,8 +73,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Name,Location,StarRate,NumberOfRooms,Price")] Hotel hotel)
         {
-            try
-            {
+            
                 if (ModelState.IsValid)
                 {
                     await _context.AddAsync(hotel);
@@ -83,11 +83,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 }
 
                 return View(hotel);
-            }
-            catch (EntityAlreadyExists ex)
-            {
-                throw new EntityAlreadyExists("Hotel Model Alredy Exits.");
-            }
+            
         }
 
         

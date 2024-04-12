@@ -141,8 +141,8 @@ namespace GBC_Travel_Group_90.Areas.Identity.Pages.Account
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
-                    throw new UserBlockedException("User account locked out.");
-                    //return RedirectToPage("./Lockout");
+                   
+                    return RedirectToPage("./Lockout");
                 }
                 else
                 {

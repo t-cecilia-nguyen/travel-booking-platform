@@ -165,38 +165,24 @@ namespace GBC_Travel_Group_90.CustomMiddlewares
                 switch (exception)
                 {
                     case KeyNotFoundException:
-                    case NoSuchUserException:
                     case FileNotFoundException:
                         code = HttpStatusCode.NotFound;
                         message = "Resource not found.";
                         break;
-                    case EntityAlreadyExists:
-                        code = HttpStatusCode.Conflict;
-                        message = "Entity already exists.";
-                        break;
+                    
                     case UnauthorizedAccessException:
-                    case ExpiredPasswordException:
-                    case UserBlockedException:
                         code = HttpStatusCode.Unauthorized;
                         message = "Unauthorized access.";
                         break;
-                    case CreateUserException:
-                    case ResetPasswordException:
                     case ArgumentException:
                     case InvalidOperationException:
-                    
-
                         code = HttpStatusCode.BadRequest;
                         message = "Bad request.";
                         break;
                     case InvalidCastException:
                         code = HttpStatusCode.BadRequest;
                         message = "Cannot cast object type.";
-                        break;
-                    case BookingValidatorException:
-                        code = HttpStatusCode.BadRequest;
-                        message = "Booking validation failed.";
-                        break;
+                        break;;
                     case DbUpdateException:
                         code = HttpStatusCode.BadRequest;
                         message = "Unable to update database.";
@@ -212,7 +198,7 @@ namespace GBC_Travel_Group_90.CustomMiddlewares
         }
 
 
-
+        /*
         // Define custom exception classes 
         public class BookingValidatorException : Exception
         {
@@ -258,7 +244,7 @@ namespace GBC_Travel_Group_90.CustomMiddlewares
             {
             }
         }
-        
+        */
     }
     
 }

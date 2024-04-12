@@ -13,7 +13,7 @@ namespace GBC_Travel_Group_90.Filters
         {
             _logger = logger;   
         }
-        public virtual void OnActionExecuting(ActionExecutingContext context)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
 
             if(!context.ModelState.IsValid)
@@ -40,7 +40,7 @@ namespace GBC_Travel_Group_90.Filters
         }
 
         /// <inheritdoc />
-        public virtual void OnActionExecuted(ActionExecutedContext context)
+        public override void OnActionExecuted(ActionExecutedContext context)
         {
         }
     }

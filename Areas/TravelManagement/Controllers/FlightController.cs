@@ -32,13 +32,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 return View(availableFlights);
             }
 
-            // If Admin - view all Flights
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsAdmin);
-            if (user != null)
-            {
-                Console.WriteLine("admin is true");
-                ViewBag.IsAdmin = true;
-            }
+            
 
             var allflights = _db.Flights.ToList();
             return View(allflights);
@@ -54,10 +48,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(ValidateModelFilter))]
-        public async Task<IActionResult> Create(Flight flight)
-		
-		[HttpPost("Create")]
-		[ValidateAntiForgeryToken]
 		[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> Create(Flight flight)
         {
@@ -103,7 +93,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 		[HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(ValidateModelFilter))]
-        public async Task<IActionResult> Edit(int id, [Bind("FlightId, FlightNumber, Airline, Origin, Destination, DepartureTime, ArrivalTime, Price, MaxPassengers")] Flight flight)
 		[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> Edit(int id, [Bind("FlightId, FlightNumber, Airline, Origin, Destination, DepartureTime, ArrivalTime, Price, MaxPassengers")] Flight flight)
         {
