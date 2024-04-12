@@ -4,14 +4,15 @@ using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Models;
 using Microsoft.CodeAnalysis;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+using GBC_Travel_Group_90.Filters;
+using System.Linq.Expressions;
+using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
-using System.Diagnostics;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
     [Area("TravelManagement")]
-    [Route("[area]/[controller]/[action]")]
+    [Route("[area]/[controller]")]
     public class HotelBookingController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -26,6 +27,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         // GET: HotelBookings
         public async Task<IActionResult> Index(string email)
         {
+
             var applicationDbContext = _context.HotelBookings.Include(h => h.Hotel).Include(h => h.User);
 
             if (email == null || string.IsNullOrEmpty(email))
@@ -37,9 +39,12 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: HotelBookings/Details/5
-        public async Task<IActionResult> Details(int? id)
+        
+        // GET: HotelBooking/Details/5
+        [HttpGet("Details/{name}/{id:int}")]
+        public async Task<IActionResult> Details(string name, int id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -48,8 +53,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             var hotelBooking = await _context.HotelBookings
                 .Include(h => h.Hotel)
                 .Include(h => h.User)
-                .FirstOrDefaultAsync(m => m.HotelBookingId == id);
-
+                .FirstOrDefaultAsync(m => m.HotelBookingId == id && m.Hotel.Name == name);
             if (hotelBooking == null)
             {
                 return NotFound();
@@ -89,24 +93,35 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return checkInDate <= checkOutDate;
         }
 
-        // GET: HotelBookings/Create
-        public async Task<IActionResult> Create(int hotelId)
+
+
+        [ServiceFilter(typeof(LoggingFilter))]
+        [HttpGet, ActionName("CreateBooking")]
+        [Route("CreateBooking/{name?}/{hotelId:int?}")]
+        public async Task<IActionResult> CreateBooking(string? name, int hotelId)
         {
+
             var hotel = await _context.Hotels.FindAsync(hotelId);
-            if (hotel == null) return NotFound("Hotel not found");
+            if (hotel == null)
+            {
+                Response.StatusCode = 400;
+                return RedirectToAction("HttpStatusCodeHandler", "Error", new { statusCode = (int)Response.StatusCode });
+            }
 
-
-            var hotelBooking = new HotelBooking { HotelId = hotelId, Status = Status.Pending };
-
+            var hotelBooking = new HotelBooking { Hotel = hotel, HotelId = hotelId, Status = Status.Pending };
+            
             ViewBag.HotelId = hotelId;
+            ViewBag.Name = name;
 
             return View(hotelBooking);
         }
 
-        // POST: HotelBookings/Create
-        [HttpPost]
+
+        [HttpPost("CreateBooking/{name}/{hotelId:int}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HotelBookingId, CheckInDate,CheckOutDate, NumOfRoomsToBook,HotelId")] HotelBooking hotelBooking)
+        [ServiceFilter(typeof(LoggingFilter))]
+        [ServiceFilter(typeof(ValidateModelFilter))]
+        public async Task<IActionResult> CreateBooking([Bind("HotelBookingId, CheckInDate,CheckOutDate, NumOfRoomsToBook,HotelId, Name")] HotelBooking hotelBooking)
         {
             string email;
             ApplicationUser user = null;
@@ -137,7 +152,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                     TempData["AlreadyBooked"] = "You have already booked this hotel.";
                     return RedirectToAction("Index", "Hotel", new { email = user.Email });
                 }
-
+               
                 // Check if CheckInDate is smaller than or equal to CheckOutDate
                 if (!IsValidBookingDates(hotelBooking.CheckInDate, hotelBooking.CheckOutDate))
                 {
@@ -168,7 +183,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                     hotelBooking.Status = Status.Confirmed;
                     await _context.HotelBookings.AddAsync(hotelBooking);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Details), new { id = hotelBooking.HotelBookingId });
+
+                    return RedirectToAction(nameof(Details), new { name = hotelBooking.Name, id = hotelBooking.HotelBookingId });
                 }
                 else
                 {
@@ -180,12 +196,17 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
                     return View(hotelBooking);
                 }
+
+                
             }
             return View(hotelBooking);
+
+
         }
 
         // GET: HotelBookings/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [HttpGet("Edit/{name}/{id:int}")]
+        public async Task<IActionResult> Edit(string? name, int? id)
         {
             if (id == null)
             {
@@ -202,13 +223,17 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         // POST: HotelBookings/Edit/5
-        [HttpPost]
+
+        [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(ValidateModelFilter))]
+
         public async Task<IActionResult> Edit(int id, [Bind("HotelBookingId, NumOfRoomsToBook, CheckInDate,CheckOutDate,UserId, HotelId")] HotelBooking hotelBooking)
         {
             if (id != hotelBooking.HotelBookingId)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("Error/", new { statusCode = 404});
             }
 
             if (ModelState.IsValid)
