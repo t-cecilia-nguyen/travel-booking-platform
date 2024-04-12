@@ -27,6 +27,13 @@
 @Html.Partial("~/Views/Shared/_LoadingBar.cshtml")
 
 <div class="card">
+	@if (User.Identity.IsAuthenticated)
+	{
+		@if (User.IsInRole("Admin"))
+		{
+			<a class="btn btn-primary" style="margin: 10px 0;" asp-controller="Flight" asp-action="Create">Create New Flight</a>
+		}
+	}
 	<div class="card-body" id="flightList">
 		@if (Model.Any())
 		{
@@ -65,14 +72,7 @@
 								<td>@flight.ArrivalTime</td>
 								<td>@flight.Price</td>
 								<td>@flight.MaxPassengers</td>
-								<td>
-									@if (User.Identity.IsAuthenticated)
-									{
-										@if (User.IsInRole("Admin"))
-										{
-											<a class="btn btn-primary" style="margin: 10px 0;" asp-controller="Flight" asp-action="Create">Create New Flight</a>
-										}
-									}
+								<td>									
 									<a asp-controller="Booking" asp-action="GetBookFlight" asp-route-id="@flight.FlightId" class="btn btn-primary">Book Flight</a>
 									<a asp-action="Details" asp-route-id="@flight.FlightId" class="btn btn-info">Details</a>
 									@if (User.Identity.IsAuthenticated)
