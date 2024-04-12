@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using GBC_Travel_Group_90.Models;
 using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+using GBC_Travel_Group_90.Filters;
+using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +14,7 @@ using SendGrid.Helpers.Mail;
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
     [Area("TravelManagement")]
-    [Route("[area]/[controller]/[action]")]
+    [Route("[area]/[controller]")]
     public class CarRentalController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -31,6 +33,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(cars);
         }
 
+
+
+
         [HttpGet("Details/{id:int}")]
         public async Task<IActionResult> Details(int id)
         {
@@ -43,7 +48,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View(carRental);
         }
 
-		[HttpGet("Create")]
+        [HttpGet("Create")]
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
@@ -77,10 +82,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         }
 
-		
-		[HttpPost("Create")]
+
+        [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Create(CarRental carRental)
         {
             if (ModelState.IsValid)
@@ -107,6 +113,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [HttpPost("Book")]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(LoggingFilter))]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Book(int id)
         {
 
@@ -124,7 +132,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 user = await _userManager.GetUserAsync(User);
-            } 
+            }
             else
             {
                 // If User is not signed in
@@ -145,8 +153,12 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             carRental.ApplicationUserId = user.Id;
             await _db.SaveChangesAsync();
 
-            return RedirectToAction("Success", new { carRentalId = carRental.CarRentalId, userId = user.Id });
+
+            return RedirectToAction("Success", new { carRentalId = carRental.CarRentalId, userId = user.UserId });
+
         }
+
+        
 
 
         [HttpGet("Edit/{id:int}")]
@@ -165,6 +177,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Edit(int id, [Bind("CarRentalId, RentalCompany, PickUpLocation, PickUpDate, DropOffDate, CarModel, Price")] CarRental carRental)
         {
             if (id != carRental.CarRentalId)
@@ -231,10 +244,13 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return NotFound();
         }
 
+
+        [ServiceFilter(typeof(LoggingFilter))]
         [HttpPost("Search")]
+        [Route("Search/{searchType?}/{RentalCompany?}/{CarModel?}/{PickUpDate?}/{DropoffDate?}")]
         public async Task<IActionResult> Search(string RentalCompany, string CarModel, DateTime? PickUpDate, DateTime? DropOffDate)
         {
-            var carQuery = _db.CarRentals.AsQueryable(); // Queryable to allow further filtering
+            var carQuery = from f in _db.CarRentals select f;
 
             if (!string.IsNullOrEmpty(RentalCompany))
             {

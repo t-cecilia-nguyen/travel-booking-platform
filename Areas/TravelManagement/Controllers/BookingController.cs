@@ -1,6 +1,9 @@
 ﻿using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
 using GBC_Travel_Group_90.Data;
 using Microsoft.AspNetCore.Identity;
+using GBC_Travel_Group_90.Filters;
+using GBC_Travel_Group_90.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
@@ -11,7 +14,8 @@ using System.Runtime.CompilerServices;
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
     [Area("TravelManagement")]
-    [Route("[area]/[controller]/[action]")]
+    [Route("[area]/[controller]")]
+    [ServiceFilter(typeof(LoggingFilter))]
     public class BookingController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -36,6 +40,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View("BookFlight", flight);
         }
 
+
+        [ServiceFilter(typeof(LoggingFilter))]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         [HttpPost("PostBookFlight")]
         public async Task<IActionResult> PostBookFlight(int id)
         {
@@ -62,7 +69,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 {
                     return View("NotSignedInOrRegistered");
                 }
-               
+
             }
 
             email = user.Email;
@@ -74,7 +81,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             {
                 return View("AlreadyBooked");
             }
-                        
+
             var booking = new Booking
             {
                 User = user,
@@ -92,10 +99,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             await _db.SaveChangesAsync();
             return RedirectToAction("Success", new { id = booking.BookingId });
         }
-
         [HttpGet("SuccessBooking/{id:int}")]
         public async Task<IActionResult> Success(int id)
         {
+
             // Retrieve the booking from the database
             var booking = await _db.Bookings.Include(b => b.User)
                                       .Include(b => b.Flight)

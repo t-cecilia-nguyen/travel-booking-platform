@@ -44,7 +44,7 @@
     </div>
 </div>
 <div>
-    <a class="btn btn-primary" asp-controller="HotelBooking" asp-action="Create" asp-route-hotelId="@Model?.HotelId">Book Hotel</a>
+    <a class="btn btn-primary" asp-controller="HotelBooking" asp-action="CreateBooking" asp-route-hotelId="@Model?.Name" asp-route-hotelId="@Model?.HotelId">Book Hotel</a>
     <a asp-action="Index" class="btn btn-warning">Back to Hotels</a>
 </div>
 

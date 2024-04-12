@@ -11,7 +11,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-4">
-                <form asp-area="TravelManagement" asp-controller="HotelBooking" asp-action="Create" method="post">
+                <form asp-area="TravelManagement" asp-controller="HotelBooking" asp-action="CreateBooking" method="post">
                     <input type="hidden" value="@ViewBag.HotelId" asp-for="HotelId" />                 
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -31,9 +31,18 @@
                         <input asp-for="CheckOutDate" type="datetime-local" class="form-control" />
                         <span asp-validation-for="CheckOutDate" class="text-danger"></span>
                     </div>
-           
-                    <button type="submit" class="btn btn-secondary">Book Hotel</button>
-                    <a asp-controller="Hotel" asp-action="Index" class="btn btn-warning">Back to Hotels</a>
+            
+                    @Html.HiddenFor(model => model.HotelId)
+                    @Html.HiddenFor(model => model.Name)
+                    
+
+                    <div class="form-group">
+                    <input type="submit" value="Book Hotel" class="btn btn-secondary" />
+                  
+                        <a asp-controller="Hotel" asp-action="Index" class="btn btn-warning">Back to Hotels</a>
+
+                    
+                    </div>
                 </form>
             </div>
         </div>

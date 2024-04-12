@@ -41,6 +41,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
 
         public int HotelId { get; set; }
 
+        public string? Name { get; set; }
+
         public Hotel? Hotel { get; set; }
     }
     public enum Status
