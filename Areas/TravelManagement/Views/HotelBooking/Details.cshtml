@@ -95,14 +95,3 @@
         </div>
     </div>
 </div>
-
-<div>
-    @if (User.Identity.IsAuthenticated)
-    {
-        @if (User.IsInRole("Admin"))
-        {
-            <a asp-action="Edit" asp-route-isAdmin="true" asp-route-id="@Model?.HotelBookingId" class="btn btn-secondary">Edit</a>
-        }
-    }
-        <a asp-controller="Hotel" asp-action="Index" class="btn btn-warning">Back to Hotel Listing</a>
-</div>
