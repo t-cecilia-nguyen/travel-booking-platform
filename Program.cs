@@ -87,9 +87,10 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    //app.UseExceptionHandler("/Error");
-    app.UseMiddleware<ErrorHandlingMiddleware>();
+    
+    app.UseExceptionHandler("/Error");
     app.UseStatusCodePagesWithReExecute("/Error/{0}");
+
 }
 else
 {
@@ -124,23 +125,6 @@ app.UseLoggingMiddleware();
 
 
 // Dynamic Route
-/*
-app.Use(async (context, next) =>
-{
-    var path = context.Request.Path.Value;
-    //resolve path to content identifier
-    if (path.StartsWith("/TravelManagement/Flight", StringComparison.OrdinalIgnoreCase))
-    {
-        var slug = path.Substring("/TravelManagement/Flight".Length).Trim('/');
-        //resolve slug to article Id and set route values
-        context.Request.RouteValues["Controller"] = "Flights";
-        context.Request.RouteValues["action"] = "Details";
-        //context.Request.RouteValues["id"] = ResolveSlugToId(slug);
-
-    }
-    await next();
-});
-*/
 
 
 //app.UseEndpoints(endpoints =>)
@@ -164,17 +148,20 @@ app.MapGet("/CustomRouteError", async context => {
 
 app.MapRazorPages();
 
+
 app.MapControllerRoute(
     name: "areas",
-    pattern: "{area:exists}/{controller:exists}/{action=Index}/{id?}");
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{name?}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-
-
-
+app.MapControllerRoute(
+    name: "error",
+    pattern: "/Error/{statusCode}",
+    defaults: new { controller = "Error", action = "HttpStatusCodeHandler" }
+);
 
 
 

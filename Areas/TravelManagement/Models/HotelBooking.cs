@@ -31,6 +31,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
         public int UserId { get; set; }
         public User? User { get; set; }
         public int HotelId { get; set; }
+        public string? Name { get; set; }
         public Hotel? Hotel { get; set; }
 
 

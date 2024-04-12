@@ -44,9 +44,33 @@ namespace GBC_Travel_Group_90.Filters
 
                 }
 
-                if (actionDescriptor.ActionName == "Book" || actionDescriptor.ActionName == "Success" || actionDescriptor.ActionName == "Create" || actionDescriptor.ActionName == "BookFlight")
+                if (actionDescriptor.ActionName == "Book" || actionDescriptor.ActionName == "Success" || actionDescriptor.ActionName == "Create" || actionDescriptor.ActionName == "CreateBooking" || actionDescriptor.ActionName == "BookFlight")
                 {
+                    var action = actionDescriptor.ActionName;
                     var bookingInfo = GetBookingDetails<Booking>(context.HttpContext);
+
+                    switch (action) {
+                        case "Book":
+
+                            bookingInfo = GetBookingDetails<Booking>(context.HttpContext);
+                            break;
+                        case "Success":
+
+                            bookingInfo = GetBookingDetails<CarRental>(context.HttpContext);
+                            break;
+                        case "Create":
+                        case "CreateBooking":
+
+                            bookingInfo = GetBookingDetails<HotelBooking>(context.HttpContext);
+                            break;
+                        case "BookFlight":
+
+                            bookingInfo = GetBookingDetails<Booking>(context.HttpContext);
+                            break;
+                        default:
+                            break;
+                    }
+
 
                     // Log Booking activities
                     LogBookingInfo(context, bookingInfo);
@@ -188,8 +212,16 @@ namespace GBC_Travel_Group_90.Filters
             {
                 if (int.TryParse(bookingIdObj?.ToString(), out int bookingId))
                 {
-                    // Assign BookingType based on the controller
-                    bookingType = (T)(object)new Booking();
+                    // Cast the booking type based on the controller
+                    if (typeof(T) == typeof(Booking))
+                    {
+                        bookingType = (T)(object)new Booking();
+                    }
+                    else
+                    {
+                        bookingInfo = "Invalid booking type.";
+                    }
+                    
 
                     bookingInfo = RetriveBooking(bookingId, bookingType);
                 }
@@ -198,15 +230,24 @@ namespace GBC_Travel_Group_90.Filters
                     bookingInfo = "Invalid booking ID format.";
                 }
             }
-            //else if (controllerName == "HotelBooking" && httpContext.GetRouteData().Values.TryGetValue("hotelId", out object hotelIdObj))
-            else if (controllerName == "HotelBooking" && httpContext.Request.Query.ContainsKey("hotelId"))
-               
+            else if (controllerName == "HotelBooking" && httpContext.GetRouteData().Values.TryGetValue("hotelId", out object hotelIdObj))
             {
-                if (int.TryParse(request.Query["hotelId"], out int bookingId))
+                if (int.TryParse(hotelIdObj?.ToString(), out int bookingId))
                 {
-                     bookingInfo = RetriveBooking(bookingId, bookingType);
+                    
+                    // Cast the booking type based on the controller
+                    if (typeof(T) == typeof(HotelBooking))
+                    {
+                        bookingType = (T)(object)new HotelBooking();
+                    }
+                    else
+                    {
+                        bookingInfo = "Invalid booking type.";
+                    }
 
-                    bookingType = (T)(object)new HotelBooking();
+
+                    // Assuming RetriveBooking method returns booking information
+                    bookingInfo = RetriveBooking(bookingId, bookingType);
 
                 }
                 else
@@ -215,13 +256,20 @@ namespace GBC_Travel_Group_90.Filters
                 }
             }
             else if (controllerName == "CarRental" && httpContext.GetRouteData().Values.TryGetValue("id", out object carIdObj))
-             
             {
                 if (int.TryParse(carIdObj?.ToString(), out int bookingId))
                 {
-                    // Assign BookingType based on the controller
-                    bookingType = (T)(object)new CarSuccess();
+                    // Cast the booking type based on the controller
+                    if (typeof(T) == typeof(CarSuccess))
+                    {
+                        bookingType = (T)(object)new CarSuccess();
+                    }
+                    else
+                    {
+                        bookingInfo = "Invalid booking type.";
+                    }
 
+                    // Assuming RetriveBooking method returns booking information
                     bookingInfo = RetriveBooking(bookingId, bookingType);
                 }
                 else
@@ -229,6 +277,7 @@ namespace GBC_Travel_Group_90.Filters
                     bookingInfo = "Invalid booking ID format.";
                 }
             }
+
             else
             {
                 // Handle case when the controller or booking ID parameter is not present or unrecognized

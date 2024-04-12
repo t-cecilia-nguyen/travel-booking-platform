@@ -17,7 +17,6 @@ namespace GBC_Travel_Group_90.Controllers
             _db = db;
         }
 
-        [HttpGet("")]
         public IActionResult Index()
 		{
 			return View();

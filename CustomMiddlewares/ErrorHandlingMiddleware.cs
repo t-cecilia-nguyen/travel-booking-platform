@@ -1,9 +1,11 @@
 ﻿using Serilog;
 using System.Net;
 using System.Reflection;
-using Serilog;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
+
+
 
 namespace GBC_Travel_Group_90.CustomMiddlewares
 {
@@ -108,28 +110,18 @@ namespace GBC_Travel_Group_90.CustomMiddlewares
 
 
 
-
-    ///
-    using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using Serilog;
-
 namespace GBC_Travel_Group_90.CustomMiddlewares
     {
         public class ErrorHandlingMiddleware
         {
-            private static readonly ILogger<ErrorHandlingMiddleware> _logger = (ILogger<ErrorHandlingMiddleware>)Log.ForContext<ErrorHandlingMiddleware>();
+            private  readonly ILogger<ErrorHandlingMiddleware> _logger ;
 
             private readonly RequestDelegate _next;
 
-            public ErrorHandlingMiddleware(RequestDelegate next)
+            public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
             {
                 _next = next;
+                _logger = logger;
             }
 
             public async Task Invoke(HttpContext context)
@@ -140,16 +132,28 @@ namespace GBC_Travel_Group_90.CustomMiddlewares
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError("---------"+exception, "Error during executing {Context}", context.Request.Path);
+                    _logger.LogError(exception, "Error during executing {Context}", context.Request.Path);
+
                     var response = context.Response;
-                    response.ContentType = "application/json";
+                    response.ContentType = "text/html";
+
+                    // Determine the appropriate status code based on the exception
+                    var (code, message, stackTrace, timeStamp) = GetResponse(exception);
+
+                    response.StatusCode = (int)code;
+                    int statusCode = response.StatusCode;
+
+                    // Redirect to the ErrorController with the status code
+                    // Construct the URL to the desired controller action
+                    string url = $"{context.Request.Scheme}://{context.Request.Host}/Error/{statusCode}";
+
+                    // Perform the redirection
+                    context.Response.Redirect(url);
 
 
-                    var (status, message, stackTrace, timeStamp) = GetResponse(exception);
-                    response.StatusCode = (int)status;
-                    await response.WriteAsync(JsonConvert.SerializeObject(new { message, stackTrace, timeStamp }));
                 }
             }
+
 
             public (HttpStatusCode code, string message, string stackTrace, DateTime timeStamp) GetResponse(Exception exception)
             {
@@ -180,12 +184,22 @@ namespace GBC_Travel_Group_90.CustomMiddlewares
                     case ResetPasswordException:
                     case ArgumentException:
                     case InvalidOperationException:
+                    
+
                         code = HttpStatusCode.BadRequest;
                         message = "Bad request.";
+                        break;
+                    case InvalidCastException:
+                        code = HttpStatusCode.BadRequest;
+                        message = "Cannot cast object type.";
                         break;
                     case BookingValidatorException:
                         code = HttpStatusCode.BadRequest;
                         message = "Booking validation failed.";
+                        break;
+                    case DbUpdateException:
+                        code = HttpStatusCode.BadRequest;
+                        message = "Unable to update database.";
                         break;
                     default:
                         code = HttpStatusCode.InternalServerError;

@@ -3,11 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using GBC_Travel_Group_90.Filters;
+using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
     [Area("TravelManagement")]
-    [Route("[area]/[controller]/[action]")]
+    [Route("[area]/[controller]")]
     public class HotelController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,58 +19,33 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         // GET: Hotels
-        public async Task<IActionResult> Index(string email, bool isAdmin = false)
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-
-            ViewBag.Email = email;
 
 
             var applicationDbContext = _context.Hotels;
 
-            //handle isAdmin request
-            ViewBag.IsAdmin = isAdmin;
-            if (isAdmin)
-            {
-                ViewBag.IsAdmin = true;
-                return View(await applicationDbContext.ToListAsync());
-            }
-
-
-            if (email == null || string.IsNullOrEmpty(email))
-            {
-                ViewBag.IsAdmin = false;
-                return View(await applicationDbContext.ToListAsync());
-            }
-
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsAdmin);
-            if (user != null)
-            {
-                Console.WriteLine("admin is true");
-
-                ViewBag.IsAdmin = true;
-            }
-
+            
             return View(await applicationDbContext.ToListAsync());
+            
+
 
 
         }
 
         // GET: Hotels/Details/5
-        public async Task<IActionResult> Details(int? id, bool isAdmin = false)
+        [Route("Details/{name}/{id:int}")]
+        public async Task<IActionResult> Details(string? name, int? id)
         {
-            ViewBag.IsAdmin = false;
             if (id == null)
             {
                 return NotFound();
             }
-
-            if (isAdmin)
-            {
-                ViewBag.IsAdmin = true;
-            }
-
+            
             var hotel = await _context.Hotels
-                .FirstOrDefaultAsync(m => m.HotelId == id);
+                .FirstOrDefaultAsync(m => m.HotelId == id && m.Name == name);
+
             if (hotel == null)
             {
                 return NotFound();
@@ -82,7 +58,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
 
         // GET: Hotels/Create
-
+        [HttpGet("Create")]
         public IActionResult Create()
         {
             return View();
@@ -95,33 +71,25 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [ServiceFilter(typeof(ValidateModelFilter))]
         public async Task<IActionResult> Create([Bind("Name,Location,StarRate,NumberOfRooms,Price")] Hotel hotel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await _context.AddAsync(hotel);
-                await _context.SaveChangesAsync();
-                //return isAdmin's View
-                return RedirectToAction(nameof(Index), new { isAdmin = true });
-            }
+                if (ModelState.IsValid)
+                {
+                    await _context.AddAsync(hotel);
+                    await _context.SaveChangesAsync();
+                    //return isAdmin's View
+                    return RedirectToAction(nameof(Index));
+                }
 
-            return View(hotel);
+                return View(hotel);
+            }
+            catch (EntityAlreadyExists ex)
+            {
+                throw new EntityAlreadyExists("Hotel Model Alredy Exits.");
+            }
         }
 
-        /*// GET: Hotels/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var hotel = await _context.Hotels.FindAsync(id);
-            if (hotel == null)
-            {
-                return NotFound();
-            }
-            return View(hotel);
-        }*/
-
+        
 
         [HttpGet("Edit/{id:int}")]
         public async Task<IActionResult> Edit(int? id)
@@ -209,8 +177,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         [ServiceFilter(typeof(LoggingFilter))]
-        [HttpGet("Search")]
-        [Route("Search/{searchType}/{name?}/{location?}/{starRate?}/{maxPrice?}")]
+        [HttpGet]
+        [Route("SearchHotel/{searchType?}/{name?}/{location?}/{starRate?}/{maxPrice?}")]
         public async Task<IActionResult> SearchHotel(string? searchType, string? name, string? location, int? starRate, decimal? maxPrice)
         {
 

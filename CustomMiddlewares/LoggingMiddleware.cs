@@ -23,37 +23,16 @@ namespace GBC_Travel_Group_90.CustomMiddlewares
 
             _logger.LogInformation($"----------Incoming Request: {context.Request.Method} on  Path: {context.Request.Path}");
 
-            // log request headers
-            //LogHeaders(context.Request.Headers);
-
-            //
-            /* log request body (if it's a readable stream and not too large)
-            if (context.Request.Body.CanRead && context.Request.ContentLength < 1024)
-            {
-                context.Request.EnableBuffering(); // Enable request body buffering
-                var requestBody = await new StreamReader(context.Request.Body, Encoding.UTF8).ReadToEndAsync();
-                _logger.LogInformation($"--------Request Body: {requestBody}");
-                context.Request.Body.Position = 0; // Reset stream position for further processing
-            }*/
-
+            
             // Call the next middleware in the pipeline
             await _next(context);
 
             // Log the response status
             _logger.LogInformation($"----------- Response Status: {context.Response.StatusCode} on Path {context.Request.Path} ");
 
-            // Optionally log response headers
-            //LogHeaders(context.Response.Headers);
         }
 
 
-        private void LogHeaders(IHeaderDictionary headers)
-        {
-            foreach (var (key, value) in headers)
-            {
-                _logger.LogInformation($"-------------Header: {key}: {value}");
-            }
-        }
 
     }   
 

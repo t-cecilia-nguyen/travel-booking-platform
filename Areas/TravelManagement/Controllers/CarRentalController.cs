@@ -22,23 +22,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         [HttpGet("")]
-        public async Task<IActionResult> Index(string email)
+        public async Task<IActionResult> Index()
         {
-
-
-            if (email == null || string.IsNullOrEmpty(email))
-            {
-                ViewBag.IsAdmin = false;
-                return View(await _db.CarRentals.ToListAsync());
-            }
-
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsAdmin);
-            if (user != null)
-            {
-                Console.WriteLine("admin is true");
-                ViewBag.IsAdmin = true;
-            }
-
+   
             return View(await _db.CarRentals.ToListAsync());
         }
 

@@ -145,12 +145,11 @@
                             <h5 class="card-text">Available Rooms: @item.NumberOfRooms</h5>
                         </div>
                         <div class="card-footer">
-                            <a asp-action="Details" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
-                            @if (ViewBag.IsAdmin)
-                            {
-                                <a asp-action="Edit" asp-route-isAdmin="true" asp-route-id="@item.HotelId" class="btn btn-secondary">Edit</a>
-                                <a asp-action="Delete" asp-route-isAdmin="true" asp-route-id="@item.HotelId" class="btn btn-danger">Delete</a>
-                            }
+                            <a asp-action="Details" asp-route-name="@item.Name" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
+                            
+                                <a asp-action="Edit" asp-route-name="@item.Name" asp-route-id="@item.HotelId" class="btn btn-secondary">Edit</a>
+                                <a asp-action="Delete"  asp-route-id="@item.HotelId" class="btn btn-danger">Delete</a>
+                            
                         </div>
                     </div>
                 </div>

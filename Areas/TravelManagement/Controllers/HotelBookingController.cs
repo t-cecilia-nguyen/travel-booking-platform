@@ -11,7 +11,7 @@ using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddleware
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
     [Area("TravelManagement")]
-    [Route("[area]/[controller]/[action]")]
+    [Route("[area]/[controller]")]
     public class HotelBookingController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,20 +21,16 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             _context = context;
         }
 
-        // GET: HotelBookings
-        public async Task<IActionResult> Index(string email, bool isAdmin = false)
+        // GET: HotelBooking
+        [HttpGet]
+        public async Task<IActionResult> Index(string email)
         {
-            ViewBag.IsAdmin = false;
-            if (isAdmin)
-            {
-                ViewBag.IsAdmin = true;
-            }
 
             var applicationDbContext = _context.HotelBookings.Include(h => h.Hotel).Include(h => h.User);
 
             if (email == null || string.IsNullOrEmpty(email))
             {
-                ViewBag.IsAdmin = false;
+              
 
                 return View(await applicationDbContext.ToListAsync());
             }
@@ -43,7 +39,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             if (user != null)
             {
                 Console.WriteLine("admin is true");
-                ViewBag.IsAdmin = true;
+       
             }
 
             return View(await applicationDbContext.ToListAsync());
@@ -52,15 +48,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         }
 
-        // GET: HotelBookings/Details/5
-        public async Task<IActionResult> Details(int? id, bool isAdmin = false)
+        // GET: HotelBooking/Details/5
+        [HttpGet("Details/{name}/{id:int}")]
+        public async Task<IActionResult> Details(string name, int id)
         {
-            ViewBag.IsAdmin = false;
-
-            if (isAdmin)
-            {
-                ViewBag.IsAdmin = true;
-            }
 
             if (id == null)
             {
@@ -70,7 +61,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             var hotelBooking = await _context.HotelBookings
                 .Include(h => h.Hotel)
                 .Include(h => h.User)
-                .FirstOrDefaultAsync(m => m.HotelBookingId == id);
+                .FirstOrDefaultAsync(m => m.HotelBookingId == id && m.Hotel.Name == name);
             if (hotelBooking == null)
             {
                 return NotFound();
@@ -111,45 +102,46 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return checkInDate <= checkOutDate;
         }
 
+
+
         [ServiceFilter(typeof(LoggingFilter))]
-        // GET: HotelBookings/Create
-        public async Task<IActionResult> Create(int hotelId, bool isAdmin = false)
+        [HttpGet, ActionName("CreateBooking")]
+        [Route("CreateBooking/{name}/{hotelId:int}")]
+        public async Task<IActionResult> Create(string name, int hotelId)
         {
-            ViewBag.IsAdmin = false;
-            if (isAdmin)
-            {
-                ViewBag.IsAdmin = true;
-            }
 
             var hotel = await _context.Hotels.FindAsync(hotelId);
-            if (hotel == null) return NotFound("Hotel not found");
+            if (hotel == null)
+            {
+                Response.StatusCode = 400;
+                return RedirectToAction("HttpStatusCodeHandler", "Error", new { statusCode = (int)Response.StatusCode });
+            }
 
-
-            var hotelBooking = new HotelBooking { HotelId = hotelId, Status = Status.Pending };
-
+            var hotelBooking = new HotelBooking { Hotel = hotel, HotelId = hotelId, Status = Status.Pending };
+            
             ViewBag.HotelId = hotelId;
+            ViewBag.Name = name;
 
 
             return View(hotelBooking);
         }
-        [ServiceFilter(typeof(LoggingFilter))]
-        // POST: HotelBookings/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
 
+
+        [HttpPost("CreateBooking/{name}/{hotelId:int}")]
+        [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(LoggingFilter))]
         [ServiceFilter(typeof(ValidateModelFilter))]
-        public async Task<IActionResult> Create([Bind("HotelBookingId, CheckInDate,CheckOutDate, NumOfRoomsToBook,HotelId")] HotelBooking hotelBooking, string userEmail)
+        public async Task<IActionResult> Create([Bind("HotelBookingId, CheckInDate,CheckOutDate, NumOfRoomsToBook,HotelId, Name")] HotelBooking hotelBooking)
         {
 
             try
             {
                 // Check if the user already booked the hotel
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
-                if (user == null)
+                //var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+               /* if (user == null)
                 {
                     user = new User
                     {
-                        Email = userEmail,
                         FirstName = "Guest",
                         LastName = "Guest"
                     };
@@ -162,8 +154,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 if (existingBooking != null)
                 {
                     TempData["AlreadyBooked"] = "You have already booked this hotel.";
-                    return RedirectToAction("Index", "Hotel", new { email = userEmail });
-                }
+                    return RedirectToAction("Index", "Hotel");
+                }*/
 
                 // Check if CheckInDate is smaller than or equal to CheckOutDate
                 if (!IsValidBookingDates(hotelBooking.CheckInDate, hotelBooking.CheckOutDate))
@@ -181,13 +173,13 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
                     // Continue booking 
 
-                    hotelBooking.UserId = user.UserId;
+                    //hotelBooking.UserId = user.UserId;
                     hotelBooking.BookingDate = DateTime.Now;
                     hotelBooking.Status = Status.Confirmed;
                     await _context.HotelBookings.AddAsync(hotelBooking);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction(nameof(Details), new { id = hotelBooking.HotelBookingId });
+                    return RedirectToAction(nameof(Details), new { name = hotelBooking.Name, id = hotelBooking.HotelBookingId });
                 }
                 else
                 {
@@ -200,29 +192,20 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                     return View(hotelBooking);
                 }
 
-                return View(hotelBooking);
+                
             }
-            catch (BookingValidatorException ex)
+            catch(DbUpdateException e)
             {
-                throw new BookingValidatorException("Booking validation failed.", ex);
-            }
-            catch (NoSuchUserException ex)
-            {
-                throw new NoSuchUserException("User not found.", ex);
+                return RedirectToAction("Error", "Error");
             }
 
 
         }
 
         // GET: HotelBookings/Edit/5
-        public async Task<IActionResult> Edit(int? id, bool isAdmin = false)
+        [HttpGet("Edit/{name}/{id:int}")]
+        public async Task<IActionResult> Edit(string? name, int? id)
         {
-
-            if (isAdmin)
-            {
-                ViewBag.IsAdmin = true;
-            }
-
             if (id == null)
             {
                 return NotFound();
@@ -240,7 +223,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         // POST: HotelBookings/Edit/5
 
-        [HttpPost]
+        [HttpPost("Edit/{id:int}")]
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(ValidateModelFilter))]
 

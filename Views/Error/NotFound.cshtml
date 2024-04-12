@@ -4,11 +4,21 @@
 }
 
 
-<h2>@ViewBag.ErrorMessage</h2>
-
-<h2>Exception Details</h2>
-
 <div class="alert alert-danger">
-    <h4>Exeption occurred while calling: </h4>
-    <h1>404</h1>
+    <h2>An Error Has Occured While Proccessing Your Request.</h2>
+    <h4>Please Contact Us for more information. Our contact information is at the bottom of this page.</h4>
+    <br />
+    <hr />
+    <br />
+    <h2 class="mb-10">Exeption Details</h2>
+</div>
+
+<hr />
+
+<h2 >Error Details</h2>
+
+<div class="alert alert-danger mt-5">
+    <h4>Exeption occurred while processing your request. </h4>
+    <p class="text-warning">Error Message: @ViewBag.ErrorMessage</p>
+    <h1>@ViewBag.StatusCode</h1>
 </div>
