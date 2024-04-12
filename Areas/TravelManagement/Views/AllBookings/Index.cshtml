@@ -34,7 +34,7 @@
                 <p><strong>Destination: </strong>@booking.Flight.Destination</p>
                 <p><strong>Departure Time: </strong>@booking.Flight.DepartureTime</p>
                 <p><strong>Arrival Time: </strong>@booking.Flight.ArrivalTime</p>
-                <p><strong>Price: </strong>@booking.Flight.Price</p>
+                <p><strong>Price: </strong>$@booking.Flight.Price</p>
                 <p><strong>Passengers (Current/Max): </strong>@booking.Flight.CurrentPassengers/@booking.Flight.MaxPassengers</p>
             </div>
         </div>
@@ -66,7 +66,7 @@
                 <p><strong>Drop Off Date: </strong>@carSuccess.CarRental.DropOffDate</p>
                 <p><strong>Car Model: </strong>@carSuccess.CarRental.CarModel</p>
                 <p><strong>Max Passengers: </strong>@carSuccess.CarRental.MaxPassengers</p>
-                <p><strong>Price: </strong>@carSuccess.CarRental.Price</p>
+                <p><strong>Price: </strong>$@carSuccess.CarRental.Price</p>
             </div>
         </div>
     </div>
@@ -96,7 +96,9 @@
                 <p><strong>Number of Rooms: </strong>@hotelBooking.NumOfRoomsToBook</p>
                 <p><strong>Hotel Name: </strong>@hotelBooking.Hotel.Name</p>
                 <p><strong>Location: </strong>@hotelBooking.Hotel.Location</p>
-                <p><strong>Price: </strong>@hotelBooking.Hotel.Price</p>
+                <p><strong>Price per Night: </strong>$@hotelBooking.Hotel.Price</p>
+                <p><strong>Number of Days Booked: </strong>@((int)(hotelBooking.CheckOutDate - hotelBooking.CheckInDate).TotalDays)</p>
+                <p><strong>Total Amount: </strong>$@hotelBooking.TotalAmount</p>
             </div>
         </div>
     </div>

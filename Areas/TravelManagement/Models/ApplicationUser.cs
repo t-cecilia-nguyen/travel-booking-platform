@@ -16,6 +16,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
         public List<HotelBooking>? HotelBookings { get; set; }
 
         public List<CarSuccess>? CarSuccesses { get; set; }
+        public int FrequentFlyerPoints { get; set; }
+        public int FrequentCarPoints { get; set; }
+        public int HotelLoyaltyPoints { get; set; }
 
     }
 }

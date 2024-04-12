@@ -16,14 +16,6 @@
 
 @Html.Partial("~/Views/Shared/_SearchBar.cshtml")
 
-@if (User.Identity.IsAuthenticated)
-{
-	@if (User.IsInRole("Admin")) 
-	{
-		<a class="btn btn-primary" style="margin: 10px 0;" asp-controller="Flight" asp-action="Create">Create New Flight</a>
-	}
-}
-
 <div class="card">
 	<div class="card-body">
 		@if (Model.Any())
@@ -31,15 +23,15 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<td>Flight Number</td>
-						<td>Airline</td>
-						<td>Origin</td>
-						<td>Destination</td>
-						<td>Departure</td>
-						<td>Arrival</td>
-						<td>Price</td>
-						<td>Max Passengers</td>
-						<td>Actions</td>
+						<th>Flight Number</th>
+						<th>Airline</th>
+						<th>Origin</th>
+						<th>Destination</th>
+						<th>Departure</th>
+						<th>Arrival</th>
+						<th>Price</th>
+						<th>Max Passengers</th>
+						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -57,6 +49,13 @@
 								<td>@flight.Price</td>
 								<td>@flight.MaxPassengers</td>
 								<td>
+									@if (User.Identity.IsAuthenticated)
+									{
+										@if (User.IsInRole("Admin"))
+										{
+											<a class="btn btn-primary" style="margin: 10px 0;" asp-controller="Flight" asp-action="Create">Create New Flight</a>
+										}
+									}
 									<a asp-controller="Booking" asp-action="GetBookFlight" asp-route-id="@flight.FlightId" class="btn btn-primary">Book Flight</a>
 									<a asp-action="Details" asp-route-id="@flight.FlightId" class="btn btn-info">Details</a>
 									@if (User.Identity.IsAuthenticated)

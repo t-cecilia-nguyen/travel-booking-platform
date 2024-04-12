@@ -12,10 +12,14 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title">User Information</h5>
-                    <p>Email: @Model.Email</p>
-                    <p>First Name: @Model.FirstName</p>
-                    <p>Last Name: @Model.LastName</p>
-                    <p>Phone Number: @Model.PhoneNumber</p>
+                    <p><strong>Email: </strong>@Model.Email</p>
+                    <p><strong>First Name: </strong>@Model.FirstName</p>
+                    <p><strong>Last Name: </strong>@Model.LastName</p>
+                    <p><strong>Phone Number: </strong>@Model.PhoneNumber</p>
+                    <hr />
+                    <p><strong>Flyer Points: </strong>@Model.FrequentFlyerPoints</p>
+                    <p><strong>Car Points: </strong>@Model.FrequentCarPoints</p>
+                    <p><strong>Hotel Loyalty Points: </strong>@Model.HotelLoyaltyPoints</p>
                 </div>
             </div>
         </div>
@@ -45,12 +49,13 @@
         {
             <div class="card mb-3">
                 <div class="card-body">
-                    <p>Flight Number: @flightBooking.Flight?.FlightNumber</p>
-                    <p>Airline: @flightBooking.Flight?.Airline</p>
-                    <p>Origin: @flightBooking.Flight?.Origin</p>
-                    <p>Destination: @flightBooking.Flight?.Destination</p>
-                    <p>Departure Time: @flightBooking.Flight?.DepartureTime</p>
-                    <p>Arrival Time: @flightBooking.Flight?.ArrivalTime</p>
+                    <p><strong>Flight Number: </strong>@flightBooking.Flight?.FlightNumber</p>
+                    <p><strong>Airline: </strong>@flightBooking.Flight?.Airline</p>
+                    <p><strong>Origin: </strong>@flightBooking.Flight?.Origin</p>
+                    <p><strong>Destination: </strong>@flightBooking.Flight?.Destination</p>
+                    <p><strong>Departure Time: </strong>@flightBooking.Flight?.DepartureTime</p>
+                    <p><strong>Arrival Time: </strong>@flightBooking.Flight?.ArrivalTime</p>
+                    <p><strong>Price: </strong>$@flightBooking.Flight?.Price</p>
                 </div>
             </div>
         }      
@@ -68,12 +73,13 @@
         {
             <div class="card mb-3">
                 <div class="card-body">
-                    <p>Rental Company: @carRental.CarRental.RentalCompany</p>
-                    <p>Pick Up Location: @carRental.CarRental.PickUpLocation</p>
-                    <p>Pick Up Date: @carRental.CarRental.PickUpDate</p>
-                    <p>Drop Off Date: @carRental.CarRental.DropOffDate</p>
-                    <p>Car Model: @carRental.CarRental.CarModel</p>
-                    <p>Maximum Passengers: @carRental.CarRental.MaxPassengers</p>
+                    <p><strong>Rental Company: </strong>@carRental.CarRental.RentalCompany</p>
+                    <p><strong>Pick Up Location: </strong>@carRental.CarRental.PickUpLocation</p>
+                    <p><strong>Pick Up Date: </strong>@carRental.CarRental.PickUpDate</p>
+                    <p><strong>Drop Off Date: </strong>@carRental.CarRental.DropOffDate</p>
+                    <p><strong>Car Model: </strong>@carRental.CarRental.CarModel</p>
+                    <p><strong>Maximum Passengers: </strong>@carRental.CarRental.MaxPassengers</p>
+                    <p><strong>Price: </strong>$@carRental.CarRental.Price</p>
                 </div>
             </div>
         }
@@ -96,16 +102,18 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <h5 class="card-title">Hotel Information</h5>
-                                    <p>Hotel: @hotelBooking.Hotel?.Name</p>
-                                    <p>Location: @hotelBooking.Hotel?.Location</p>
-                                    <p>Price: @hotelBooking.Hotel?.Price</p>
+                                    <p><strong>Hotel: </strong>@hotelBooking.Hotel?.Name</p>
+                                    <p><strong>Location: </strong>@hotelBooking.Hotel?.Location</p>                                    
+                                    <p><strong>Number of Rooms: </strong>@hotelBooking.NumOfRoomsToBook</p>
+                                    <p><strong>Price per Night: </strong>$@hotelBooking.Hotel?.Price</p>                                    
                                 </div>
                                 <div class="col-md-6">
                                     <h5 class="card-title">Booking Information</h5>
-                                    <p>Booked On: @hotelBooking.BookingDate</p>
-                                    <p>Check In Date: @hotelBooking.CheckInDate</p>
-                                    <p>Check Out Date: @hotelBooking.CheckOutDate</p>
-                                    <p>Number of Rooms: @hotelBooking.NumOfRoomsToBook</p>
+                                    <p><strong>Booked On: </strong>@hotelBooking.BookingDate</p>
+                                    <p><strong>Check In Date: </strong>@hotelBooking.CheckInDate</p>
+                                    <p><strong>Check Out Date: </strong>@hotelBooking.CheckOutDate</p>
+                                    <p><strong>Number of Days Booked: </strong>@((int)(hotelBooking.CheckOutDate - hotelBooking.CheckInDate).TotalDays)</p>
+                                    <p><strong>Total Amount: </strong>$@hotelBooking.TotalAmount</p>
                                 </div>
                             </div>
                         </div>

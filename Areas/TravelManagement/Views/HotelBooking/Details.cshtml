@@ -1,10 +1,8 @@
-﻿@* @model HotelBooking
+﻿@model HotelBooking
 
 @{
     ViewData["Title"] = "Details";
 }
-
-
 
 <div class="container mt-5">
     <div class="white-opaque">
@@ -99,13 +97,12 @@
 </div>
 
 <div>
-    @if (ViewBag.IsAdmin)
+    @if (User.Identity.IsAuthenticated)
     {
-        <a asp-action="Edit" asp-route-isAdmin="true" asp-route-id="@Model?.HotelBookingId" class="btn btn-secondary">Edit</a>
-        <a asp-controller="Hotel" asp-route-isAdmin="true" asp-action="Index" class="btn btn-warning">Back to Hotel Listing</a>
-    } else
-    {
-        <a asp-controller="Hotel" asp-action="Index" class="btn btn-warning">Back to Hotel Listing</a>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Edit" asp-route-isAdmin="true" asp-route-id="@Model?.HotelBookingId" class="btn btn-secondary">Edit</a>
+        }
     }
+        <a asp-controller="Hotel" asp-action="Index" class="btn btn-warning">Back to Hotel Listing</a>
 </div>
- *@

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GBC_Travel_Group_90.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240411203920_Initial")]
+    [Migration("20240412015608_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -47,6 +47,15 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FrequentCarPoints")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FrequentFlyerPoints")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HotelLoyaltyPoints")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
@@ -172,11 +181,11 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 1,
                             Available = true,
                             CarModel = "Cool Car",
-                            DropOffDate = new DateTime(2024, 6, 23, 16, 39, 19, 989, DateTimeKind.Local).AddTicks(8224),
+                            DropOffDate = new DateTime(2024, 6, 23, 21, 56, 7, 724, DateTimeKind.Local).AddTicks(3470),
                             MaxPassengers = 4,
-                            PickUpDate = new DateTime(2024, 5, 3, 16, 39, 19, 989, DateTimeKind.Local).AddTicks(8161),
+                            PickUpDate = new DateTime(2024, 5, 3, 21, 56, 7, 724, DateTimeKind.Local).AddTicks(3362),
                             PickUpLocation = "123 str Toronto ON",
-                            Price = 350.00m,
+                            Price = 400.00m,
                             RentalCompany = "Big Company"
                         },
                         new
@@ -184,11 +193,11 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 2,
                             Available = true,
                             CarModel = "SUV",
-                            DropOffDate = new DateTime(2024, 4, 18, 16, 39, 19, 989, DateTimeKind.Local).AddTicks(8230),
+                            DropOffDate = new DateTime(2024, 4, 18, 21, 56, 7, 724, DateTimeKind.Local).AddTicks(3481),
                             MaxPassengers = 5,
-                            PickUpDate = new DateTime(2024, 4, 13, 16, 39, 19, 989, DateTimeKind.Local).AddTicks(8229),
+                            PickUpDate = new DateTime(2024, 4, 13, 21, 56, 7, 724, DateTimeKind.Local).AddTicks(3479),
                             PickUpLocation = "456 Main St, Vancouver",
-                            Price = 500.00m,
+                            Price = 550.00m,
                             RentalCompany = "Rent-A-Car"
                         },
                         new
@@ -196,11 +205,11 @@ namespace GBC_Travel_Group_90.Migrations
                             CarRentalId = 3,
                             Available = true,
                             CarModel = "Compact",
-                            DropOffDate = new DateTime(2024, 4, 17, 16, 39, 19, 989, DateTimeKind.Local).AddTicks(8234),
+                            DropOffDate = new DateTime(2024, 4, 17, 21, 56, 7, 724, DateTimeKind.Local).AddTicks(3486),
                             MaxPassengers = 4,
-                            PickUpDate = new DateTime(2024, 4, 14, 16, 39, 19, 989, DateTimeKind.Local).AddTicks(8232),
+                            PickUpDate = new DateTime(2024, 4, 14, 21, 56, 7, 724, DateTimeKind.Local).AddTicks(3484),
                             PickUpLocation = "789 Elm St, Calgary",
-                            Price = 250.00m,
+                            Price = 350.00m,
                             RentalCompany = "City Cars"
                         });
                 });
@@ -467,6 +476,10 @@ namespace GBC_Travel_Group_90.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("HotelBookingId");
 

@@ -102,6 +102,9 @@ namespace GBC_Travel_Group_90.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProfilePicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    FrequentFlyerPoints = table.Column<int>(type: "int", nullable: false),
+                    FrequentCarPoints = table.Column<int>(type: "int", nullable: false),
+                    HotelLoyaltyPoints = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -256,6 +259,7 @@ namespace GBC_Travel_Group_90.Migrations
                     CheckInDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NumOfRoomsToBook = table.Column<int>(type: "int", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     HotelId = table.Column<int>(type: "int", nullable: false)
@@ -378,9 +382,9 @@ namespace GBC_Travel_Group_90.Migrations
                 columns: new[] { "CarRentalId", "ApplicationUserId", "Available", "CarModel", "DropOffDate", "MaxPassengers", "PickUpDate", "PickUpLocation", "Price", "RentalCompany" },
                 values: new object[,]
                 {
-                    { 1, null, true, "Cool Car", new DateTime(2024, 6, 23, 16, 39, 19, 989, DateTimeKind.Local).AddTicks(8224), 4, new DateTime(2024, 5, 3, 16, 39, 19, 989, DateTimeKind.Local).AddTicks(8161), "123 str Toronto ON", 350.00m, "Big Company" },
-                    { 2, null, true, "SUV", new DateTime(2024, 4, 18, 16, 39, 19, 989, DateTimeKind.Local).AddTicks(8230), 5, new DateTime(2024, 4, 13, 16, 39, 19, 989, DateTimeKind.Local).AddTicks(8229), "456 Main St, Vancouver", 500.00m, "Rent-A-Car" },
-                    { 3, null, true, "Compact", new DateTime(2024, 4, 17, 16, 39, 19, 989, DateTimeKind.Local).AddTicks(8234), 4, new DateTime(2024, 4, 14, 16, 39, 19, 989, DateTimeKind.Local).AddTicks(8232), "789 Elm St, Calgary", 250.00m, "City Cars" }
+                    { 1, null, true, "Cool Car", new DateTime(2024, 6, 23, 21, 56, 7, 724, DateTimeKind.Local).AddTicks(3470), 4, new DateTime(2024, 5, 3, 21, 56, 7, 724, DateTimeKind.Local).AddTicks(3362), "123 str Toronto ON", 400.00m, "Big Company" },
+                    { 2, null, true, "SUV", new DateTime(2024, 4, 18, 21, 56, 7, 724, DateTimeKind.Local).AddTicks(3481), 5, new DateTime(2024, 4, 13, 21, 56, 7, 724, DateTimeKind.Local).AddTicks(3479), "456 Main St, Vancouver", 550.00m, "Rent-A-Car" },
+                    { 3, null, true, "Compact", new DateTime(2024, 4, 17, 21, 56, 7, 724, DateTimeKind.Local).AddTicks(3486), 4, new DateTime(2024, 4, 14, 21, 56, 7, 724, DateTimeKind.Local).AddTicks(3484), "789 Elm St, Calgary", 350.00m, "City Cars" }
                 });
 
             migrationBuilder.InsertData(

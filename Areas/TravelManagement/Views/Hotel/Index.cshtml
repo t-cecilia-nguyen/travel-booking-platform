@@ -26,18 +26,6 @@
     </div>
 }
 </div>
-    
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
-@if (User.Identity.IsAuthenticated)
-{
-    @if (User.IsInRole("Admin"))
-    {
-        <a class="btn btn-primary" asp-controller="Hotel" asp-action="Create">Create New Hotel</a>
-    }
-}
 
 <div class="card">
     <div class="card-body">
@@ -60,10 +48,8 @@
                         @Html.DisplayNameFor(model => model.Price)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Price)
+                        Actions
                     </th>
-                
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -71,21 +57,30 @@
                  {
                     @foreach (var item in Model)
                     {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Location)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.StarRate)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NumberOfRooms)
-                                </td>
-                                <td>
+                        <tr>
                             <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Location)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StarRate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NumberOfRooms)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a class="btn btn-primary" asp-controller="Hotel" asp-action="Create">Create New Hotel</a>
+                                    }
+                                }
                                 <a class="btn btn-primary" asp-controller="HotelBooking" asp-action="Create" asp-route-hotelId="@item.HotelId">Book Hotel</a>
                                 <a asp-action="Details" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
                                 @if (User.Identity.IsAuthenticated)

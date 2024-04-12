@@ -39,6 +39,10 @@ namespace GBC_Travel_Group_90.Data
                 .Property(c => c.Price)
                 .HasPrecision(18, 2);
 
+            modelBuilder.Entity<HotelBooking>()
+                .Property(c => c.TotalAmount)
+                .HasPrecision(18, 2);
+
             // Seed Flight Data
             modelBuilder.Entity<Flight>().HasData(
                 new Flight
@@ -152,7 +156,7 @@ namespace GBC_Travel_Group_90.Data
                     DropOffDate = DateTime.Now.AddDays(73),
                     CarModel = "Cool Car",
                     MaxPassengers = 4,
-                    Price = 350.00m
+                    Price = 400.00m
                 },
                 new CarRental
                 {
@@ -163,7 +167,7 @@ namespace GBC_Travel_Group_90.Data
                     DropOffDate = DateTime.Now.AddDays(7),
                     CarModel = "SUV",
                     MaxPassengers = 5,
-                    Price = 500.00m
+                    Price = 550.00m
                 },
                 new CarRental
                 {
@@ -174,20 +178,8 @@ namespace GBC_Travel_Group_90.Data
                     DropOffDate = DateTime.Now.AddDays(6), // Example drop-off date
                     CarModel = "Compact",
                     MaxPassengers = 4,
-                    Price = 250.00m
+                    Price = 350.00m
                 });
-
-            /*// Seed User data
-            modelBuilder.Entity<User>().HasData(
-                new User
-                {
-                    UserId = 1,
-                    FirstName = "Admin",
-                    LastName = "User",
-                    Email = "admin@example.com",
-                    IsAdmin = true
-                }
-            );*/
 
             modelBuilder.HasDefaultSchema("Identity");
 
