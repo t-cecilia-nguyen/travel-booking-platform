@@ -8,7 +8,6 @@ using GBC_Travel_Group_90.Filters;
 using CGBC_Travel_Group_90.Services;
 using Serilog;
 using GBC_Travel_Group_90.CustomMiddlewares;
-using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,7 +56,7 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    app.UseStatusCodePagesWithReExecute("/Error/{statusCode}");
+    app.UseStatusCodePagesWithRedirects("/Error/{0}");
 }
 else
 {
@@ -120,8 +119,8 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "error",
-    pattern: "/Error/{statusCode}",
-    defaults: new { controller = "Error", action = "HttpStatusCodeHandler" }
+    pattern: "/Error/{statusCode?}",
+    defaults: new { controller = "Error", action = "Error" }
 );
 
 app.Run();

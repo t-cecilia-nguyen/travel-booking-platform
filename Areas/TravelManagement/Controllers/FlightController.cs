@@ -53,14 +53,19 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         {
             //TRIGGER AN ERROR
             // throw new Exception("Error in Details View");
-
+            
             var flight = await _db.Flights.FirstOrDefaultAsync(p => p.FlightId == id);
 
+
+            
             if (flight == null)
             {
                 Response.StatusCode = 404;
-                return View("Error", new { StatusCode = 404 });
+                ViewBag.FlightId = id;  
+                return View("FLightNotFound");
             }
+
+
             return View(flight);
         }
 

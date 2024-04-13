@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using System.Net.Mail;
-using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
+using GBC_Travel_Group_90.CustomMiddlewares;
 
 namespace GBC_Travel_Group_90.Areas.Identity.Pages.Account
 {
@@ -105,6 +105,8 @@ namespace GBC_Travel_Group_90.Areas.Identity.Pages.Account
 
             ReturnUrl = returnUrl;
         }
+
+
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {

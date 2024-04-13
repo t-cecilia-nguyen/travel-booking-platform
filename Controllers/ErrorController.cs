@@ -18,6 +18,9 @@ namespace GBC_Travel_Group_90.Controllers
         [Route("Error/{statusCode}")]
         public IActionResult HttpStatusCodeHandler(int statusCode)
         {
+
+            //Hanlde unsuccesful status code
+
             //Retrieve the exeption details
             var statusCodeResult = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
             if (statusCodeResult != null)
@@ -76,13 +79,16 @@ namespace GBC_Travel_Group_90.Controllers
         [Route("Error")]
         public IActionResult Error()
         {
+            //Handle Any unhandle exceptions
+
             //Retrieve the exeption details
             var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
 
-            
+            ViewBag.ExceptionPath = exceptionHandlerPathFeature.Path;
+            ViewBag.ExceptionMessage = exceptionHandlerPathFeature.Error.Message;
             if (exceptionHandlerPathFeature != null)
             {
-                _logger.LogError($" Request path {exceptionHandlerPathFeature.Path} threw an exception {exceptionHandlerPathFeature.Error.Message} with StackTrace:\n {exceptionHandlerPathFeature.Error.StackTrace} ");
+                _logger.LogError($" Exception path: {exceptionHandlerPathFeature.Path}; Exception Message: {exceptionHandlerPathFeature.Error.Message} StackTrace: {exceptionHandlerPathFeature.Error.StackTrace} ");
 
             }
              return View("Error");

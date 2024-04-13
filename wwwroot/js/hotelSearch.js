@@ -13,7 +13,9 @@
                 type: 'GET', 
                 data: formData,
                 success: function (response) {
-                    $('#hotelList').html(response); 
+                   // $('#hotelList').html(response); 
+                    $('#hotelContainer').html(response); 
+
                 },
                 error: function (xhr, status, error) {
                     // Handle error

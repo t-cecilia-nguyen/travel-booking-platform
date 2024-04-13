@@ -4,7 +4,7 @@ using GBC_Travel_Group_90.Models;
 using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using GBC_Travel_Group_90.Filters;
-using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
+using GBC_Travel_Group_90.CustomMiddlewares;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
@@ -19,11 +19,12 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
-
-        public CarRentalController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
+        private readonly ILogger<CarRentalController> _logger;
+        public CarRentalController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, ILogger<CarRentalController> logger)
         {
             _db = db;
             _userManager = userManager;
+            _logger = logger;
         }
 
         [HttpGet("")]
@@ -43,7 +44,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             if (carRental == null)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                ViewBag.CarId = id;
+                return View("CarNotFound");
+                
             }
             return View(carRental);
         }
@@ -58,7 +62,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [HttpGet("Success/{carRentalId:int}")]
         public async Task<IActionResult> Success(int carRentalId)
         {
-
+            
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _db.Users.FindAsync(userId);
             var carRental = await _db.CarRentals.FindAsync(carRentalId);
@@ -78,8 +82,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             await _db.CarSuccess.AddAsync(model);
             await _db.SaveChangesAsync();
+            
+            _logger.LogInformation("-------- User {fisrtname} {lastname} successfully booked Car: {carInfo}", user.FirstName, user.LastName, model);
             return View(model);
-
+           
         }
 
 

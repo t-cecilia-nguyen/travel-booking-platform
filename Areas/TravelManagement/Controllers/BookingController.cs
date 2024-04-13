@@ -1,5 +1,5 @@
 ﻿using GBC_Travel_Group_90.Areas.TravelManagement.Models;
-using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
+using GBC_Travel_Group_90.CustomMiddlewares;
 using GBC_Travel_Group_90.Data;
 using Microsoft.AspNetCore.Identity;
 using GBC_Travel_Group_90.Filters;
@@ -20,11 +20,13 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<BookingController> _logger;
 
-        public BookingController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
+        public BookingController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, ILogger<BookingController> logger)
         {
             _db = db;
             _userManager = userManager;
+            _logger = logger;
         }
 
         [HttpGet("GetBookFlight/{id:int}")]
@@ -97,8 +99,14 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             await _db.Bookings.AddAsync(booking);
             flight.CurrentPassengers++;
             await _db.SaveChangesAsync();
+
+
+            _logger.LogInformation("-------- User {fisrtname} {lastname} successfully booked Flight: {flightInfo}", user.FirstName, user.LastName, booking);
+
             return RedirectToAction("Success", new { id = booking.BookingId });
         }
+
+
         [HttpGet("SuccessBooking/{id:int}")]
         public async Task<IActionResult> Success(int id)
         {

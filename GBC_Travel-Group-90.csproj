@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\TravelManagement\Views\NewFolder\**" />
+    <Content Remove="Areas\TravelManagement\Views\NewFolder\**" />
+    <EmbeddedResource Remove="Areas\TravelManagement\Views\NewFolder\**" />
+    <None Remove="Areas\TravelManagement\Views\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.3" />
