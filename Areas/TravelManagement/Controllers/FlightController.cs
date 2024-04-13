@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using Microsoft.AspNetCore.Authorization;
 using GBC_Travel_Group_90.Filters;
+using Microsoft.AspNetCore.Identity;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
@@ -12,6 +13,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
     public class FlightController : Controller
     {
         private readonly ApplicationDbContext _db;
+        public UserManager<ApplicationUser> UserManager;
 
         public FlightController(ApplicationDbContext db)
         {
