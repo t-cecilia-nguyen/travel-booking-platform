@@ -14,7 +14,7 @@ using SendGrid.Helpers.Mail;
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
     [Area("TravelManagement")]
-    [Route("[area]/[controller]/[action]")]
+    [Route("[area]/[controller]")]
     public class CarRentalController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -76,7 +76,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 CarRental = carRental
             };
 
-            // await _db.CarSuccess.AddAsync(model);
+            await _db.CarSuccess.AddAsync(model);
             await _db.SaveChangesAsync();
             return View(model);
 
@@ -111,14 +111,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             return View("Book", carRental);
         }
 
-
-
-        [ServiceFilter(typeof(LoggingFilter))]
-        [HttpPost("Book/{id:int}")]
+        [HttpPost("Book")]
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(LoggingFilter))]
         [ServiceFilter(typeof(ValidateModelFilter))]
-        public async Task<IActionResult> Book(int id, string userEmail)
+        public async Task<IActionResult> Book(int id)
         {
 
             var carRental = await _db.CarRentals.FindAsync(id);
@@ -250,10 +247,9 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
         [ServiceFilter(typeof(LoggingFilter))]
         [HttpGet("Search")]
-        [Route("Search/{serachType?}/{RentalCompany?}/{CarModel?}/{PickUpDate?}/{DropoffDate?}")]
+        [Route("Search/{searchType?}/{RentalCompany?}/{CarModel?}/{PickUpDate?}/{DropoffDate?}")]
         public async Task<IActionResult> Search(string RentalCompany, string CarModel, DateTime? PickUpDate, DateTime? DropOffDate)
         {
-            ViewBag.IsAdmin = false;
             var carQuery = from f in _db.CarRentals select f;
 
             if (!string.IsNullOrEmpty(RentalCompany))
@@ -276,9 +272,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                 carQuery = carQuery.Where(f => f.DropOffDate.Date == DropOffDate.Value.Date);
             }
 
-            var car = await carQuery.ToListAsync();
+            var cars = await carQuery.ToListAsync();
 
-            return View("Index", car); // Reuse the Index view to display results
+            // Return partial view with search results
+            return PartialView("_CarRentalSearchResults", cars);
         }
 
         public int CalculateFrequentCarPoints(decimal price)

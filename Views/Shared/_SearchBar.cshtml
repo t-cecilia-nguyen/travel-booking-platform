@@ -1,4 +1,20 @@
-﻿<!-- Search Bar -->
+﻿<script>
+    $(document).ready(function () {
+        $('#flights-tab').click(function () {
+            window.location.href = '@Url.Action("Index", "Flight")';
+        });
+        $('#carrentals-tab').click(function () {
+            window.location.href = '@Url.Action("Index", "CarRental")';
+        });
+        $('#hotels-tab').click(function () {
+            window.location.href = '@Url.Action("Index", "Hotel")';
+        });
+    });
+
+</script>
+
+
+<!-- Search Bar -->
 <div class="container" style="margin-bottom: 10px;">
     <div class="card">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -16,7 +32,7 @@
             <div class="tab-pane fade show active" id="flights" role="tabpanel" aria-labelledby="flights-tab">
                 <div class="row justify-content-center">
                     <div class="col-md-10">
-                        <form asp-area="TravelManagement" asp-controller="Flight" asp-action="Search" method="get">
+                        <form asp-area="TravelManagement" id="flightSearchForm" asp-controller="Flight" asp-action="Search" method="GET">
                             <input type="hidden" id="searchType" name="searchType" class="form-control" value="Flight">
 
                             <div class="search-row">
@@ -44,7 +60,7 @@
                                 </div>
                             </div>
                             <div class="form-group" style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
-                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Explore</button>
+                                <button type="button" id="searchBtn" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Explore</button>
                             </div>
                         </form>
                     </div>
@@ -53,7 +69,7 @@
             <div class="tab-pane fade" id="carrentals" role="tabpanel" aria-labelledby="carrentals-tab">
                 <div class="row justify-content-center">
                     <div class="col-md-10">
-                        <form asp-area="TravelManagement" asp-controller="CarRental" asp-action="Search" method="get">
+                        <form asp-area="TravelManagement" id="carSearchForm" asp-controller="CarRental" asp-action="Search" method="GET">
                             <input type="hidden" id="searchType" name="searchType" class="form-control" value="Car">
 
                             <div class="search-row">
@@ -87,7 +103,7 @@
                                 </div>
                             </div>
                             <div class="form-group" style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
-                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Explore</button>
+                                <button type="submit" id="searchBtnCar" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Explore</button>
                             </div>
                         </form>
                     </div>
@@ -96,7 +112,7 @@
             <div class="tab-pane fade" id="hotels" role="tabpanel" aria-labelledby="hotels-tab">
                 <div class="row justify-content-center">
                     <div class="col-md-10">
-                        <form asp-area="TravelManagement" asp-controller="Hotel" asp-action="SearchHotel" method="get">
+                        <form asp-area="TravelManagement" id="hotelSearchForm" asp-controller="Hotel" asp-action="SearchHotel" method="GET">
                             <input type="hidden" id="searchType" name="searchType" class="form-control" value="Hotel">
 
                             <div class="search-row">
@@ -130,7 +146,7 @@
                                 </div>
                             </div>
                             <div class="form-group" style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
-                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Explore</button>
+                                <button type="submit" id="searchBtnHotel" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Explore</button>
                             </div>
                         </form>
                     </div>

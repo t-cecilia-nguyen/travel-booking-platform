@@ -4,19 +4,29 @@
     ViewData["Title"] = "Hotel Home Page";
 }
 
+<!-- Load the flight-search.js file -->
+@section Scripts {
+    <script src="~/js/hotelSearch.js"></script>
+}
+
+
 <script>
     $(document).ready(function () {
         var page = window.location.pathname;
 
         // Remove the 'active' class from all tabs
         $('.nav-link').removeClass('active');
+        $('.tab-pane').removeClass('show active');
+
         // Hotel tab active
         $('#hotels-tab').addClass('active');
-
+        $('#hotels').addClass('show active');
+        $('#loader').hide();
     });
 </script>
 
 @Html.Partial("~/Views/Shared/_SearchBar.cshtml")
+@Html.Partial("~/Views/Shared/_LoadingBar.cshtml")
 
 <div class="white-opaque">
 @if (ViewBag.AlreadyBookedMessage != null)
@@ -27,32 +37,16 @@
 }
 </div>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <p>Admin View</p>
-                </div>
-                <div class="card-body">
-                    <form method="get" asp-action="Index">
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" class="form-control" required />
-                        </div>
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-primary">View</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
+@if (User.Identity.IsAuthenticated)
+{
+    @if (User.IsInRole("Admin"))
+    {
+        <a class="btn btn-primary" asp-controller="Hotel" asp-action="CreateBooking">Create New Hotel</a>
+    }
+}
 
 <div class="card">
-    <div class="card-body">
+    <div id="hotelList" class="card-body">
         <table class="table">
             <thead>
                 <tr>
@@ -74,6 +68,13 @@
                     <th>
                         Actions
                     </th>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <th>Admin Actions</th>
+                        }
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -97,25 +98,20 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Price)
                             </td>
-                            <td>
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <a class="btn btn-primary" asp-controller="Hotel" asp-action="CreateBooking" >Create New Hotel</a>
-                                    }
-                                }
+                            <td>                                
                                 <a class="btn btn-primary" asp-controller="HotelBooking" asp-action="CreateBooking" asp-route-name="@item.Name" asp-route-hotelId="@item.HotelId">Book Hotel</a>
-                                <a asp-action="Details" asp-route-name="@item.Name" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
-                                @if (User.Identity.IsAuthenticated)
+                                <a asp-action="Details" asp-route-name="@item.Name" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>                                
+                            </td>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                @if (User.IsInRole("Admin"))
                                 {
-                                    @if (User.IsInRole("Admin"))
-                                    {
+                                    <td>
                                         <a asp-action="Edit" asp-route-id="@item.HotelId" class="btn btn-secondary">Edit</a>
                                         <a asp-action="Delete" asp-route-id="@item.HotelId" class="btn btn-danger">Delete</a>
-                                    }
+                                    </td>
                                 }
-                            </td>
+                            }
                         </tr>
                         }
                  }

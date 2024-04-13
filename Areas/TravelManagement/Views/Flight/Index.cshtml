@@ -1,23 +1,41 @@
 ﻿@model List<Flight>
 @{
-	ViewData["Title"] = "Flights";
+    ViewData["Title"] = "Flights";
+}
+
+<!-- Load the flight-search.js file -->
+@section Scripts {
+    <script src="~/js/flight-search.js"></script>
 }
 
 <script>
-	$(document).ready(function () {
-		var page = window.location.pathname;
+    $(document).ready(function () {
+        var page = window.location.pathname;
 
 		// Remove the 'active' class from all tabs
 		$('.nav-link').removeClass('active');
+		$('.tab-pane').removeClass('show active');
+
 		// Flight tab active
 		$('#flights-tab').addClass('active');
+		$('#flights').addClass('show active');
+		$('#loader').hide();
 	});
 </script>
 
 @Html.Partial("~/Views/Shared/_SearchBar.cshtml")
+@Html.Partial("~/Views/Shared/_LoadingBar.cshtml")
 
-<div class="card">
-	<div class="card-body">
+@if (User.Identity.IsAuthenticated)
+{
+	@if (User.IsInRole("Admin"))
+	{
+		<a class="btn btn-primary" style="margin: 10px 0;" asp-controller="Flight" asp-action="Create">Create New Flight</a>
+	}
+}
+
+<div class="card">	
+	<div class="card-body" id="flightList">
 		@if (Model.Any())
 		{
 			<table class="table">
@@ -30,8 +48,21 @@
 						<th>Departure</th>
 						<th>Arrival</th>
 						<th>Price</th>
-						<th>Max Passengers</th>
+						@if (User.Identity.IsAuthenticated)
+						{
+							@if (User.IsInRole("Admin"))
+							{
+								<th>Max Passengers</th>
+							}
+						}
 						<th>Actions</th>
+						@if (User.Identity.IsAuthenticated)
+						{
+							@if (User.IsInRole("Admin"))
+							{
+								<th>Admin Actions</th>
+							}
+						}
 					</tr>
 				</thead>
 				<tbody>
@@ -47,26 +78,27 @@
 								<td>@flight.DepartureTime</td>
 								<td>@flight.ArrivalTime</td>
 								<td>@flight.Price</td>
-								<td>@flight.MaxPassengers</td>
-								<td>
-									@if (User.Identity.IsAuthenticated)
+								@if (User.Identity.IsAuthenticated)
+								{
+									@if (User.IsInRole("Admin"))
 									{
-										@if (User.IsInRole("Admin"))
-										{
-											<a class="btn btn-primary" style="margin: 10px 0;" asp-controller="Flight" asp-action="Create">Create New Flight</a>
-										}
+										<td>@flight.MaxPassengers</td>
 									}
+								}
+								<td>									
 									<a asp-controller="Booking" asp-action="GetBookFlight" asp-route-id="@flight.FlightId" class="btn btn-primary">Book Flight</a>
-									<a asp-action="Details" asp-route-id="@flight.FlightId" class="btn btn-info">Details</a>
-									@if (User.Identity.IsAuthenticated)
+									<a asp-action="Details" asp-route-id="@flight.FlightId" class="btn btn-info">Details</a>									
+								</td>								
+								@if (User.Identity.IsAuthenticated)
+								{
+									@if (User.IsInRole("Admin"))
 									{
-										@if (User.IsInRole("Admin"))
-										{
+										<td>
 											<a asp-action="Edit" asp-route-id="@flight.FlightId" class="btn btn-secondary">Edit</a>
 											<a asp-action="Delete" asp-route-id="@flight.FlightId" class="btn btn-danger">Delete</a>
-										}
+										</td>
 									}
-								</td>
+								}								
 							</tr>
 						}
 					}

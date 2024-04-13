@@ -19,23 +19,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         [HttpGet("")]
-        public async Task<IActionResult> Index(string email)
+        public async Task<IActionResult> Index()
         {
-            ViewBag.IsAdmin = false;
-
-            // If not Admin - view available Flights
-            if (email == null || string.IsNullOrEmpty(email))
-            {
-                ViewBag.IsAdmin = false;
-                var flights = await _db.Flights.ToListAsync();
-                var availableFlights = flights.Where(f => f.CurrentPassengers < f.MaxPassengers).ToList();
-                return View(availableFlights);
-            }
-
-            
-
-            var allflights = _db.Flights.ToList();
-            return View(allflights);
+            var flights = await _db.Flights.ToListAsync();
+            var availableFlights = flights.Where(f => f.CurrentPassengers < f.MaxPassengers).ToList();
+            return View(availableFlights);
         }
 
         [HttpGet("Create")]
@@ -64,7 +52,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         public async Task<IActionResult> Details(int id)
         {
             //TRIGGER AN ERROR
-            throw new Exception("Error in Details View");
+            // throw new Exception("Error in Details View");
 
             var flight = await _db.Flights.FirstOrDefaultAsync(p => p.FlightId == id);
 
@@ -167,31 +155,31 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         {
             ViewBag.IsAdmin = false;
 
-            var flightsQuery = from f in _db.Flights select f;
+			var flightsQuery = from f in _db.Flights select f;
 
-            if (!string.IsNullOrEmpty(origin))
-            {
-                flightsQuery = flightsQuery.Where(f => f.Origin.Contains(origin));
-            }
+			if (!string.IsNullOrEmpty(origin))
+			{
+				flightsQuery = flightsQuery.Where(f => f.Origin.Contains(origin));
+			}
 
-            if (!string.IsNullOrEmpty(destination))
-            {
-                flightsQuery = flightsQuery.Where(f => f.Destination.Contains(destination));
-            }
+			if (!string.IsNullOrEmpty(destination))
+			{
+				flightsQuery = flightsQuery.Where(f => f.Destination.Contains(destination));
+			}
 
-            if (departureDate.HasValue)
-            {
-                flightsQuery = flightsQuery.Where(f => f.DepartureTime.Date == departureDate.Value.Date);
-            }
+			if (departureDate.HasValue)
+			{
+				flightsQuery = flightsQuery.Where(f => f.DepartureTime.Date == departureDate.Value.Date);
+			}
 
-            if (arrivalDate.HasValue)
-            {
-                flightsQuery = flightsQuery.Where(f => f.ArrivalTime.Date == arrivalDate.Value.Date);
-            }
+			if (arrivalDate.HasValue)
+			{
+				flightsQuery = flightsQuery.Where(f => f.ArrivalTime.Date == arrivalDate.Value.Date);
+			}
 
-            var flights = await flightsQuery.ToListAsync();
+			var flights = await flightsQuery.ToListAsync();
 
-            return View("Index", flights); // Reuse the Index view to display results
-        }
-    }
+			return PartialView("_FlightSearchResult", flights); // Return partial view
+		}
+	}
 }

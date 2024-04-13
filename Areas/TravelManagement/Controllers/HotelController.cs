@@ -206,7 +206,6 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             {
                 hotelsQuery = hotelsQuery.Where(h => h.StarRate == starRate);
             }
-
             
             if (maxPrice.HasValue)
             {
@@ -216,7 +215,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             var hotels = await hotelsQuery.ToListAsync();
 
-            return View("Index", hotels);
+            return PartialView("_HotelSearchResults", hotels); // Return partial view
+
         }
 
     }

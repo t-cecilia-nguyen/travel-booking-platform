@@ -13,10 +13,6 @@ using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddleware
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-
-
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -31,18 +27,7 @@ builder.Services.AddRazorPages();
 // Ensures IEmailSender is injected, then an instance is provided
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
-
-
-
-
-
-
-
-
-
-
 //<<<<     >>>>>>
-
 
 //<<<<   Register Filters   >>>>>>
 
@@ -50,12 +35,8 @@ builder.Services.AddScoped<LoggingFilter>();
 
 builder.Services.AddScoped<ValidateModelFilter>();
 
-
-
 //Register global filters for all controllers, actions and razor pages here
 builder.Services.AddControllersWithViews();
-
-
 
 //Inilialize Serilog
 //configure Serilog to read from appsetting.json configuartion
@@ -70,20 +51,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ISessionService, SessionService>();
 builder.Services.AddSession();
 
-
-
-
-
-
-
-
-
-
-
 var app = builder.Build();
-
-
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -130,22 +98,10 @@ app.UseAuthorization();
 
 app.UseSession();
 
-
-
-
-
-
-
-
 //<<<<   Using Custom Logging Middleware   >>>>>>
 
 
 app.UseLoggingMiddleware();
-
-
-
-
-
 
 
 
@@ -167,7 +123,5 @@ app.MapControllerRoute(
     pattern: "/Error/{statusCode}",
     defaults: new { controller = "Error", action = "HttpStatusCodeHandler" }
 );
-
-
 
 app.Run();
