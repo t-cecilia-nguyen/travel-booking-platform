@@ -76,3 +76,37 @@
         }
     </tbody>
 </table>
+<div class="container">
+    <div class="row row-30   justify-content-center">
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <div class="col-sm-6 col-lg-4">
+                    <div class="card h-100">
+                        <img src="/book-hotels.jpg" class="card-img-top" alt="Hotel @item.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <h5 class="card-text">Location: @item.Location</h5>
+                            <h5 class="card-text">Star Rate: @item.StarRate</h5>
+                            <h5 class="card-text">Available Rooms: @item.NumberOfRooms</h5>
+                        </div>
+                        <div class="card-footer">
+                            <a asp-action="Details" asp-route-name="@item.Name" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
+
+                            <a asp-action="Edit" asp-route-name="@item.Name" asp-route-id="@item.HotelId" class="btn btn-secondary">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.HotelId" class="btn btn-danger">Delete</a>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col text-center">
+                <p class="text-danger">No hotels available.</p>
+            </div>
+        }
+    </div>
+</div>

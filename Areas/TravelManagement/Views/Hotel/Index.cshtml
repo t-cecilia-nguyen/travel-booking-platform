@@ -37,14 +37,6 @@
 }
 </div>
 
-@if (User.Identity.IsAuthenticated)
-{
-    @if (User.IsInRole("Admin"))
-    {
-        <a class="btn btn-primary" asp-controller="Hotel" asp-action="CreateBooking">Create New Hotel</a>
-    }
-}
-
 <div class="card">
     <div id="hotelList" class="card-body">
         <table class="table">
@@ -68,13 +60,6 @@
                     <th>
                         Actions
                     </th>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <th>Admin Actions</th>
-                        }
-                    }
                 </tr>
             </thead>
             <tbody>
@@ -98,20 +83,25 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Price)
                             </td>
-                            <td>                                
-                                <a class="btn btn-primary" asp-controller="HotelBooking" asp-action="CreateBooking" asp-route-name="@item.Name" asp-route-hotelId="@item.HotelId">Book Hotel</a>
-                                <a asp-action="Details" asp-route-name="@item.Name" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>                                
-                            </td>
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                @if (User.IsInRole("Admin"))
+                            <td>
+                                @if (User.Identity.IsAuthenticated)
                                 {
-                                    <td>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a class="btn btn-primary" asp-controller="Hotel" asp-action="Create">Create New Hotel</a>
+                                    }
+                                }
+                                <a class="btn btn-primary" asp-controller="HotelBooking" asp-action="Create" asp-route-hotelId="@item.HotelId">Book Hotel</a>
+                                <a asp-action="Details" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    @if (User.IsInRole("Admin"))
+                                    {
                                         <a asp-action="Edit" asp-route-id="@item.HotelId" class="btn btn-secondary">Edit</a>
                                         <a asp-action="Delete" asp-route-id="@item.HotelId" class="btn btn-danger">Delete</a>
-                                    </td>
+                                    }
                                 }
-                            }
+                            </td>
                         </tr>
                         }
                  }
@@ -123,41 +113,42 @@
                 }
             </tbody>
         </table>
-    </div>
-</div>
 
+        <div class="container">
+            <div class="row row-30   justify-content-center">
+                @if (Model.Any())
+                {
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="card h-100">
+                                <img src="/book-hotels.jpg" class="card-img-top" alt="Hotel @item.Name">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.Name</h5>
+                                    <h5 class="card-text">Location: @item.Location</h5>
+                                    <h5 class="card-text">Star Rate: @item.StarRate</h5>
+                                    <h5 class="card-text">Available Rooms: @item.NumberOfRooms</h5>
+                                </div>
+                                <div class="card-footer">
+                                    <a asp-action="Details" asp-route-name="@item.Name" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
 
-<div class="container">
-    <div class="row row-30   justify-content-center">
-        @if (Model.Any())
-        {
-            @foreach (var item in Model)
-            {
-                <div class="col-sm-6 col-lg-4">
-                    <div class="card h-100">
-                        <img src="/book-hotels.jpg" class="card-img-top" alt="Hotel @item.Name">
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Name</h5>
-                            <h5 class="card-text">Location: @item.Location</h5>
-                            <h5 class="card-text">Star Rate: @item.StarRate</h5>
-                            <h5 class="card-text">Available Rooms: @item.NumberOfRooms</h5>
+                                    <a asp-action="Edit" asp-route-name="@item.Name" asp-route-id="@item.HotelId" class="btn btn-secondary">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@item.HotelId" class="btn btn-danger">Delete</a>
+
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-footer">
-                            <a asp-action="Details" asp-route-name="@item.Name" asp-route-id="@item.HotelId" class="btn btn-info">Details</a>
-                            
-                                <a asp-action="Edit" asp-route-name="@item.Name" asp-route-id="@item.HotelId" class="btn btn-secondary">Edit</a>
-                                <a asp-action="Delete"  asp-route-id="@item.HotelId" class="btn btn-danger">Delete</a>
-                            
-                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col text-center">
+                        <p class="text-danger">No hotels available.</p>
                     </div>
-                </div>
-            }
-        }
-        else
-        {
-            <div class="col text-center">
-                <p class="text-danger">No hotels available.</p>
+                }
             </div>
-        }
+        </div>
     </div>
 </div>
+
+
