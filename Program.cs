@@ -88,18 +88,16 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    
     app.UseExceptionHandler("/Error");
-    app.UseStatusCodePagesWithReExecute("/Error/{0}");
-
+    app.UseStatusCodePagesWithReExecute("/Error/{statusCode}");
 }
 else
 {
     app.UseDeveloperExceptionPage();
-    //app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-    app.UseDeveloperExceptionPage();
 }
+
+
+app.UseHsts();
 
 using var scope = app.Services.CreateScope();
 var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
@@ -146,22 +144,7 @@ app.UseLoggingMiddleware();
 
 
 
-// Dynamic Route
 
-
-//app.UseEndpoints(endpoints =>)
-
-
-
-/*ERRORRRRRRRRRR
-//Custom Route
-//for each get request on /CustomRoute
-app.MapGet("/CustomRouteError", async context => {
-    await context.Response.WriteAsync("Error StatusCode and Message Here");
-});
-
-
-*/
 
 
 

@@ -68,7 +68,7 @@ namespace GBC_Travel_Group_90.Controllers
                         break;
                 }
             }
-            return View("Error");
+            return View("StatusCodeError");
         }
         
 
