@@ -4,7 +4,7 @@
     ViewData["Title"] = "Log out";
 }
 
-<header>
+<header class="d-flex flex-column align-items-center justify-content-center">
     <h1>@ViewData["Title"]</h1>
     @{
         if (User.Identity?.IsAuthenticated ?? false)
@@ -19,3 +19,4 @@
         }
     }
 </header>
+
