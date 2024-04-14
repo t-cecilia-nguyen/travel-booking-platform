@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
 {
     public class Booking
@@ -8,11 +9,18 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
         public int BookingId { get; set; }
 
         public string? ApplicationUserId { get; set; }
-
+        
         public ApplicationUser? User { get; set; }
 
         public int? FlightId { get; set; }
-
+        
         public Flight? Flight { get; set; }
+
+        public override string ToString()
+        {
+            return $"BookingId: {BookingId}, ApplicationUserId: {ApplicationUserId}, FlightId: {FlightId}";
+        }
     }
+    
+
 }

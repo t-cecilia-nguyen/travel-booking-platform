@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using GBC_Travel_Group_90.Data;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using GBC_Travel_Group_90.Filters;
-using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
+using GBC_Travel_Group_90.CustomMiddlewares;
 using Microsoft.AspNetCore.Authorization;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
@@ -39,17 +39,15 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         [Route("Details/{name}/{id:int}")]
         public async Task<IActionResult> Details(string? name, int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
             
             var hotel = await _context.Hotels
                 .FirstOrDefaultAsync(m => m.HotelId == id && m.Name == name);
 
             if (hotel == null)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                ViewBag.HotelId = id;
+                return View("HotelNotFound");
             }
 
             ViewBag.HotelId = hotel.HotelId;

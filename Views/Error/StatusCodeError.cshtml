@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "Error Page";
+}
+
+
+<div class="alert alert-danger">
+    <h2>An Error Has Occured While Proccessing Your Request.</h2>
+    <h4>Please Contact Us for more information. Our contact information is at the bottom of this page.</h4>
+    <br />
+    <hr />
+    <br />
+    <h2 class="mb-10">Error Details</h2>
+    <p class="text-danger">Error Message: @ViewBag.ErrorMessage</p>
+    <h1>@ViewBag.StatusCode</h1>
+</div>
+
+<hr />
+
+
+<a asp-action="Index" asp-controller="Home" class="btn btn-secondary m-10">Go Back To Home Page</a>
+

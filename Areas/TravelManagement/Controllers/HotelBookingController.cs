@@ -6,8 +6,9 @@ using Microsoft.CodeAnalysis;
 using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using GBC_Travel_Group_90.Filters;
 using System.Linq.Expressions;
-using GBC_Travel_Group_90.CustomMiddlewares.GBC_Travel_Group_90.CustomMiddlewares;
+using GBC_Travel_Group_90.CustomMiddlewares;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
@@ -17,11 +18,13 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<HotelBookingController> _logger;
 
-        public HotelBookingController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public HotelBookingController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ILogger<HotelBookingController> logger)
         {
             _context = context;
             _userManager = userManager;
+            _logger = logger;
         }
 
         // GET: HotelBookings
@@ -40,15 +43,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         }
 
         
-        // GET: HotelBooking/Details/5
+      
         [HttpGet("Details/{name}/{id:int}")]
         public async Task<IActionResult> Details(string name, int id)
         {
-
-            if (id == null)
-            {
-                return NotFound();
-            }
 
             var hotelBooking = await _context.HotelBookings
                 .Include(h => h.Hotel)
@@ -149,8 +147,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
                 if (existingBooking != null)
                 {
-                    TempData["AlreadyBooked"] = "You have already booked this hotel.";
-                    return RedirectToAction("Index", "Hotel", new { email = user.Email });
+                    return View("AlreadyBooked");
                 }
                
                 // Check if CheckInDate is smaller than or equal to CheckOutDate
@@ -183,6 +180,8 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                     hotelBooking.Status = Status.Confirmed;
                     await _context.HotelBookings.AddAsync(hotelBooking);
                     await _context.SaveChangesAsync();
+
+                    _logger.LogInformation("-------- User {fisrtname} {lastname} successfully booked Hotel: {hotelInfo}", user.FirstName, user.LastName, hotelBooking.ToString());
 
                     return RedirectToAction(nameof(Details), new { name = hotelBooking.Name, id = hotelBooking.HotelBookingId });
                 }
@@ -256,7 +255,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Details), new { id = hotelBooking.HotelBookingId });
+                return RedirectToAction(nameof(Details), new { name = hotelBooking.Name,id = hotelBooking.HotelBookingId });
             }
                     return View(hotelBooking);
                 }

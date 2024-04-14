@@ -1,4 +1,5 @@
-﻿using GBC_Travel_Group_90.Areas.TravelManagement.Models;
+﻿using Azure.Core;
+using GBC_Travel_Group_90.Areas.TravelManagement.Models;
 using GBC_Travel_Group_90.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -22,7 +23,7 @@ namespace GBC_Travel_Group_90.Filters
         }
 
 
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public override async void OnActionExecuting(ActionExecutingContext context)
         {
             var requestPath = context.HttpContext.Request.Path;
             _logger.LogInformation("---------Request on path: {requestPath} at {DateTime}", requestPath, DateTime.UtcNow);
@@ -46,283 +47,26 @@ namespace GBC_Travel_Group_90.Filters
 
                 if (actionDescriptor.ActionName == "Book" || actionDescriptor.ActionName == "Success" || actionDescriptor.ActionName == "Create" || actionDescriptor.ActionName == "CreateBooking" || actionDescriptor.ActionName == "BookFlight")
                 {
+
+                    //log booking service's name
                     var action = actionDescriptor.ActionName;
-                    var bookingInfo = GetBookingDetails<Booking>(context.HttpContext);
-
-                    switch (action) {
-                        case "Book":
-
-                            bookingInfo = GetBookingDetails<Booking>(context.HttpContext);
-                            break;
-                        case "Success":
-
-                            bookingInfo = GetBookingDetails<CarRental>(context.HttpContext);
-                            break;
-                        case "Create":
-                        case "CreateBooking":
-
-                            bookingInfo = GetBookingDetails<HotelBooking>(context.HttpContext);
-                            break;
-                        case "BookFlight":
-
-                            bookingInfo = GetBookingDetails<Booking>(context.HttpContext);
-                            break;
-                        default:
-                            break;
-                    }
-
-
-                    // Log Booking activities
-                    LogBookingInfo(context, bookingInfo);
-                }
-            }
-
-
-        }
-
-
-
-
-        private bool LogBookingInfo<T>(ActionExecutingContext context, T bookingInfo)
-        {
-            var user = _userManager.GetUserAsync(context.HttpContext.User).Result;
-
-            if (bookingInfo != null)
-            {
-                string bookingDetails = GetBookingDetails<Booking>(context.HttpContext);
-
-                if (user != null)
-                {
-                    _logger.LogInformation("--------Request Booking: User {userId} Attempting To Book for: {bookingDetails}", user.Id, bookingDetails);
-                }
-                else
-                {
-                    _logger.LogInformation("--------Request Booking: Anonymous User  for: {bookingDetails}", bookingDetails);
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-
-
-        /*
-        private string GetBookingDetails<T>(HttpContext httpContext)
-        {
-            var request = httpContext.Request;
-            string bookingInfo;
-            T? bookingType = default;
-
-
-
-
-
-            var routeData = httpContext.GetRouteData();
-            if (routeData != null)
-            {
-                if (routeData.Values.TryGetValue("id", out object idValue))
-                {
-                    if (int.TryParse(idValue?.ToString(), out int id))
+                    var user = await _userManager.FindByNameAsync(action);  
+                    if (user != null)
                     {
-                        // Use the id variable here
-                        // For example, query your database with this id to get booking details
-                    }
-                }
-            }
+                        _logger.LogInformation("--------- Booking Request: User {userId} is using booking {serviceType} service. ", user.Id, action);
 
-
-
-
-            // Extract controller name from the context
-            var controllerName = httpContext.GetRouteData().Values["controller"]?.ToString();
-
-            // Check if the request contains the booking ID parameter with different names based on the controller
-            if (controllerName == "Booking" && request.Query.ContainsKey("id"))
-            {
-                // Assign BookingType based on the controller
-                bookingType = (T)(object)new Booking();
-
-                if (int.TryParse(request.Query["id"], out int bookingId))
-                {
-                    bookingInfo = bookingInfo = RetriveBooking(bookingId, bookingType);
-
-                }
-                else
-                {
-                    bookingInfo = "Invalid booking ID format.";
-                }
-            }
-            else if (controllerName == "HotelBooking" && request.Query.ContainsKey("hotelId"))
-            {
-                // Assign BookingType based on the controller
-                bookingType = (T)(object)new HotelBooking();
-
-                if (int.TryParse(request.Query["hotelId"], out int bookingId))
-                {
-                    bookingInfo = bookingInfo = RetriveBooking(bookingId, bookingType);
-
-                }
-                else
-                {
-                    bookingInfo = "Invalid booking ID format.";
-                }
-            }
-            else if (controllerName == "CarRental" && request.Query.ContainsKey("id"))
-            {
-                // Assign BookingType based on the controller
-                bookingType = (T)(object)new CarSuccess();
-
-                if (int.TryParse(request.Query["id"], out int bookingId))
-                {
-                    bookingInfo = RetriveBooking(bookingId, bookingType);
-                }
-                else
-                {
-                    bookingInfo = "Invalid booking ID format.";
-                }
-            }
-            else
-            {
-                // Handle case when the controller or booking ID parameter is not present or unrecognized
-                bookingInfo = "Booking ID or Controller not found or unrecognized in the request.";
-            }
-
-            // Return the booking information as a string
-            return bookingInfo;
-        }
-        */
-
-
-
-
-
-        private string GetBookingDetails<T>(HttpContext httpContext)
-        {
-            var request = httpContext.Request;
-            string bookingInfo;
-            T? bookingType = default;
-
-            // Extract controller name from the context
-            var controllerName = httpContext.GetRouteData().Values["controller"]?.ToString();
-
-            // Extract the booking ID from route data based on the controller name
-            if (controllerName == "Booking" && httpContext.GetRouteData().Values.TryGetValue("id", out object bookingIdObj))
-            {
-                if (int.TryParse(bookingIdObj?.ToString(), out int bookingId))
-                {
-                    // Cast the booking type based on the controller
-                    if (typeof(T) == typeof(Booking))
-                    {
-                        bookingType = (T)(object)new Booking();
                     }
                     else
                     {
-                        bookingInfo = "Invalid booking type.";
+                        _logger.LogInformation("--------- Booking Request: Anonymous User is using booking {serviceType} service", action);
                     }
-                    
-
-                    bookingInfo = RetriveBooking(bookingId, bookingType);
-                }
-                else
-                {
-                    bookingInfo = "Invalid booking ID format.";
-                }
-            }
-            else if (controllerName == "HotelBooking" && httpContext.GetRouteData().Values.TryGetValue("hotelId", out object hotelIdObj))
-            {
-                if (int.TryParse(hotelIdObj?.ToString(), out int bookingId))
-                {
-                    
-                    // Cast the booking type based on the controller
-                    if (typeof(T) == typeof(HotelBooking))
-                    {
-                        bookingType = (T)(object)new HotelBooking();
-                    }
-                    else
-                    {
-                        bookingInfo = "Invalid booking type.";
-                    }
-
-
-                    // Assuming RetriveBooking method returns booking information
-                    bookingInfo = RetriveBooking(bookingId, bookingType);
-
-                }
-                else
-                {
-                    bookingInfo = "Invalid booking ID format.";
-                }
-            }
-            else if (controllerName == "CarRental" && httpContext.GetRouteData().Values.TryGetValue("id", out object carIdObj))
-            {
-                if (int.TryParse(carIdObj?.ToString(), out int bookingId))
-                {
-                    // Cast the booking type based on the controller
-                    if (typeof(T) == typeof(CarSuccess))
-                    {
-                        bookingType = (T)(object)new CarSuccess();
-                    }
-                    else
-                    {
-                        bookingInfo = "Invalid booking type.";
-                    }
-
-                    // Assuming RetriveBooking method returns booking information
-                    bookingInfo = RetriveBooking(bookingId, bookingType);
-                }
-                else
-                {
-                    bookingInfo = "Invalid booking ID format.";
                 }
             }
 
-            else
-            {
-                // Handle case when the controller or booking ID parameter is not present or unrecognized
-                bookingInfo = "Booking ID or Controller not found or unrecognized in the request.";
-            }
 
-            // Return the booking information as a string
-            return bookingInfo;
         }
 
-
-        private string RetriveBooking<T>(int bookingId, T bookingType)
-        {
-
-            // You can customize this method based on the structure of your booking models
-            if (bookingType is HotelBooking)
-            {
-                var booking = bookingType as HotelBooking;
-                var hotel = booking?.Hotel;
-                return $"Hotel Name: {hotel?.Name}, ID: {booking?.HotelBookingId}, Number of Rooms: {booking?.NumOfRoomsToBook}, Booking Date: {booking?.BookingDate}";
-            }
-            else if (bookingType is Booking)
-            {
-                var booking = bookingType as Booking;
-                var flight = booking?.Flight;
-
-                return $"Flight Id: {booking?.FlightId}, Booking ID: {booking?.BookingId}, Ariline: {flight?.Airline}, Origin: {flight?.Origin}, Destination: {flight?.Destination}, Departure: {flight?.DepartureTime}, Arrival: {flight?.ArrivalTime}";
-
-            }
-            else if (bookingType is CarSuccess)
-            {
-                var booking = bookingType as CarSuccess;
-                var car = booking?.CarRental;
-
-                return $"Model: {car?.CarModel}, Booking ID: {booking?.CarSuccessId}, Pick-up Date: {booking?.CarRental.PickUpDate}, Pick-up Loaction: {booking?.CarRental.PickUpLocation}";
-            }
-            else
-            {
-                return "Unknown Booking Details";
-            }
-        }
-
-
-
-
+       
 
         private Dictionary<string, string> ExtractSearchParams(HttpRequest request)
         {
@@ -383,12 +127,12 @@ namespace GBC_Travel_Group_90.Filters
             {
                 if (user != null)
                 {
-                    _logger.LogInformation("--------Request Searching: User {userId} searched for: {searchParams}", user.Id, string.Join(", ", searchParams.Select(kv => $"{kv.Key}={kv.Value}")));
+                    _logger.LogInformation("-------- Searching Request: User {userId} searched for: {searchParams}", user.Id, string.Join(", ", searchParams.Select(kv => $"{kv.Key}={kv.Value}")));
 
                 }
                 else
                 { 
-                    _logger.LogInformation("---------Request Details: Anonymous User searched for: {searchParams}", string.Join(", ", searchParams.Select(kv => $"{kv.Key}={kv.Value}")));
+                    _logger.LogInformation("--------- Seraching Request : Anonymous User searched for: {searchParams}", string.Join(", ", searchParams.Select(kv => $"{kv.Key}={kv.Value}")));
                 }
                 return true;
             }
