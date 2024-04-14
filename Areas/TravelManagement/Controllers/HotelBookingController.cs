@@ -8,6 +8,7 @@ using GBC_Travel_Group_90.Filters;
 using System.Linq.Expressions;
 using GBC_Travel_Group_90.CustomMiddlewares;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
@@ -180,7 +181,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
                     await _context.HotelBookings.AddAsync(hotelBooking);
                     await _context.SaveChangesAsync();
 
-                    _logger.LogInformation("-------- User {fisrtname} {lastname} successfully booked Flight: {flightInfo}", user.FirstName, user.LastName, hotelBooking);
+                    _logger.LogInformation("-------- User {fisrtname} {lastname} successfully booked Hotel: {hotelInfo}", user.FirstName, user.LastName, hotelBooking.ToString());
 
                     return RedirectToAction(nameof(Details), new { name = hotelBooking.Name, id = hotelBooking.HotelBookingId });
                 }

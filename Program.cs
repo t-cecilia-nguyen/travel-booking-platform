@@ -35,7 +35,11 @@ builder.Services.AddScoped<LoggingFilter>();
 builder.Services.AddScoped<ValidateModelFilter>();
 
 //Register global filters for all controllers, actions and razor pages here
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    }); ;
 
 //Inilialize Serilog
 //configure Serilog to read from appsetting.json configuartion
@@ -48,6 +52,7 @@ builder.Services.AddHttpContextAccessor();
 
 // Register Session Service
 builder.Services.AddScoped<ISessionService, SessionService>();
+
 builder.Services.AddSession();
 
 var app = builder.Build();
@@ -56,7 +61,8 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    app.UseStatusCodePagesWithRedirects("/Error/{0}");
+    app.UseStatusCodePagesWithReExecute("/Error/{0}");
+    
 }
 else
 {
@@ -89,18 +95,30 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
+app.UseSession();
+
+
+
 app.UseRouting();
+
+
+//<<<<   Using Custom Logging Middleware   >>>>>>
+
+
+
+app.UseMiddleware<GlobalExceptionMiddleware>();
+app.UseLoggingMiddleware();
+
+
+
+
 
 app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseSession();
-
-//<<<<   Using Custom Logging Middleware   >>>>>>
 
 
-app.UseLoggingMiddleware();
 
 
 
@@ -116,11 +134,13 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
+/*
 app.MapControllerRoute(
     name: "error",
     pattern: "/Error/{statusCode?}",
     defaults: new { controller = "Error", action = "Error" }
 );
+*/
+
 
 app.Run();

@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] =  ViewBag.StatusCode + " Error Page";
+    ViewData["Title"] = "Error Page";
 }
 
 
@@ -10,18 +10,13 @@
     <br />
     <hr />
     <br />
-    <h2 class="mb-10">Exeption Details</h2>
+    <h2 class="mb-10">Error Details</h2>
+    <p class="text-danger">Error Message: @ViewBag.ErrorMessage</p>
+    <h1>@ViewBag.StatusCode</h1>
 </div>
 
 <hr />
 
-<h2 >Error Details</h2>
 
-<div class="alert alert-danger mt-5">
-    <h4>Exeption occurred while processing your request. </h4>
-    <p class="text-warning">Error Message: @ViewBag.ErrorMessage</p>
-    <h1>@ViewBag.StatusCode</h1>
-</div>
-
-<a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Go Back To Home Page</a>
+<a asp-action="Index" asp-controller="Home" class="btn btn-secondary m-10">Go Back To Home Page</a>
 

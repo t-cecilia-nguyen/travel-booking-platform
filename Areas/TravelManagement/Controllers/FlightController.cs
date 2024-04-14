@@ -52,7 +52,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
         public async Task<IActionResult> Details(int id)
         {
             //TRIGGER AN ERROR
-            // throw new Exception("Error in Details View");
+            //throw new Exception("Error in Flight Details View");
             
             var flight = await _db.Flights.FirstOrDefaultAsync(p => p.FlightId == id);
 

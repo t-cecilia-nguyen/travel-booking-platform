@@ -83,7 +83,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             await _db.CarSuccess.AddAsync(model);
             await _db.SaveChangesAsync();
             
-            _logger.LogInformation("-------- User {fisrtname} {lastname} successfully booked Car: {carInfo}", user.FirstName, user.LastName, model);
+            _logger.LogInformation("-------- User {fisrtname} {lastname} successfully booked Car: {carInfo}", user.FirstName, user.LastName, model.ToString());
             return View(model);
            
         }

@@ -44,6 +44,11 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
         public string? Name { get; set; }
 
         public Hotel? Hotel { get; set; }
+
+        public override string ToString()
+        {
+            return $"HotelBookingId: {HotelBookingId}, BookingDate: {BookingDate}, CheckInDate: {CheckInDate}, CheckOutDate: {CheckOutDate}, NumOfRoomsToBook: {NumOfRoomsToBook}, TotalAmount: {TotalAmount}, Status: {Status}, ApplicationUserId: {ApplicationUserId}, HotelId: {HotelId}, Name: {Name}";
+        }
     }
     public enum Status
     {

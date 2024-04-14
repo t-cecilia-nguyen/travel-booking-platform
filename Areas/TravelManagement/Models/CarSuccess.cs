@@ -11,5 +11,10 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
         public int? CarRentalId { get; set; }
         public CarRental CarRental { get; set; }
 
+        public override string ToString()
+        {
+            return $"CarSuccessId: {CarSuccessId}, ApplicationUserId: {ApplicationUserId}, CarRentalId: {CarRentalId}";
+        }
+
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 using static System.Net.Mime.MediaTypeNames;
 using System.Text.RegularExpressions;
 using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 {
@@ -101,7 +102,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
             await _db.SaveChangesAsync();
 
 
-            _logger.LogInformation("-------- User {fisrtname} {lastname} successfully booked Flight: {flightInfo}", user.FirstName, user.LastName, booking);
+            _logger.LogInformation("-------- User {fisrtname} {lastname} successfully booked Flight: {flightInfo}", user.FirstName, user.LastName, booking.ToString());
 
             return RedirectToAction("Success", new { id = booking.BookingId });
         }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
 {
@@ -50,6 +51,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Models
         [Display(Name = "Current Passengers")]
         public int CurrentPassengers { get; set; }
 
+     
         public virtual ICollection<Booking>? Bookings { get; set; }
     }
 }
