@@ -5,6 +5,7 @@ namespace GBC_Travel_Group_90.Data
 {
     public interface IApplicationDbContext
     {
+        //
         public DbSet<Flight> Flights { get; set; }
         public DbSet<CarRental> CarRentals { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
