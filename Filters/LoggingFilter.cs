@@ -23,7 +23,7 @@ namespace GBC_Travel_Group_90.Filters
         }
 
 
-        public override async void OnActionExecuting(ActionExecutingContext context)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
             var requestPath = context.HttpContext.Request.Path;
             _logger.LogInformation("---------Request on path: {requestPath} at {DateTime}", requestPath, DateTime.UtcNow);
@@ -50,11 +50,10 @@ namespace GBC_Travel_Group_90.Filters
 
                     //log booking service's name
                     var action = actionDescriptor.ActionName;
-                    var user = await _userManager.FindByNameAsync(action);  
+                    var user = _userManager.FindByNameAsync(action).GetAwaiter().GetResult();
                     if (user != null)
                     {
                         _logger.LogInformation("--------- Booking Request: User {userId} is using booking {serviceType} service. ", user.Id, action);
-
                     }
                     else
                     {

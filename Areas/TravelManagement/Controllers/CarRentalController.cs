@@ -128,6 +128,7 @@ namespace GBC_Travel_Group_90.Areas.TravelManagement.Controllers
 
             if (carRental == null)
             {
+                System.Console.WriteLine("carRental = NUL!!!!!!!!!!!");
                 return NotFound(); // Car rental not found, return Not Found status
             }
 
